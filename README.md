@@ -17,6 +17,10 @@ HOW TO MAKE EDITS - IMPORTANT!
 4. Submit a pull request for the branch. Try to only do this when you know that somebody else is present to review your request, or you'll be stuck in limbo. Only approve your own request when you ABSOLUTELY need to, and double check the revisions when doing so. When approving your own pull request, send a message on Hangouts to ensure transparency.
 5. Have someone else approve the pull request, and then delete the temporary branch.
 
+POSTING ISSUES:
+- For all to see the issue, assign everyone to it and add it to the Project
+- For a private issue, only assign the pertainent people to that issue.
+
 PRO TIP: Submit pull requests around 2-3 minutes before the end of class. 
 
 PROJECT TIMELINE*:
