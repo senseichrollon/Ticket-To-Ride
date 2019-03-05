@@ -10,6 +10,10 @@ Miles Tran(Associate Developer)
 OBJECTIVE:
 To create a graphical, Java based implementation of the board game "Ticket to Ride".
 
+BEFORE YOU MAKE EDITS, UPDATE YOUR LOCAL FILES!
+1. Fetch updates from upstream
+2. Rebase your local branch on the Remote Master Branch
+
 HOW TO MAKE EDITS - IMPORTANT!
 1. Make the edit in your local branch, then commit it to your LOCAL BRANCH
 2. Required Template for Commit Message: INITIALS, HH:MM AM/PM(time), DD/MM(date), DESCRIPTION OF CHANGES
