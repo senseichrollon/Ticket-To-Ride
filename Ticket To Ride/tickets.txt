@@ -1,0 +1,69 @@
+68
+20|Vancouver|Montreal
+13|Vancouver|Duluth
+11|Portland|Phoenix
+13|Montreal|New Orleans
+12|Boston|Miami
+14|Calgary|Nashville
+7|Salt Lake City|Kansas City
+19|Portland|Pittsburgh
+20|Seattle|New York
+4|Washingston|Atlanta
+9|Los Angeles|Oklahoma City
+9|Seattle|Los Angeles
+4|Boston|Washington
+6|Nashville|New York
+10|Winnipeg|Santa Fe
+11|Winnipeg|Little Rock
+11|Kansas City|Boston
+13|Vancouver|Santa Fe
+10|Duluth|El Paso
+13|Montreal|Dallas
+20|Los Angeles|New York
+6|Toronto|Charleston
+16|Los Angeles|Chicago
+14|Seattle|Oklahoma City
+8|Sault St. Marie|Nashville
+17|San Francisco|Sault St. Marie
+4|Denver|El Paso
+8|Omaha|New Orleans
+6|Denver|Saint Louis
+9|Montreal|Atlanta
+13|Calgary|Phoenix
+7|Duluth|Dallas
+9|Chicago|Santa Fe
+12|Winnipeg|Houston
+16|Portland|Houston
+12|Los Angeles|Calgary
+21|San Francisco|Washington
+10|Seattle|Las Vegas
+19|Las Vegas|New York
+8|Saint Louis|Miami
+11|Vancouver|Denver
+8|Helena|Los Angeles
+7|Calgary|Salt Lake City
+7|Chicago|Boston
+19|Los Angeles|Miami
+17|Portland|Nashville
+5|Kansas City|Houston
+15|Los Angeles|Atlanta
+6|Winnipeg|Omaha
+11|Salt Lake City|Chicago
+7|Chicago|New Orleans
+10|Toronto|Miami
+5|Chicago|New York
+5|Chicago|Atlanta
+11|Dallas|New York
+11|Denver|Pittsburgh
+6|New York|Atlanta
+19|Phoenix|Boston
+12|Sault St. Marie|Miami
+10|Houston|Washington
+7|Montreal|Raleigh
+7|Montreal|Chicago
+8|Pittsburgh|New Orleans
+8|Duluth|Houston
+10|New York|Miami
+17|San Francisco|Atlanta
+2|Vancouver|Portland
+21|Las Vegas|Miami
