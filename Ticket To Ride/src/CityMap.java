@@ -20,7 +20,7 @@ public class CityMap
 			Scanner in = new Scanner(new File("tickets.txt"));
 			while(in.hasNextLine())
 			{
-				
+
 			}
 		}
 		catch(Exception e) {}
