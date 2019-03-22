@@ -1,5 +1,65 @@
 package game.graphics.engine;
 
-public class GraphicsPanel {
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import game.graphics.screens.ScreenManager;
+
+public class GraphicsPanel extends JPanel implements Runnable {
+	
+	public static final int WIDTH = 1920, HEIGHT = 1080;
+	public static boolean animating;
+	
+	private Thread thread;
+	private boolean running;
+	private int FPS = 60;
+	private long targetTime = 1000 / FPS;
+	
+	
+	
+	public GraphicsPanel() {
+		ScreenManager.init();
+	}
+	
+	
+	public static void main(String[] args) {
+		JFrame frame = new JFrame("Ticket to Ride");
+		frame.setSize(WIDTH, HEIGHT);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.add(new GraphicsPanel());
+		frame.setVisible(true);
+	}
+	
+	public void update() {
+		ScreenManager.getCurrentScreen().update();
+	}
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		ScreenManager.getCurrentScreen().draw((Graphics2D)g);
+	}
+
+	@Override
+	public void run() {
+
+		long start, elapsed, wait;
+		while (running) {
+			start = System.nanoTime();
+			update();
+			elapsed = System.nanoTime() - start;
+			wait = targetTime - elapsed / 1000000;
+			if (wait < 0)
+				wait = 5;
+			try {
+				Thread.sleep(wait);
+			} catch (Exception e) {
+			}
+			repaint();
+			
+		}
+	}
 }
