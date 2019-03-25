@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import game.graphics.input.MouseInput;
 import game.graphics.screens.ScreenManager;
 
 public class GraphicsPanel extends JPanel implements Runnable {
@@ -21,7 +22,14 @@ public class GraphicsPanel extends JPanel implements Runnable {
 	
 	
 	public GraphicsPanel() {
-		ScreenManager.init();
+		MouseInput input = new MouseInput();
+		ScreenManager.init(input);
+		addMouseListener(input);
+		addMouseMotionListener(input);
+		running = true;
+		thread = new Thread(this);
+		thread.start();
+		
 	}
 	
 	
@@ -32,6 +40,7 @@ public class GraphicsPanel extends JPanel implements Runnable {
 		frame.setResizable(false);
 		frame.add(new GraphicsPanel());
 		frame.setVisible(true);
+		
 	}
 	
 	public void update() {
@@ -45,7 +54,6 @@ public class GraphicsPanel extends JPanel implements Runnable {
 
 	@Override
 	public void run() {
-
 		long start, elapsed, wait;
 		while (running) {
 			start = System.nanoTime();

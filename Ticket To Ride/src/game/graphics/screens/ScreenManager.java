@@ -2,6 +2,8 @@ package game.graphics.screens;
 
 import java.awt.Graphics2D;
 
+import game.graphics.input.MouseInput;
+
 public abstract class ScreenManager {
 	
 	public static final int GAME = 0;
@@ -14,9 +16,9 @@ public abstract class ScreenManager {
 	
 	private static ScreenManager currentScreen;
 	
-	public static void init() {
+	public static void init(MouseInput input) {
 		game = new GameScreen();
-		menu = new MenuScreen();
+		menu = new MenuScreen(input);
 		rule = new RuleScreen();
 		currentScreen = menu;
 	}

@@ -19,7 +19,7 @@ public class CardNode {
 	}
 
 	public CardNode(String value, CardNode left, CardNode right) {
-		color = value;
+		color = value;	
 		this.left = left;
 		this.right = right;
 	}
