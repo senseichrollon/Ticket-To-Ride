@@ -1,4 +1,4 @@
-package game.entity;
+
 
 public class CardNode {
 	private String color;
