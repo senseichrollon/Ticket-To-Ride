@@ -29,12 +29,7 @@ public class Deck {
 		}
 
 	}
-	public boolean removeUpCard(String x) {
-		
-		
-		
-		return true;
-	}
+	
 	public void replaceContract(List<ContractCard> ss) {
 		for(ContractCard c:ss) {
 			contractDeck.add(c);
