@@ -1,3 +1,4 @@
+package game.entity;
 import java.util.*;
 public class Deck {
 	private Queue<String> trainDeck;

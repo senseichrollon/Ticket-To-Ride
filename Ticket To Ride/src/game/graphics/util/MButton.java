@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 
 public class MButton {
@@ -24,6 +26,8 @@ public class MButton {
 		this.setFont(font);
 		this.setBackground(background);
 		this.setForeground(foreground);
+		
+		shape = roundedRect(100,100,100);
 	}
 	
 	public void setCenter(Point2D center) {
@@ -82,7 +86,23 @@ public class MButton {
 		this.cleared = cleared;
 	}
 	
+	public static Shape roundedRect(double width, double height, double radius) {
+		Path2D shape = new Path2D.Double();
+		shape.moveTo(0, 0);
+		shape.lineTo(width - radius, 0);
+		shape.curveTo(width, 0, width, 0, width, radius);
+		shape.lineTo(width, height - radius);
+		shape.curveTo(width, height, width, height, width - radius, height);
+        shape.lineTo(0, height);
+        AffineTransform at = new AffineTransform();
+        at.translate(900, 900);
+        shape.transform(at);
+        shape. closePath();
+		return shape;
+	}
+	
 	public void draw(Graphics2D g) {
-		
+		g.setColor(foreground);
+		g.draw(shape);
 	}
 }
