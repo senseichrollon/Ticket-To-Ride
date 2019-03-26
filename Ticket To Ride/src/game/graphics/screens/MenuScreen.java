@@ -15,35 +15,44 @@ public class MenuScreen extends ScreenManager {
 
 	private MouseInput input;
 	private MButton playButton;
+	private MButton exitButton;
 	private Rectangle rect;
 	private int dx, dy;
 	
 	public MenuScreen(MouseInput input) {
 		this.input = input;
 		playButton = new MButton("Play", new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 20), Color.GREEN, Color.orange);
-		playButton.setCenter(new Point(300,300));
+		playButton.setCenter(new Point(800,300));
 		playButton.setShape(MButton.ellipse(200,100));
+		
+		exitButton = new MButton("Exit", new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 20), Color.GREEN, Color.orange);
+		exitButton.setCenter(new Point(800,800));
+		exitButton.setShape(MButton.ellipse(200,100));
+		
 		dx = 5;
 		rect = new Rectangle(0,780,100,100);
 	}
 	
 	@Override
 	public void update() {
-		if(rect.getX() + rect.getWidth() + dx >= GraphicsPanel.WIDTH || rect.getX() < 0) {
-			dx *=-1;
+		if(rect.getX() + dx >= GraphicsPanel.WIDTH+50) {
+			rect.setBounds((int)-rect.getWidth(), (int)rect.getY(), (int)rect.getWidth(), (int)rect.getHeight());
 		}
 
 		rect.setBounds((int)rect.getX() + (int)dx, (int)rect.getY(), (int)rect.getWidth(), (int)rect.getHeight());
 		updateButton(input.clicked(), input.released(), new Point(input.getX(), input.getY()));
-		System.out.println(input.clicked() + " " + input.released());
 		if(playButton.isValidRelease()) {
 			playButton.setValidRelease(false);
 			ScreenManager.switchScreen(ScreenManager.GAME);
 		}
+		
+		if(exitButton.isValidRelease()) {
+			System.exit(0);
+		}
 	}
 	
 	public void updateButton(boolean mousePressed, boolean mouseReleased, Point mouseLoc) {
-		MButton[] buttons = {playButton};
+		MButton[] buttons = {playButton, exitButton};
 		if(mousePressed)
 			for(MButton b : buttons)
 				if(b.checkContains(mouseLoc))
@@ -67,6 +76,7 @@ public class MenuScreen extends ScreenManager {
 		g.setPaint(gp1);
 		g.fillRect(0, 0, GraphicsPanel.WIDTH, GraphicsPanel.HEIGHT);
 		playButton.draw(g);
+		exitButton.draw(g);
 		g.setColor(Color.GREEN);
 		g.fill(rect);
 	}

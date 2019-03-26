@@ -47,15 +47,14 @@ public class MouseInput implements MouseListener, MouseMotionListener {
 	
 	public boolean clicked() {
 		boolean temp = clicked;
-		clicked = false;
-		System.out.println(temp);
+//		System.out.println(temp);
 		return temp;
 	}
 	
 	public boolean released() {
 		boolean temp = released;
 		released = false;
-		System.out.println(temp);
+//		System.out.println(temp);
 		return (temp);
 	}
 	
