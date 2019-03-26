@@ -1,4 +1,4 @@
-package game.entity;
+
 
 public class ContractCard {
 	private String cityOne, cityTwo;
