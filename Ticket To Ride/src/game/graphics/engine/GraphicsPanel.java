@@ -22,6 +22,7 @@ public class GraphicsPanel extends JPanel implements Runnable {
 	
 	
 	public GraphicsPanel() {
+		requestFocus();
 		MouseInput input = new MouseInput();
 		ScreenManager.init(input);
 		addMouseListener(input);
