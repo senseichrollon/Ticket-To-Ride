@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+/game/
+/resources/
+=======
 /Class1.class
 /TestBranch.class
 /CardNode.class
@@ -8,3 +12,4 @@
 /ContractCard.class
 >>>>>>> branch 'master' of https://github.com/senseichrollon/Ticket-To-Ride.git
 /game/
+>>>>>>> branch 'master' of https://github.com/senseichrollon/Ticket-To-Ride.git
