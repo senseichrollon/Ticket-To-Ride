@@ -1,6 +1,7 @@
 package game.graphics.screens;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 
 import game.graphics.engine.GraphicsPanel;
@@ -14,11 +15,11 @@ public class MenuScreen extends ScreenManager {
 	
 	public MenuScreen(MouseInput input) {
 		this.input = input;
+		playButton = new MButton("Play", new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 20), Color.red, Color.orange);
 	}
 	
 	@Override
 	public void update() {
-		System.out.println("hi7");
 		if(input.clicked()) {
 			ScreenManager.switchScreen(ScreenManager.GAME);
 		}
@@ -30,6 +31,7 @@ public class MenuScreen extends ScreenManager {
 	public void draw(Graphics2D g) {
 		g.setColor(Color.RED);
 		g.fillRect(0, 0, GraphicsPanel.WIDTH, GraphicsPanel.HEIGHT);
+		playButton.draw(g);
 	}
 
 }

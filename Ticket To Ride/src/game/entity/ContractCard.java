@@ -1,3 +1,4 @@
+package game.entity;
 
 
 public class ContractCard {
