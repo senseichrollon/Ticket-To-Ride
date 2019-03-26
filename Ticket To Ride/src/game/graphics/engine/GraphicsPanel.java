@@ -16,7 +16,7 @@ public class GraphicsPanel extends JPanel implements Runnable {
 	
 	private Thread thread;
 	private boolean running;
-	private int FPS = 5;
+	private int FPS = 60;
 	private long targetTime = 1000 / FPS;
 	
 	
