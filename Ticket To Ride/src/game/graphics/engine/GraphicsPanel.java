@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import game.graphics.input.MouseInput;
@@ -22,6 +23,7 @@ public class GraphicsPanel extends JPanel implements Runnable {
 	
 	
 	public GraphicsPanel() {
+		requestFocus();
 		MouseInput input = new MouseInput();
 		ScreenManager.init(input);
 		addMouseListener(input);
@@ -31,7 +33,6 @@ public class GraphicsPanel extends JPanel implements Runnable {
 		thread.start();
 		
 	}
-	
 	
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Ticket to Ride");

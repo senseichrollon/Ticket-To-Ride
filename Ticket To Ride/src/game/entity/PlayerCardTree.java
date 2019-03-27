@@ -80,39 +80,43 @@ public class PlayerCardTree
 		}
 	}
 	
-	public CardNode remove(String color, int c)
-	{
-		CardNode temp = getCard(root, color);
-		if (temp == null)
-		{
-			return null;
-		}
-		int numLeft = temp.getCount() - c;
-		if (numLeft > 0)
-		{
-			temp.setCount(numLeft);
-			return new CardNode(color, c);
-		}
-		else if (numLeft < 0)
-		{
-			CardNode wildCard = getCard(root, "wild");
-			if (wildCard == null)
-				return null;
-			int wildCardLeft = wildCard.getCount() - (-1 * numLeft);
-			if (wildCardLeft < 0)
-			{
-				return null;
-			}
-			else if (wildCardLeft > 0)
-			{
-				wildCard.setCount(wildCardLeft);
-				numLeft = 0;
-			}
-		}
-		if (numLeft == 0)
-		{
-			
-		}
-	}
+//	public CardNode remove(String color, int c)
+//	{
+//		CardNode wildCard;
+//		CardNode temp = getCard(root, color);
+//		if (temp == null)
+//		{
+//			return null;
+//		}
+//		int numLeft = temp.getCount() - c;
+//		if (numLeft > 0)
+//		{
+//			temp.setCount(numLeft);
+//			return new CardNode(color, c);
+//		}
+//		else if (numLeft < 0)
+//		{
+//			wildCard = getCard(root, "wild");
+//			if (wildCard == null)
+//				return null;
+//			int wildCardLeft = wildCard.getCount() - (-1 * numLeft);
+//			if (wildCardLeft < 0)
+//			{
+//				return null;
+//			}
+//			else if (wildCardLeft > 0)
+//			{
+//				wildCard.setCount(wildCardLeft);
+//				numLeft = 0;
+//			}
+//		}
+//		if (numLeft == 0)
+//		{
+//			if (temp.getLeft() == null && temp.getRight() == null)
+//			{
+//				temp.setCount(0);
+//			}
+//		}
+//	}
 }
 

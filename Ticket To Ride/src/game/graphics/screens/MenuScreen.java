@@ -1,37 +1,119 @@
 package game.graphics.screens;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GradientPaint;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import game.graphics.engine.GraphicsPanel;
 import game.graphics.input.MouseInput;
+import game.graphics.util.ImageLoader;
 import game.graphics.util.MButton;
 
 public class MenuScreen extends ScreenManager {
 
 	private MouseInput input;
 	private MButton playButton;
+	private MButton exitButton;
+	private MButton creditButton;
+	private int trainX;
+	private int trainY;
+	private int dx;
+	private BufferedImage train;
+	private BufferedImage logo;
+	private JFrame credits;
 	
 	public MenuScreen(MouseInput input) {
 		this.input = input;
-		playButton = new MButton("Play", new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 20), Color.red, Color.orange);
+		playButton = new MButton("Play", new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 20), Color.GREEN, Color.orange);
+		playButton.setCenter(new Point(600,850));
+		playButton.setShape(MButton.ellipse(200,100));
+		
+		creditButton = new MButton("Credits", new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 20), Color.GREEN, Color.orange);
+		creditButton.setCenter(new Point(1100,850));
+		creditButton.setShape(MButton.ellipse(200,100));
+		credits = new JFrame("Credits");
+		
+		exitButton = new MButton("Exit", new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 20), Color.GREEN, Color.orange);
+		exitButton.setCenter(new Point(850,850));
+		exitButton.setShape(MButton.ellipse(200,100));
+		
+		train = ImageLoader.resize(ImageLoader.loadImage("resources/menuscreen/chootrain.png"), 500, 200);
+		trainX = GraphicsPanel.WIDTH - train.getWidth();
+		trainY = 0;
+		dx = 3;
+		
+		logo = ImageLoader.resize(ImageLoader.loadImage("resources/menuscreen/logo.png"), 550, 550);
 	}
 	
 	@Override
 	public void update() {
-		if(input.clicked()) {
+		if(trainX <= -1*train.getWidth())
+			trainX = GraphicsPanel.WIDTH + train.getWidth();
+		trainX -= dx;
+		updateButton(input.clicked(), input.released(), new Point(input.getX(), input.getY()));
+		if(playButton.isValidRelease()) {
+			playButton.setValidRelease(false);
 			ScreenManager.switchScreen(ScreenManager.GAME);
 		}
+		
+		if(exitButton.isValidRelease()) {
+			System.exit(0);
+		}
+		
+		if(creditButton.isValidRelease())
+		{
+			creditButton.setValidRelease(false);
+			JOptionPane.showMessageDialog(credits,
+					"Aurko Routh - Project Lead\nRac Mukkamala - Software Developer"
+					+ "\nNikunj Zamwar - Software Developer\nMiles Tran - Software Developer",
+				    "Credits",
+				    JOptionPane.PLAIN_MESSAGE);
+		}
+	}
+	
+	public void updateButton(boolean mousePressed, boolean mouseReleased, Point mouseLoc) {
+		MButton[] buttons = {playButton, exitButton, creditButton};
+		if(mousePressed)
+			for(MButton b : buttons)
+				if(b.checkContains(mouseLoc))
+					b.setPressed(true);
+		if(mouseReleased)
+			for(MButton b : buttons)
+				if(b.checkContains(mouseLoc) && b.isPressed())
+					b.setValidRelease(true);
+		if(!mousePressed && !mouseReleased)
+			for(MButton b : buttons)
+				if(!b.checkContains(mouseLoc))
+					b.setPressed(false);
 	}
 	
 
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.setColor(Color.RED);
+		Color c2 = Color.CYAN.darker().darker();
+		GradientPaint gp1 = new GradientPaint(0, 0, Color.CYAN, 0, (GraphicsPanel.HEIGHT), c2, true);
+		g.setPaint(gp1);
 		g.fillRect(0, 0, GraphicsPanel.WIDTH, GraphicsPanel.HEIGHT);
+		
 		playButton.draw(g);
+		exitButton.draw(g);
+		creditButton.draw(g);
+		
+		g.drawImage(logo, 700, 250, null);
+		g.drawImage(train, trainX, trainY, null);
+		
+		g.setStroke(new BasicStroke(20));
+		g.setColor(Color.BLACK);
+		int lineY = trainY + train.getHeight()-15;
+		g.drawLine(0, lineY, GraphicsPanel.WIDTH, lineY);
 	}
 
 }
