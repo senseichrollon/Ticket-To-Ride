@@ -117,5 +117,22 @@ public class PlayerCardTree
 		}
 		return false;
 	}
+	
+	public String toString()
+	{
+		return inOrder(root);
+	}
+	
+	public String inOrder(CardNode card)
+	{
+		String str = "";
+		if (card != null)
+		{
+			str += inOrder(card.getLeft());
+			str += card + "\n";
+			str += inOrder(card.getRight());
+		}
+		return str;
+	}
 }
 

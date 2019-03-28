@@ -43,5 +43,10 @@ public class GameState
 	{
 		return deck;
 	}
-
+	public void updatePlayer()
+	{
+		currentPlayer++;
+		if (currentPlayer == 4)
+			currentPlayer = 0;
+	}
 }
