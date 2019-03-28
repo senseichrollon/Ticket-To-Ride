@@ -66,6 +66,11 @@ public class CardNode
 
 	public void setCount(int c) 
 	{
-		count += c;
+		count = c;
+	}
+	
+	public String toString()
+	{
+		return "Count: " + count + " Color: " + color;
 	}
 }
