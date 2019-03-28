@@ -9,18 +9,33 @@ import java.util.TreeSet;
 
 public class CityMap {
 	private List<ArrayList<Track>> map;
-	public static HashMap<String, Integer> INDEX;
+	public static HashMap<String, Integer> CITYINDEX;
+	private List<ArrayList<Track>> fullMap;
+	private ArrayList<Integer> dp;
+	private ArrayList<Track> lpVisited;
+	private ArrayList<Track> gcVisited;
 
 	public CityMap() {
 		// TreeSet<String> temp = new TreeSet<String>();
-		INDEX = new HashMap<String, Integer>();
+		CITYINDEX = new HashMap<String, Integer>();
 		map = new ArrayList<ArrayList<Track>>();
+		fullMap = new ArrayList<ArrayList<Track>>();
 		try {
-			Scanner in = new Scanner(new File("tickets.txt"));
-			while (in.hasNextLine()) {
-
+			Scanner in = new Scanner(new File("resources/gamedata/cities.txt"));
+			for(int i = 0; i < in.nextInt(); i++){
+				CITYINDEX.put(in.next(), in.nextInt());
 			}
 		} catch (Exception e) {
+			System.out.println("Error reading resources/gamedata/cities.txt");
+		}
+		
+		try {
+			Scanner in = new Scanner(new File("resources/gamedata/cities.txt"));
+			for(int i = 0; i < in.nextInt(); i++){
+				CITYINDEX.put(in.next(), in.nextInt());
+			}
+		} catch (Exception e) {
+			System.out.println("Error reading resources/gamedata/cities.txt");
 		}
 	}
 
