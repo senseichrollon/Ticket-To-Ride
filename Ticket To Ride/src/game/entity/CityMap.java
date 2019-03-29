@@ -30,12 +30,12 @@ public class CityMap {
 		}
 		
 		try {
-			Scanner in = new Scanner(new File("resources/gamedata/cities.txt"));
+			Scanner in = new Scanner(new File("resources/gamedata/tracks.txt"));
 			for(int i = 0; i < in.nextInt(); i++){
-				CITYINDEX.put(in.next(), in.nextInt());
+				
 			}
 		} catch (Exception e) {
-			System.out.println("Error reading resources/gamedata/cities.txt");
+			System.out.println("Error reading resources/gamedata/tracks.txt");
 		}
 	}
 
