@@ -3,18 +3,13 @@ package game.entity;
 public class Track {
 	private String cityOne;
 	private String cityTwo;
-	private String color1;
-	private String color2;
+	private String color;
 
 	public Track(String cityOne, String cityTwo, String color) {
-		this(cityOne, cityTwo, color, null);
-	}
-	
-	public Track(String cityOne, String cityTwo, String color1, String color2) {
+		super();
 		this.cityOne = cityOne;
 		this.cityTwo = cityTwo;
-		this.color1 = color1;
-		this.color2 = color2;
+		this.color = color;
 	}
 
 	public String getCityOne() {
@@ -41,20 +36,12 @@ public class Track {
 		return "";
 	}
 
-	public String getColorOne() {
-		return color1;
+	public String getColor() {
+		return color;
 	}
 
-	public void setColorOne(String color) {
-		this.color1 = color;
-	}
-	
-	public String getColorTwo() {
-		return color2;
-	}
-
-	public void setColorTwo(String color) {
-		this.color2 = color;
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 }
