@@ -15,7 +15,6 @@ public class ImageLoader {
 		 } catch (Exception e) {
 			 System.out.println("Error loading image!");
 		 }
-
 		 return img;
 	 }
 	 

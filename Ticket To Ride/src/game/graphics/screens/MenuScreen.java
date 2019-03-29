@@ -95,7 +95,7 @@ public class MenuScreen extends ScreenManager {
 	}
 	
 
-
+	
 	@Override
 	public void draw(Graphics2D g) {
 		Color c2 = Color.CYAN.darker().darker();
