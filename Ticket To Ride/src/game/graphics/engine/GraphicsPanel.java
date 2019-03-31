@@ -24,11 +24,11 @@ public class GraphicsPanel extends JPanel implements Runnable {
 	
 	public GraphicsPanel() {
 		requestFocus();
+		currentPanel = this;
 		MouseInput input = new MouseInput();
 		ScreenManager.init(input);
 		addMouseListener(input);
 		addMouseMotionListener(input);
-		currentPanel = this;
 		running = true;
 		thread = new Thread(this);
 		thread.start();

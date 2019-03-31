@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import game.graphics.drawers.CityMapDrawer;
 import game.graphics.drawers.ContractCardDrawer;
 import game.graphics.drawers.HandDrawer;
+import game.graphics.engine.GraphicsPanel;
 import game.graphics.util.ImageLoader;
 
 public class GameScreen extends ScreenManager {
@@ -25,12 +26,15 @@ public class GameScreen extends ScreenManager {
 		cMapDrawer = new CityMapDrawer();
 		logo = ImageLoader.loadImage("resources/menuscreen/logo2.png");
 		logo = ImageLoader.resize(logo, logo.getWidth()/3, logo.getHeight()/3);
+		contractDrawer = new ContractCardDrawer();
 	}
 	
 	
 	@Override
 	public void update() {
-		
+		if(!(contractDrawer.getParent() == GraphicsPanel.getPanel())) {
+			GraphicsPanel.getPanel().add(contractDrawer);
+		}
 	}
 
 	@Override
