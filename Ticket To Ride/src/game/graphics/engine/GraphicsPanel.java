@@ -14,12 +14,12 @@ public class GraphicsPanel extends JPanel implements Runnable {
 	
 	public static final int WIDTH = 1920, HEIGHT = 1080;
 	public static boolean animating;
+	private static GraphicsPanel currentPanel;
 	
 	private Thread thread;
 	private boolean running;
 	private int FPS = 60;
 	private long targetTime = 1000 / FPS;
-	
 	
 	
 	public GraphicsPanel() {
@@ -28,6 +28,7 @@ public class GraphicsPanel extends JPanel implements Runnable {
 		ScreenManager.init(input);
 		addMouseListener(input);
 		addMouseMotionListener(input);
+		currentPanel = this;
 		running = true;
 		thread = new Thread(this);
 		thread.start();
@@ -70,5 +71,9 @@ public class GraphicsPanel extends JPanel implements Runnable {
 			repaint();
 			
 		}
+	}
+	
+	public static GraphicsPanel getPanel() {
+		return currentPanel;
 	}
 }
