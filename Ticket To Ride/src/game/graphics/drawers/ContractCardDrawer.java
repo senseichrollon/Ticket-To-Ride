@@ -32,7 +32,6 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 	
 	public void paintComponent(Graphics gg) {
 		Graphics2D g = (Graphics2D)gg;
-		Graphics2D g = (Graphics2D)gg;
 		g.translate(-dx, 0);
 		g.setColor(Color.GREEN);
 		g.drawRect(0, 0, 1000, 1000);
@@ -45,6 +44,5 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e) {
 		dx = e.getAdjustable().getValue() * 10;
-	}
-	
+	}	
 }
