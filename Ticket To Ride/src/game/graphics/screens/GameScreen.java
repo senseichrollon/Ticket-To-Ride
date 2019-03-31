@@ -36,7 +36,7 @@ public class GameScreen extends ScreenManager {
 	@Override
 	public void draw(Graphics2D g) {
 		cMapDrawer.draw(g);
-		Color c2 = Color.RED.darker();
+		Color c2 = Color.RED.darker() ;
 		GradientPaint gp1 = new GradientPaint(0, 0, Color.orange, 0, (600), c2, true);
 		Paint p = g.getPaint();
 		g.setPaint(gp1);
