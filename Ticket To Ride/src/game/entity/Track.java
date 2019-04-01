@@ -114,10 +114,29 @@ public class Track {
 				if(trackColor1.equals(colChoice) && playerColor1 == null 
 				&& (playerColor2 == null || !playerColor2.equals(pc))) 
 				{
-					
+					playerColor1 = pc;
+					return true;
+				}
+				else if(trackColor2.equals(colChoice) && playerColor2 == null 
+				&& (playerColor1 == null || !playerColor1.equals(pc))) 
+				{
+					playerColor2 = pc;
+					return true;
 				}
 			}
 		}
+		return false;
+	}
+	
+	public int getID()
+	{
+		return id;
+	}
+	
+	public boolean equals(Track other)
+	{
+		if(other.getID() == getID())
+			return true;
 		return false;
 	}
 }
