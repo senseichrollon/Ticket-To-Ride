@@ -7,18 +7,20 @@ public class Track {
 	private String trackColor2;
 	private String playerColor1;
 	private String playerColor2;
+	private int length;
 	private int id;
 
-	public Track(int id, String cityOne, String cityTwo, String color) {
-		this(id, cityOne, cityTwo, color, null);
+	public Track(int id, String cityOne, String cityTwo, int length, String color) {
+		this(id, cityOne, cityTwo, length, color, null);
 	}
 	
-	public Track(int id, String cityOne, String cityTwo, String trackColor1, String trackColor2) {
+	public Track(int id, String cityOne, String cityTwo, int length, String trackColor1, String trackColor2) {
 		this.id = id;
 		this.cityOne = cityOne;
 		this.cityTwo = cityTwo;
 		this.trackColor1 = trackColor1;
 		this.trackColor2 = trackColor2;
+		this.length = length;
 		playerColor1 = null;
 		playerColor2 = null;
 	}
