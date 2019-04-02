@@ -27,6 +27,7 @@ public class GameScreen extends ScreenManager {
 		logo = ImageLoader.loadImage("resources/menuscreen/logo2.png");
 		logo = ImageLoader.resize(logo, logo.getWidth()/3, logo.getHeight()/3);
 		contractDrawer = new ContractCardDrawer();
+		handDrawer = new HandDrawer();
 	}
 	
 	
@@ -34,11 +35,12 @@ public class GameScreen extends ScreenManager {
 	public void update() {
 		if(!(contractDrawer.getParent() == GraphicsPanel.getPanel())) {
 			GraphicsPanel.getPanel().add(contractDrawer);
-		}
+		} 
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
+		handDrawer.draw(g);
 		cMapDrawer.draw(g);
 		Color c2 = Color.RED.darker();
 		GradientPaint gp1 = new GradientPaint(0, 0, Color.orange, 0, (600), c2, true);
