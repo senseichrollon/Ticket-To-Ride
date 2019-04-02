@@ -21,21 +21,21 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 
 	
 	public ContractCardDrawer() {
-		setBounds(300,920,1250,1000);
+		setBounds(298,920,1226,1000);
 		setLayout(new BorderLayout());
 		Scrollbar sb = new Scrollbar();
 		
 		sb.setBackground(Color.white);
 		sb.setOrientation(Scrollbar.HORIZONTAL);
 		add(sb, BorderLayout.SOUTH);
-		sb.setSize(1250, 20);
+		sb.setSize(1226, 20);
 		sb.addAdjustmentListener(this);
 	}
 	
 	public void paintComponent(Graphics gg) {
 		Graphics2D g = (Graphics2D)gg;
 		g.translate(-dx, 0);
-		Color c1 =  new Color(63,255,0);
+		Color c1 =  new Color(245,245,220);
 		Color c2 = c1.darker();
 		GradientPaint gp1;
 		Paint p = g.getPaint();

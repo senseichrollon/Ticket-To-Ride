@@ -38,8 +38,8 @@ public class Player
 		trains -= cnt;
 	}
 	
-	public boolean (String color, int cnt)
+	public boolean removeCards(String color, int cnt)
 	{
-		return 
+		return cards.remove(color, cnt);
 	}
 }
