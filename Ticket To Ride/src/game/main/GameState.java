@@ -49,4 +49,6 @@ public class GameState
 		if (currentPlayer == 4)
 			currentPlayer = 0;
 	}
+	
+	
 }
