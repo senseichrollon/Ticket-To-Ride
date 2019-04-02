@@ -20,7 +20,8 @@ public class GameScreen extends ScreenManager {
 	private HandDrawer handDrawer;
 	
 	private Thread gameThread;
-	private BufferedImage logo;
+	private BufferedImage logo, govContract, trainContract;
+	
 	
 	public GameScreen() {
 		cMapDrawer = new CityMapDrawer();
@@ -49,6 +50,12 @@ public class GameScreen extends ScreenManager {
 		g.fillRect(0, 0, 298, 600);
 		g.setPaint(p);
 		g.drawImage(logo,10,0,null);
+		
+		
+		 c2 = new Color(109,146,155).darker();
+		 gp1 = new GradientPaint(0, 0, new Color(109,146,155), 0, (600), c2, true);
+		 g.setPaint(gp1);
+		g.fillRect(0, 600, 298, 480);
 //		g.setColor(Color.BLACK.darker().darker());
 //		g.setFont(new Font("Serif", Font.BOLD+Font.ITALIC, 36));
 //		g.drawString("Ticket to Ride", 0, 50);
