@@ -66,7 +66,15 @@ public class Deck {
 		for(int i=0;i<list.size();i++) {
 			trainDeck.add(list.get(i));
 		}
-		
+		ArrayList Clist = new ArrayList<String>();
+		while(!contractDeck.isEmpty()) {
+			Clist.add(contractDeck.poll());
+			
+		}
+		Collections.shuffle(Clist);
+		for(int i=0;i<Clist.size();i++) {
+			contractDeck.add(Clist.get(i));
+		}
 	}
 	
 	public void replaceContract(List<ContractCard> ss) {
