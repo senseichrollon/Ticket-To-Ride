@@ -23,7 +23,9 @@ public class CityMap {
 		try {
 			Scanner in = new Scanner(new File("resources/gamedata/cities.txt"));
 			for(int i = 0; i < in.nextInt(); i++){
-				CITYINDEX.put(in.next(), in.nextInt());
+				String city = in.next();
+				int num = in.nextInt();
+				CITYINDEX.put(num, city);
 			}
 		} catch (Exception e) {
 			System.out.println("Error reading resources/gamedata/cities.txt");
@@ -32,6 +34,11 @@ public class CityMap {
 		try {
 			Scanner in = new Scanner(new File("resources/gamedata/tracks.txt"));
 			for(int i = 0; i < in.nextInt(); i++){
+				String[] args = in.nextLine().split(" ");
+				
+				//Track add = new Track(Integer.parseInt(args[0]), CITYINDEX.get(Integer.parseInt(args[1])), CITYINDEX.get(Integer.parseInt(args[2])), Integer.parseInt(args[3]), args[5]);
+				if(Boolean.parseBoolean(args[4]))
+					add.setTrackColor2(args[6]);
 				
 			}
 		} catch (Exception e) {
