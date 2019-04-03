@@ -72,6 +72,11 @@ public class Deck {
 		}
 		
 	}
+	public String drawTrain(int c) {
+		String temp = upTrains[c];
+		upTrains[c] = drawRandTrain();
+		return temp;
+	}
 	public void replaceTrains(String s, int x) {
 		CardNode node = new CardNode(s, x);
 		if(upTrains[0]==null) {
@@ -91,6 +96,29 @@ public class Deck {
 		}
 		if(upTrains[5]==null) {
 			upTrains[5] = trainDeck.poll();
+		}
+	}
+	public void check() {
+		if(upTrains[0]=="wild"&&upTrains[1]=="wild"&&upTrains[2]=="wild") {
+			shuffle();
+		}
+		if(upTrains[0]=="wild"&&upTrains[2]=="wild"&&upTrains[3]=="wild") {
+			shuffle();
+		}
+		if(upTrains[0]=="wild"&&upTrains[3]=="wild"&&upTrains[4]=="wild") {
+			shuffle();
+		}
+		if(upTrains[1]=="wild"&&upTrains[2]=="wild"&&upTrains[3]=="wild") {
+			shuffle();
+		}
+		if(upTrains[1]=="wild"&&upTrains[3]=="wild"&&upTrains[4]=="wild") {
+			shuffle();
+		}
+		if(upTrains[2]=="wild"&&upTrains[3]=="wild"&&upTrains[4]=="wild") {
+			shuffle();
+		}
+		if(trainDeck.size()<=5) {
+			shuffle();
 		}
 	}
 }
