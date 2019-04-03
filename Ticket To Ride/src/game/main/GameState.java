@@ -1,5 +1,9 @@
 package game.main;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import game.entity.CityMap;
+import game.entity.ContractCard;
 import game.entity.Deck;
 import game.entity.Player;
 
@@ -11,7 +15,7 @@ public class GameState
 	private Deck deck;
 	public static int NUMPLAYERS = 4;
 	
-	public GameState()
+	public GameState() throws IOException
 	{
 		players = new Player[4];
 		players[0] = new Player("Jim", "blue");
@@ -50,5 +54,28 @@ public class GameState
 			currentPlayer = 0;
 	}
 	
+	public String drawFaceUpCard(int num)
+	{
+		return deck.drawTrain(num);
+	}
 	
+	public String drawFaceDownCard()
+	{
+		return deck.drawRandTrain();
+	}
+	
+	public String getPlayerEdges(int num)
+	{
+		return players[num].getEdges();
+	}
+	
+	public ContractCard[] drawContracts()
+	{
+		return deck.drawContracts();
+	}
+	
+	public void returnContracts(ArrayList<ContractCard> list)
+	{
+		deck.replaceContract(list);
+	}
 }
