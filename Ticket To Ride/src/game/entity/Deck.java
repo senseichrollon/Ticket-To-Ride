@@ -11,25 +11,14 @@ public class Deck {
 		}
 		for(int i=0;i<12;i++) {
 			trainDeck.add("yellow");
-		}
-		for(int i=0;i<12;i++) {
 			trainDeck.add("purple");
-		}
-		for(int i=0;i<12;i++) {
 			trainDeck.add("black");
-		}
-		for(int i=0;i<12;i++) {
 			trainDeck.add("white");
-		}
-		for(int i=0;i<12;i++) {
 			trainDeck.add("blue");
-		}
-		for(int i=0;i<12;i++) {
 			trainDeck.add("red");
-		}
-		for(int i=0;i<12;i++) {
 			trainDeck.add("orange");
 		}
+		
 		for(int i=0;i<14;i++) {
 			trainDeck.add("wild");
 		}
