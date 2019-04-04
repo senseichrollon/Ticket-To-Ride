@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import game.graphics.drawers.CityMapDrawer;
@@ -11,9 +12,11 @@ import game.graphics.drawers.ContractCardDrawer;
 import game.graphics.drawers.HandDrawer;
 import game.graphics.engine.GraphicsPanel;
 import game.graphics.util.ImageLoader;
+import game.main.GameState;
 
 public class GameScreen extends ScreenManager {
 	
+	private GameState game;
 	private CityMapDrawer cMapDrawer;
 	private ContractCardDrawer contractDrawer;
 	private HandDrawer handDrawer;
@@ -26,7 +29,8 @@ public class GameScreen extends ScreenManager {
 		cMapDrawer = new CityMapDrawer();
 		logo = ImageLoader.loadImage("resources/menuscreen/logo2.png");
 		logo = ImageLoader.resize(logo, logo.getWidth()/3, logo.getHeight()/3);
-	//	govContract = ImageLoader.loadImage(path)
+		govContract = ImageLoader.loadImage("resources/contractcard/ticket_card_back.jpg");
+		trainContract = ImageLoader.loadImage("resources/traincards/backtrain.png");
 		contractDrawer = new ContractCardDrawer();
 		handDrawer = new HandDrawer();
 	}
@@ -41,8 +45,12 @@ public class GameScreen extends ScreenManager {
 	 
 	public void drawPiles(Graphics2D g) {
 		g.fillRect(1525, 0, 500, 1080);
-		
-		
+		g.drawImage(govContract, 1600, 900, (govContract.getWidth() * 2)/3,(govContract.getHeight()*2)/3,null);
+		AffineTransform at = new AffineTransform();
+		at.setToTranslation(1800, 760);
+		at.rotate(Math.PI/2);
+		at.scale(0.25, 0.25);
+		g.drawImage(trainContract,at,null);
 	}
 
 	@Override

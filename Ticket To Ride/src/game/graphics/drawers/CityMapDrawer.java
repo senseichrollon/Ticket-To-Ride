@@ -27,7 +27,7 @@ public class CityMapDrawer {
 		g.setStroke(new BasicStroke(5));
 		g.drawImage(city, 300, 0, null);
 		g.drawRect(300, 0, city.getWidth(), city.getHeight());
-
+		
 
 	}
 	

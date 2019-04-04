@@ -9,6 +9,8 @@ public class CardAnimator {
 	
 	private int endX;
 	private int endY;
+	
+	private int numRotations;
 
 	private long startTime;
 	private long duration;
@@ -16,13 +18,14 @@ public class CardAnimator {
 	private BufferedImage cardImage;
 	private boolean running = false;
 	
-	public CardAnimator(int sx, int sy, int ex, int ey, BufferedImage img, long dur) {
+	public CardAnimator(int sx, int sy, int ex, int ey, BufferedImage img, long dur, int rot) {
 		startX = sx;
 		startY = sy;
 		endX = ex;
 		endY = ey;
 		cardImage = img;
 		duration = dur;
+		numRotations = rot;
 	}
 	
 	public void start() {
