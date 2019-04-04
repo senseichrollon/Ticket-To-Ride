@@ -42,4 +42,9 @@ public class Player
 	{
 		return cards.remove(color, cnt);
 	}
+	
+	public String getEdges()
+	{
+		return "";
+	}
 }
