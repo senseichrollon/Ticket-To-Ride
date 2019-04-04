@@ -1,9 +1,9 @@
-package game.graphics.util;
+package game.graphics.animation;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-public class CardAnimator {
+public class CardAnimator implements Animator {
 	private int startX;
 	private int startY;
 	
