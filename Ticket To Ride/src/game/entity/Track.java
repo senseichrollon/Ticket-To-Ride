@@ -1,8 +1,8 @@
 package game.entity;
 
 public class Track {
-	private String cityOne;
-	private String cityTwo;
+	private int cityOne;
+	private int cityTwo;
 	private String trackColor1;
 	private String trackColor2;
 	private String playerColor1;
@@ -10,11 +10,11 @@ public class Track {
 	private int length;
 	private int id;
 
-	public Track(int id, String cityOne, String cityTwo, int length, String color) {
+	public Track(int id, int cityOne, int cityTwo, int length, String color) {
 		this(id, cityOne, cityTwo, length, color, null);
 	}
 	
-	public Track(int id, String cityOne, String cityTwo, int length, String trackColor1, String trackColor2) {
+	public Track(int id, int cityOne, int cityTwo, int length, String trackColor1, String trackColor2) {
 		this.id = id;
 		this.cityOne = cityOne;
 		this.cityTwo = cityTwo;
@@ -25,28 +25,28 @@ public class Track {
 		playerColor2 = null;
 	}
 
-	public String getCityOne() {
+	public int getCityOne() {
 		return cityOne;
 	}
 
-	public void setCityOne(String cityOne) {
+	public void setCityOne(int cityOne) {
 		this.cityOne = cityOne;
 	}
 
-	public String getCityTwo() {
+	public int getCityTwo() {
 		return cityTwo;
 	}
 
-	public void setCityTwo(String cityTwo) {
+	public void setCityTwo(int cityTwo) {
 		this.cityTwo = cityTwo;
 	}
 
-	public String getOtherCity(String oth) {
-		if (oth.equals(cityOne))
+	public int getOtherCity(int oth) {
+		if (oth == cityOne)
 			return cityTwo;
-		if (oth.equals(cityTwo))
+		if (oth == cityTwo)
 			return cityOne;
-		return "";
+		return -1;
 	}
 
 	public String getTrackColor1() {
