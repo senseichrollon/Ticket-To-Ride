@@ -6,6 +6,8 @@ public class Deck {
 	private Queue<ContractCard> contractDeck;
 	private String[] upTrains = new String[5];
 	public Deck()throws IOException {
+		trainDeck = new LinkedList<String>();
+		contractDeck = new LinkedList<ContractCard>();
 		for(int i=0;i<12;i++) {
 			trainDeck.add("green");
 		}
@@ -75,6 +77,7 @@ public class Deck {
 	public String drawTrain(int c) {
 		String temp = upTrains[c];
 		upTrains[c] = drawRandTrain();
+		check();
 		return temp;
 	}
 	public void replaceTrains(String s, int x) {
