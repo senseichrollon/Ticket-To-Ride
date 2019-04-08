@@ -35,8 +35,8 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 	public void paintComponent(Graphics gg) {
 		Graphics2D g = (Graphics2D)gg;
 		g.translate(-dx, 0);
-		Color c1 =  new Color(245,245,220);
-		Color c2 = c1.darker();
+		Color c1 =  Color.RED;
+		Color c2 = Color.ORANGE;
 		GradientPaint gp1;
 		Paint p = g.getPaint();
 		for(int i = 0; i <= 5000; i+=200) {
