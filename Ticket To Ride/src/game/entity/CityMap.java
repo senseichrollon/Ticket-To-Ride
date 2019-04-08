@@ -90,12 +90,12 @@ public class CityMap {
 		return true;
 	}
 	
-	public boolean completedContract(String color, ContractCard check)
+	/*public boolean completedContract(String color, ContractCard check)
 	{
 		Scanner temp = new Scanner(new File("resources/gamedata/tracks.txt"));
 		int max = 
 		while(gcVisited.size() != )
-	}
+	}*/
 	
 	private boolean dfs(int goal, int curr, List<Track> visited)
 	{
