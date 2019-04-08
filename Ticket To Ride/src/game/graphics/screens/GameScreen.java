@@ -39,6 +39,7 @@ public class GameScreen extends ScreenManager {
 		trainContract = ImageLoader.loadImage("resources/traincards/backtrain.png");
 		contractDrawer = new ContractCardDrawer();
 		handDrawer = new HandDrawer();
+		handDrawer.setTree(game.getPlayers()[game.getCurrentPlayer()].getCards());
 	}
 	
 	
@@ -47,7 +48,7 @@ public class GameScreen extends ScreenManager {
 		if(!(contractDrawer.getParent() == GraphicsPanel.getPanel())) {
 			GraphicsPanel.getPanel().add(contractDrawer);
 		}
-	//	handDrawer.setTree(game.getPlayers()[game.getCurrentPlayer()]);
+		handDrawer.setTree(game.getPlayers()[game.getCurrentPlayer()].getCards());
 	}
 	 
 	public void drawPiles(Graphics2D g) {

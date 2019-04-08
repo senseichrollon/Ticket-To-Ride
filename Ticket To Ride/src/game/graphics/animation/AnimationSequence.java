@@ -1,19 +1,13 @@
 package game.graphics.animation;
 
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-public class AnimationSequence {
+public class AnimationSequence implements Runnable {
 	private ArrayList<Animator> animations;
+
 	
+
 	
-	public void update() {
-		
-	}
-	
-	public void draw(Graphics2D g) {
-		
-	}
 	
 	public AnimationSequence() {
 		animations = new ArrayList<Animator>();
@@ -25,11 +19,10 @@ public class AnimationSequence {
 	
 	
 	
-	
-	
 	public boolean hasEnded() {
 		return false;
 	}
+
 
 
 }
