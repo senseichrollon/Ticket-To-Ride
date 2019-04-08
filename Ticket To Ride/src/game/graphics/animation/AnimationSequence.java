@@ -1,17 +1,19 @@
 package game.graphics.animation;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-public class AnimationSequence implements Runnable {
+public class AnimationSequence {
 	private ArrayList<Animator> animations;
-	private Thread thread;
-	private boolean running;
 	
 	
-	public void start() {
+	public void update() {
 		
 	}
 	
+	public void draw(Graphics2D g) {
+		
+	}
 	
 	public AnimationSequence() {
 		animations = new ArrayList<Animator>();
@@ -23,13 +25,11 @@ public class AnimationSequence implements Runnable {
 	
 	
 	
+	
+	
 	public boolean hasEnded() {
 		return false;
 	}
 
 
-	@Override
-	public void run() {
-		
-	}
 }

@@ -47,7 +47,7 @@ public class GameScreen extends ScreenManager {
 		if(!(contractDrawer.getParent() == GraphicsPanel.getPanel())) {
 			GraphicsPanel.getPanel().add(contractDrawer);
 		}
-		handDrawer.setTree(game.getPlayers()[game.getCurrentPlayer()]);
+	//	handDrawer.setTree(game.getPlayers()[game.getCurrentPlayer()]);
 	}
 	 
 	public void drawPiles(Graphics2D g) {
