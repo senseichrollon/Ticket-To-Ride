@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import game.graphics.drawers.CityMapDrawer;
 import game.graphics.drawers.ContractCardDrawer;
@@ -26,7 +27,12 @@ public class GameScreen extends ScreenManager {
 	
 	
 	public GameScreen() {
-		cMapDrawer = new CityMapDrawer();
+		try {
+			game = new GameState();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		cMapDrawer = new CityMapDrawer(game.getBoard());
 		logo = ImageLoader.loadImage("resources/menuscreen/logo2.png");
 		logo = ImageLoader.resize(logo, logo.getWidth()/3, logo.getHeight()/3);
 		govContract = ImageLoader.loadImage("resources/contractcard/ticket_card_back.jpg");
@@ -40,7 +46,8 @@ public class GameScreen extends ScreenManager {
 	public void update() {
 		if(!(contractDrawer.getParent() == GraphicsPanel.getPanel())) {
 			GraphicsPanel.getPanel().add(contractDrawer);
-		} 
+		}
+		handDrawer.setTree(game.getPlayers()[game.getCurrentPlayer()]);
 	}
 	 
 	public void drawPiles(Graphics2D g) {

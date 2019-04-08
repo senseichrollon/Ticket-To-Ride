@@ -15,7 +15,8 @@ public class CityMapDrawer {
 	private CityMap map;
 	private BufferedImage city;
 	
-	public CityMapDrawer() {
+	public CityMapDrawer(CityMap map) {
+		this.map = map;
 		city = ImageLoader.loadImage("resources/gameboard/ticket_to_ride_map.jpg");
 		city = ImageLoader.resize(city, (int)(city.getWidth() * 1.3), (int)(city.getHeight() * 1.3));
 	}
