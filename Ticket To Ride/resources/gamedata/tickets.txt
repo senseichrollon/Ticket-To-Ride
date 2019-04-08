@@ -1,4 +1,3 @@
-
 20 Vancouver Montreal
 13 Vancouver Duluth
 11 Portland Phoenix
