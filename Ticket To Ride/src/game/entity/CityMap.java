@@ -89,5 +89,33 @@ public class CityMap {
 		
 		return true;
 	}
+	
+	/*public boolean completedContract(String color, ContractCard check)
+	{
+		Scanner temp = new Scanner(new File("resources/gamedata/tracks.txt"));
+		int max = 
+		while(gcVisited.size() != )
+	}*/
+	
+	private boolean dfs(int goal, int curr, List<Track> visited)
+	{
+		for(Track i: map.get(curr))
+		{
+			for(Track j: visited)
+			{
+				if(!i.equals(j))
+				{
+					if(i.getOtherCity(curr) == goal)
+						return true;
+					visited.add(i);
+					gcVisited.add(i);
+					if(dfs(goal, i.getOtherCity(curr), visited))
+						return true;
+					break;
+				}
+			}
+		}
+		return false;
+	}
 
 }
