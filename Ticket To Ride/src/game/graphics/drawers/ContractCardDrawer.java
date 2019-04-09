@@ -21,7 +21,7 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 
 	
 	public ContractCardDrawer() {
-		setBounds(298,920,1226,1000);
+		setBounds(398,920,1226,1000);
 		setLayout(new BorderLayout());
 		Scrollbar sb = new Scrollbar();
 		

@@ -26,8 +26,8 @@ public class CityMapDrawer {
 	public void draw(Graphics2D g) {
 		g.setColor(Color.BLACK);
 		g.setStroke(new BasicStroke(5));
-		g.drawImage(city, 300, 0, null);
-		g.drawRect(300, 0, city.getWidth(), city.getHeight());
+		g.drawImage(city, 400, 0, null);
+		g.drawRect(400, 0, city.getWidth(), city.getHeight());
 		
 
 	}
