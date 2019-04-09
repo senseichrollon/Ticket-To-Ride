@@ -2,7 +2,7 @@ package game.graphics.animation;
 
 import java.util.ArrayList;
 
-public class AnimationSequence implements Runnable {
+public class AnimationSequence  {
 	private ArrayList<Animator> animations;
 
 	

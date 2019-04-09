@@ -17,7 +17,8 @@ public class Player {
 			cards.add(s, 0);
 		}
 		trains = 45;
-		contracts = new ArrayList<ContractCard>();
+		contracts = new ArrayList<>();
+		contracts.add(new ContractCard("Bombay","Beijing",14));
 	}
 
 	public void addCard(String color, int cnt) {
@@ -46,5 +47,13 @@ public class Player {
 
 	public String getEdges() {
 		return "";
+	}
+
+	public ArrayList<ContractCard> getContracts() {
+		return contracts;
+	}
+
+	public void setContracts(ArrayList<ContractCard> contracts) {
+		this.contracts = contracts;
 	}
 }

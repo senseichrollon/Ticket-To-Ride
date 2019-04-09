@@ -41,7 +41,7 @@ public class GameScreen extends ScreenManager {
 		logo = ImageLoader.resize(logo, logo.getWidth()/3, logo.getHeight()/3);
 		govContract = ImageLoader.loadImage("resources/contractcard/ticket_card_back.jpg");
 		trainContract = ImageLoader.loadImage("resources/traincards/backtrain.png");
-		contractDrawer = new ContractCardDrawer();
+		contractDrawer = new ContractCardDrawer(game.getDeck().getContractCards());
 		
 		cards = new LinkedHashMap<>();
 		
@@ -64,6 +64,7 @@ public class GameScreen extends ScreenManager {
 			GraphicsPanel.getPanel().add(contractDrawer);
 		}
 		handDrawer.setTree(game.getPlayers()[game.getCurrentPlayer()].getCards());
+		contractDrawer.setPlayerContracts(game.getPlayers()[game.getCurrentPlayer()].getContracts());
 	}
 	 
 	public void drawPiles(Graphics2D g) {

@@ -7,6 +7,9 @@ public class Deck {
 	private Queue<String> trainDeck, drawTrainDeck;
 	private Queue<ContractCard> contractDeck;
 	private String[] upTrains = new String[5];
+	
+	// list of all contract cards to be returned in get method
+	private ArrayList<ContractCard> contractList;
 
 	public Deck() throws IOException {
 		trainDeck = new LinkedList<String>();
@@ -32,14 +35,16 @@ public class Deck {
 		for (int i = 0; i < 5; i++) {
 			upTrains[i] = trainDeck.poll();
 		}
+		contractList = new ArrayList<>();
 		Scanner kb = new Scanner(new File("resources/gamedata/tickets.txt"));
 		while (kb.hasNextLine()) {
 			String s = kb.nextLine();
-			String[] ss = s.split(" ");
-			System.out.println(Arrays.toString(ss));
+			String[] ss = s.split("; ");
+		//	System.out.println(Arrays.toString(ss));
 			Integer x = new Integer(ss[0]);
-
-			contractDeck.add(new ContractCard(ss[1], ss[2], x));
+			ContractCard card = new ContractCard(ss[1], ss[2], x);
+			contractDeck.add(card);
+			contractList.add(card);
 		}
 
 	}
@@ -121,5 +126,9 @@ public class Deck {
 
 	public String[] getUpCards() {
 		return upTrains;
+	}
+	
+	public ArrayList<ContractCard> getContractCards() {
+		return contractList;
 	}
 }
