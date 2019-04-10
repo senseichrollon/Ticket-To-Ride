@@ -3,17 +3,17 @@ package game.entity;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
-import java.util.TreeSet;
 
 public class CityMap {
 	private List<ArrayList<Track>> map;
 	public static HashMap<String, Integer> CITYINDEX;
 	private List<ArrayList<Track>> fullMap;
 	private ArrayList<Integer> dp;
-	private ArrayList<Track> lpVisited;
-	private ArrayList<Track> gcVisited;
+	private HashSet<Track> lpVisited;
+	private HashSet<Track> gcVisited;
 
 	public CityMap() {
 		// TreeSet<String> temp = new TreeSet<String>();
@@ -73,6 +73,8 @@ public class CityMap {
 		if(work == null)
 			return false;
 		
+		if()
+		
 		work.setPlayerColor1(player);
 		
 		i = fullMap.get(c2);
@@ -90,30 +92,26 @@ public class CityMap {
 		return true;
 	}
 	
-	/*public boolean completedContract(String color, ContractCard check)
+	public boolean completedContract(String color, ContractCard check)
 	{
-		Scanner temp = new Scanner(new File("resources/gamedata/tracks.txt"));
-		int max = 
-		while(gcVisited.size() != )
-	}*/
+		
+	}
 	
-	private boolean dfs(int goal, int curr, List<Track> visited)
+	private boolean dfs(int goal, String color, int curr, List<Track> visited)
 	{
 		for(Track i: map.get(curr))
 		{
-			for(Track j: visited)
+			if(!visited.contains(i) && )
 			{
-				if(!i.equals(j))
-				{
-					if(i.getOtherCity(curr) == goal)
-						return true;
-					visited.add(i);
-					gcVisited.add(i);
-					if(dfs(goal, i.getOtherCity(curr), visited))
-						return true;
-					break;
-				}
+				if(i.getOtherCity(curr) == goal)
+					return true;
+				visited.add(i);
+				gcVisited.add(i);
+				if(dfs(goal, i.getOtherCity(curr), visited))
+					return true;
+				break;
 			}
+
 		}
 		return false;
 	}

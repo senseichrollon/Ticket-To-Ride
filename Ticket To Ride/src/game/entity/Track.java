@@ -1,6 +1,6 @@
 package game.entity;
 
-public class Track {
+public class Track implements Comparable<Track>{
 	private int cityOne;
 	private int cityTwo;
 	private String trackColor1;
@@ -140,5 +140,10 @@ public class Track {
 		if(other.getID() == getID())
 			return true;
 		return false;
+	}
+	
+	public int compareTo(Track oth)
+	{
+		return getID() - oth.getID();
 	}
 }
