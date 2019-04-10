@@ -27,5 +27,9 @@ public class ImageLoader {
 		    g2d.dispose();
 
 		    return dimg;
-		}
+	 }
+	 
+	 public static BufferedImage getCopy(BufferedImage img) {
+		 return resize(img,img.getWidth(), img.getHeight());
+	 }
 }
