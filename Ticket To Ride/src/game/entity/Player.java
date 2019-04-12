@@ -37,7 +37,7 @@ public class Player {
 		trains -= cnt;
 	}
 
-	public boolean removeCards(String color, int cnt) {
+	public ArrayList<CardNode> removeCards(String color, int cnt) {
 		return cards.remove(color, cnt);
 	}
 	
