@@ -13,7 +13,6 @@ public class CityMap {
 	private List<ArrayList<Track>> fullMap;
 	private ArrayList<Integer> dp;
 	private HashSet<Track> lpVisited;
-	private HashSet<Track> gcVisited;
 
 	public CityMap() {
 		// TreeSet<String> temp = new TreeSet<String>();
@@ -54,7 +53,7 @@ public class CityMap {
 		}
 	}
 	
-	public boolean addTrack(String city1, String city2, String player)
+	public boolean addTrack(String city1, String city2, String player, String colChoice)
 	{
 		int c1 = CITYINDEX.get(city1);
 		int c2 = CITYINDEX.get(city2);
@@ -65,7 +64,7 @@ public class CityMap {
 		{
 			if(i.get(j).getOtherCity(c1) == c2)
 			{
-				work = i.remove(j);
+				work = i.get(j);
 				break;
 			}
 		}
@@ -73,41 +72,48 @@ public class CityMap {
 		if(work == null)
 			return false;
 		
-		if()
-		
-		work.setPlayerColor1(player);
-		
-		i = fullMap.get(c2);
-		for(int j = 0; j < i.size(); j++)
+		if(!work.isDoubleTrack())
 		{
-			if(i.get(j).equals(work))
+			fullMap.get(c1).remove(work);
+			fullMap.get(c2).remove(work);
+			work.occupyTrack(player, null);
+			map.get(c1).add(work);
+			map.get(c2).add(work);
+		}
+		else
+		{
+			work.occupyTrack(player, colChoice);
+			if(work.isFilled())
 			{
-				i.remove(j);
-				break;
+				fullMap.get(c1).remove(work);
+				fullMap.get(c2).remove(work);
+			}
+			else
+			{
+				map.get(c1).add(work);
+				map.get(c2).add(work);
 			}
 		}
-		map.get(c1).add(work);
-		map.get(c2).add(work);
+		
 		
 		return true;
 	}
 	
 	public boolean completedContract(String color, ContractCard check)
 	{
-		
+		return dfs(CITYINDEX.get(check.getCityTwo()), color, CITYINDEX.get(check.getCityOne()), new ArrayList<Track>());
 	}
 	
 	private boolean dfs(int goal, String color, int curr, List<Track> visited)
 	{
 		for(Track i: map.get(curr))
 		{
-			if(!visited.contains(i) && )
+			if(!visited.contains(i) && i.containsPlayerCol(color))
 			{
 				if(i.getOtherCity(curr) == goal)
 					return true;
 				visited.add(i);
-				gcVisited.add(i);
-				if(dfs(goal, i.getOtherCity(curr), visited))
+				if(dfs(goal, color, i.getOtherCity(curr), visited))
 					return true;
 				break;
 			}
@@ -115,6 +121,43 @@ public class CityMap {
 		}
 		return false;
 	}
+	
+	public Track getTrack(String city1, String city2)
+	{
+		int c1 = CITYINDEX.get(city1);
+		int c2 = CITYINDEX.get(city2);
+		
+		for(Track i: map.get(c1))
+		{
+			if(i.getOtherCity(c1) == c2)
+				return i;
+		}
+		return null;
+	}
+	
+	
+	public Track getTrack(int city1, int city2)
+	{	
+		for(Track i: map.get(city1))
+		{
+			if(i.getOtherCity(city1) == city2)
+				return i;
+		}
+		return null;
+	}
+	
+	private int longestPath(int currCity, List<Track> visited)
+	{
+		for(Track i : map.get(currCity))
+		{
+			if(!visited.contains(i))
+			{
+				visited.add(getTrack(currCity, i.getOtherCity(currCity)));
+				int length = i.get
+			}
+		}
+	}
+	
 
 }
 	

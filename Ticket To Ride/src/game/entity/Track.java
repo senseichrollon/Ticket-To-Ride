@@ -69,17 +69,20 @@ public class Track implements Comparable<Track>{
 		return playerColor1;
 	}
 
-	public void setPlayerColor1(String playerColor1) {
-		this.playerColor1 = playerColor1;
-	}
-
 	public String getPlayerColor2() {
 		return playerColor2;
 	}
 	
-	public boolean contains(String col)
+	public boolean containsTrackCol(String col)
 	{
 		if(trackColor1.equals(col) || (trackColor2 != null && trackColor2.equals(col)))
+			return true;
+		return false;
+	}
+	
+	public boolean containsPlayerCol(String col)
+	{
+		if((playerColor1 != null && playerColor1.equals(col)) || (playerColor2 != null && trackColor2.equals(col)))
 			return true;
 		return false;
 	}
@@ -111,7 +114,7 @@ public class Track implements Comparable<Track>{
 		}
 		else
 		{
-			if(contains(colChoice))
+			if(containsTrackCol(colChoice))
 			{
 				if(trackColor1.equals(colChoice) && playerColor1 == null 
 				&& (playerColor2 == null || !playerColor2.equals(pc))) 
@@ -130,6 +133,13 @@ public class Track implements Comparable<Track>{
 		return false;
 	}
 	
+	public boolean isDoubleTrack()
+	{
+		if(trackColor2 != null)
+			return true;
+		return false;
+	}
+	
 	public int getID()
 	{
 		return id;
@@ -145,5 +155,10 @@ public class Track implements Comparable<Track>{
 	public int compareTo(Track oth)
 	{
 		return getID() - oth.getID();
+	}
+	
+	public int getLength()
+	{
+		return length;
 	}
 }
