@@ -7,8 +7,8 @@ public class Player {
 	private String name, trainColor;
 	private int trains;
 	private ArrayList<ContractCard> contracts;
+	private int points;
 
-	public static ContractCard card = new ContractCard("Bombay","Beijing",14);
 	public Player(String n, String c) {
 		name = n;
 		trainColor = c;
@@ -17,9 +17,10 @@ public class Player {
 		for(String s : colors) {
 			cards.add(s, 0);
 		}
+		points = 0;
 		trains = 45;
 		contracts = new ArrayList<>();
-		contracts.add(card);
+		contracts.add(new ContractCard("Bombay","Beijing",14));
 	}
 
 	public void addCard(String color, int cnt) {
@@ -48,6 +49,14 @@ public class Player {
 
 	public String getEdges() {
 		return "";
+	}
+	
+	public void addPoints(int amt) {
+		points += amt;
+	}
+	
+	public int getPoints() {
+		return points;
 	}
 
 	public ArrayList<ContractCard> getContracts() {
