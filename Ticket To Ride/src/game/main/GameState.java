@@ -79,17 +79,13 @@ public class GameState
 		deck.replaceContract(list);
 	}
 	
-	public void removeCards()
-	{
-		
-	}
-	
-	public boolean placeTrack(city1, city2)
-	{
-		get info about this track
-		call removeCards
-		if true then call returnCards in deck with the card color and amount removed
-		don't need to physically pass cards around, just keep a record of it
-	
-	}
+//	public void removeCards()
+//	{
+//		
+//	}
+//	
+//	public boolean placeTrack(String city1, String city2)
+//	{
+//		
+//	}
 }
