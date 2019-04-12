@@ -53,7 +53,10 @@ public class Player {
 		return contracts;
 	}
 
-	public void setContracts(ArrayList<ContractCard> contracts) {
-		this.contracts = contracts;
+	public void setContracts(ContractCard[] cards) {
+		for (int i = 0; i < cards.length; i++)
+		{
+			contracts.add(cards[i]);
+		}
 	}
 }
