@@ -5,10 +5,6 @@ import java.util.ArrayList;
 public class AnimationSequence  {
 	private ArrayList<Animator> animations;
 
-	
-
-	
-	
 	public AnimationSequence() {
 		animations = new ArrayList<Animator>();
 	}

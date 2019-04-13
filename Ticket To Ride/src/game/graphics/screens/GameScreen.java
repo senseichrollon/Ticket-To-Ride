@@ -4,15 +4,13 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.TreeSet;
 
 import game.entity.Deck;
-import game.entity.Player;
 import game.graphics.drawers.CityMapDrawer;
 import game.graphics.drawers.ContractCardDrawer;
 import game.graphics.drawers.HandDrawer;
@@ -85,15 +83,6 @@ public class GameScreen extends ScreenManager {
 			g.drawImage(cards.get(s),1700,y,(cards.get(s).getWidth() * 8)/10,(cards.get(s).getHeight() * 8)/10,null);
 			y += 130;
 		}
-	}
-	
-	private void drawLeaderBoard(Graphics2D g) {
-		Player[] players = game.getPlayers();
-		TreeSet<Player> order = new TreeSet<>((a,b) -> (Integer.compare(b.getPoints(), a.getPoints())));
-		Arrays.stream(players).forEach(n -> order.add(n));
-		
-		int num = 1;
-		for(Player )
 	}
 
 	@Override
