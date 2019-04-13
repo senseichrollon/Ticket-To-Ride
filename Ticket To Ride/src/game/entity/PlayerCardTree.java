@@ -74,7 +74,7 @@ public class PlayerCardTree {
 		int numLeft = temp.getCount() - c;
 		if (numLeft > 0) {
 			temp.setCount(numLeft);
-			cards.add(new CardNode(color, c))
+			cards.add(new CardNode(color, c));
 			return cards;
 		} else if (numLeft < 0) {
 			wildCard = getCard(root, "wild");
