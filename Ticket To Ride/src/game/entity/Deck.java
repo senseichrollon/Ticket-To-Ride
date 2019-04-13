@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 public class Deck {
-	private Queue<String> trainDeck, drawTrainDeck;
+	private Queue<String> trainDeck, drawnTrainDeck;
 	private Queue<ContractCard> contractDeck;
 	private String[] upTrains = new String[5];
 	
@@ -13,7 +13,7 @@ public class Deck {
 
 	public Deck() throws IOException {
 		trainDeck = new LinkedList<String>();
-		drawTrainDeck = new LinkedList<String>();
+		drawnTrainDeck = new LinkedList<String>();
 		contractDeck = new LinkedList<ContractCard>();
 		for (int i = 0; i < 12; i++) {
 			trainDeck.add("green");
@@ -130,5 +130,13 @@ public class Deck {
 	
 	public ArrayList<ContractCard> getContractCards() {
 		return contractList;
+	}
+	
+	public void addDrawnCards(String color, int cnt)
+	{
+		for (int i = 0; i < cnt; i++)
+		{
+			drawnTrainDeck.add(color);
+		}
 	}
 }

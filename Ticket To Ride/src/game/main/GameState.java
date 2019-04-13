@@ -50,18 +50,18 @@ public class GameState
 	public void updatePlayer()
 	{
 		currentPlayer++;
-		if (currentPlayer == 4)
+		if (currentPlayer == NUMPLAYERS)
 			currentPlayer = 0;
 	}
 	
-	public String drawFaceUpCard(int num)
+	public void drawFaceUpCard(int num)
 	{
-		return deck.drawTrain(num);
+		players[currentPlayer].addCard(deck.drawTrain(num), 1);
 	}
 	
-	public String drawFaceDownCard()
+	public void drawFaceDownCard()
 	{
-		return deck.drawRandTrain();
+		players[currentPlayer].addCard(deck.drawRandTrain(), 1);
 	}
 	
 	public String getPlayerEdges(int num)
@@ -69,13 +69,23 @@ public class GameState
 		return players[num].getEdges();
 	}
 	
-	public ContractCard[] drawContracts()
+	public void drawContracts()
 	{
-		return deck.drawContracts();
+		players[currentPlayer].setContracts(deck.drawContracts());
 	}
 	
 	public void returnContracts(ArrayList<ContractCard> list)
 	{
 		deck.replaceContract(list);
 	}
+	
+//	public void removeCards()
+//	{
+//		
+//	}
+//	
+//	public boolean placeTrack(String city1, String city2)
+//	{
+//		
+//	}
 }

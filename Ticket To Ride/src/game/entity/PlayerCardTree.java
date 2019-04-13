@@ -1,5 +1,7 @@
 package game.entity;
 
+import java.util.ArrayList;
+
 public class PlayerCardTree {
 	private CardNode root;
 
@@ -62,33 +64,37 @@ public class PlayerCardTree {
 		}
 	}
 
-	public boolean remove(String color, int c) {
+	public ArrayList<CardNode> remove(String color, int c) {
+		ArrayList<CardNode> cards = new ArrayList<CardNode>();
 		CardNode wildCard;
 		CardNode temp = getCard(root, color);
 		if (temp == null) {
-			return false;
+			return cards;
 		}
 		int numLeft = temp.getCount() - c;
 		if (numLeft > 0) {
 			temp.setCount(numLeft);
-			return true;
+			cards.add(new CardNode(color, c))
+			return cards;
 		} else if (numLeft < 0) {
 			wildCard = getCard(root, "wild");
 			if (wildCard == null)
-				return false;
+				return cards;
 			int wildCardLeft = wildCard.getCount() - (-1 * numLeft);
 			if (wildCardLeft < 0) {
-				return false;
+				return cards;
 			} else if (wildCardLeft > 0) {
 				wildCard.setCount(wildCardLeft);
+				cards.add(new CardNode("wild", numLeft));
 				numLeft = 0;
 			}
 		}
 		if (numLeft == 0) {
+			cards.add(new CardNode(color, c));
 			temp.setCount(0);
-			return true;
+			return cards;
 		}
-		return false;
+		return cards;
 	}
 
 	public String toString() {

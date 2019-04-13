@@ -38,7 +38,7 @@ public class Player {
 		trains -= cnt;
 	}
 
-	public boolean removeCards(String color, int cnt) {
+	public ArrayList<CardNode> removeCards(String color, int cnt) {
 		return cards.remove(color, cnt);
 	}
 	
@@ -54,7 +54,10 @@ public class Player {
 		return contracts;
 	}
 
-	public void setContracts(ArrayList<ContractCard> contracts) {
-		this.contracts = contracts;
+	public void setContracts(ContractCard[] cards) {
+		for (int i = 0; i < cards.length; i++)
+		{
+			contracts.add(cards[i]);
+		}
 	}
 }
