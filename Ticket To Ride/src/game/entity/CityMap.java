@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,8 +21,6 @@ public class CityMap {
 		CITYINDEX = new HashMap<String, Integer>();
 		map = new ArrayList<ArrayList<Track>>();
 		fullMap = new ArrayList<ArrayList<Track>>();
-		dp = new ArrayList<Integer>();
-		lpVisited = new HashSet<Track>();
 		try {
 			Scanner in = new Scanner(new File("resources/gamedata/cities.txt"));
 			for(int i = 0; i < in.nextInt(); i++){
@@ -156,8 +155,9 @@ public class CityMap {
 		{
 			if(!visited.contains(i) && i.containsPlayerCol(player))
 			{
-				visited.add(getTrack(currCity, i.getOtherCity(currCity)));
+				visited.add(i);
 				int length = i.getLength();
+				lpVisited.remove(i);
 				lengths.add(length + longestPath(i.getOtherCity(currCity), new ArrayList<Track>(visited), player));
 			}
 		}
@@ -170,10 +170,66 @@ public class CityMap {
 		return lengths.get(lengths.size() - 1);
 	}
 	
-	/*public String getPlayerLongest()
+	public ArrayList<String> getPlayersLongest()
 	{
+		//GAMESTATE NEEDS A GLOBAL COLOR LIST!!!! PLZ ADD ASAP!!! 
+		//get players
+		HashMap<String, Integer> log = new HashMap<String, Integer>();
+		//String[] players = GameState.PLAYER_COLS;
+		//for(String i: players)
+		{
+			lpVisited = getPlayerTracks("INSERT i");
+			ArrayList<Integer> vals = new ArrayList<Integer>();
+			while(!lpVisited.isEmpty())
+			{
+				dp = new ArrayList<Integer>();
+				Iterator<Track> iter = lpVisited.iterator();
+				Track start = iter.next();
+				int temp = longestPath(start.getCityOne(), new ArrayList<Track>(), "INSERT (i)");
+				vals.add(Math.max(Collections.max(dp), temp));
+			}
+			log.put("INSERT i", Collections.max(vals));
+		}
+		return longestColorFinder(log);
+	}
+	
+	private ArrayList<String> longestColorFinder(HashMap<String, Integer> log)
+	{
+		int max = Collections.max(log.values());
+		Iterator<Integer> iter = log.values().iterator();
+		ArrayList<Integer> indices = new ArrayList<Integer>();
+		int c = 0;
+		while(iter.hasNext())
+		{
+			if(iter.next() == max)
+				indices.add(c);
+			c++;
+		}
 		
-	}*/
+		ArrayList<String> out = new ArrayList<String>();
+		Iterator<String> iter2 = log.keySet().iterator();
+		c= 0;
+		while(iter2.hasNext())
+		{
+			if(indices.contains(c++))
+				out.add(iter2.next());
+		}
+		return out;
+	}
+	
+	public HashSet<Track> getPlayerTracks(String col)
+	{
+		HashSet<Track> out = new HashSet<Track>();
+		for(ArrayList<Track> i : map)
+		{
+			for(Track j : i)
+			{
+				if(j.containsPlayerCol(col))
+					out.add(j);
+			}
+		}
+		return out;
+	}
 
 }
 	
