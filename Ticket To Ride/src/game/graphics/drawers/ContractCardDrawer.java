@@ -11,6 +11,7 @@ import java.awt.Paint;
 import java.awt.Scrollbar;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import javax.swing.JPanel;
 
 import game.entity.ContractCard;
+import game.entity.Player;
 import game.graphics.util.ImageLoader;
 
 public class ContractCardDrawer extends JPanel implements AdjustmentListener {
@@ -27,7 +29,7 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 
 	
 	public ContractCardDrawer(ArrayList<ContractCard> cardList) {
-		setBounds(398,920,1226,1000);
+		setBounds(398,900,1226,1000);
 		setLayout(new BorderLayout());
 		Scrollbar sb = new Scrollbar();
 		
@@ -41,19 +43,23 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 		contractCards = new HashMap<>();
 		BufferedImage template = ImageLoader.loadImage("resources/contractcard/destcard.jpg");
 		template = ImageLoader.resize(template, 1000, 1000);
-		
+		cardList.add(Player.card);
 		for(ContractCard c : cardList) {
 			BufferedImage img = ImageLoader.getCopy(template);
 			Graphics2D g = img.createGraphics();
-			g.setFont(new Font("TimesRoman", Font.BOLD, 15));
-			g.drawString(c.getCityOne() + "-" + c.getCityTwo(),5,5);
-			g.drawString(Integer.toString(c.getPoints()), 20, 20);
-			contractCards.put(c, template);
+			g.setColor(Color.black);
+			String str = c.getCityOne() + "-" + c.getCityTwo();
+			g.setFont(new Font("TimesRoman", Font.BOLD, 80));
+			g.drawString(str,120,205);
+			g.setFont(new Font("TimesRoman", Font.BOLD, 120));
+			g.drawString(Integer.toString(c.getPoints()), 770, 780);
+			contractCards.put(c, img);
 		}
 		
 	}
 	
 	public void paintComponent(Graphics gg) {
+		super.paintComponent(gg);
 		Graphics2D g = (Graphics2D)gg;
 		g.translate(-dx, 0);
 		Color c1 =  Color.RED;
@@ -68,13 +74,16 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 			c1 = c2;
 			c2 = c;
 		}
-	//	g.setPaint(p);
+		g.setPaint(p);
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("TimesRoman", Font.BOLD, 100));
 		int x = 30;
 		for(ContractCard card : playerContracts) {
-			
-			g.drawImage(contractCards.get(card),30,90,30,30,null);
+			g.fillRect(30,90,30,30);
+			AffineTransform at = new AffineTransform();
+			at.setToTranslation(30, 20);
+			at.scale(0.17, 0.13);
+			g.drawImage(contractCards.get(card),at,null);
 			x += 50;
 		}
 	//	g.drawString("fffffffffffffffffffffffffffffffffasdafsdafsfjipaojewf/p;jnfweqpjnfapfewnfp;jfn/pufn/apu.n/pur/fffffffffffffff",30 , 100);

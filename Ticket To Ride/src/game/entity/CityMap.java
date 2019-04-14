@@ -13,7 +13,7 @@ public class CityMap {
 	public static HashMap<String, Integer> CITYINDEX;
 	private List<ArrayList<Track>> fullMap;
 	private ArrayList<Integer> dp;
-	private HashSet<Track> lpVisited;
+	private  HashSet<Track> lpVisited;
 
 	public CityMap() {
 		// TreeSet<String> temp = new TreeSet<String>();
