@@ -2,6 +2,7 @@ package game.entity;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +20,8 @@ public class CityMap {
 		CITYINDEX = new HashMap<String, Integer>();
 		map = new ArrayList<ArrayList<Track>>();
 		fullMap = new ArrayList<ArrayList<Track>>();
+		dp = new ArrayList<Integer>();
+		lpVisited = new HashSet<Track>();
 		try {
 			Scanner in = new Scanner(new File("resources/gamedata/cities.txt"));
 			for(int i = 0; i < in.nextInt(); i++){
@@ -146,18 +149,31 @@ public class CityMap {
 		return null;
 	}
 	
-	/*private int longestPath(int currCity, List<Track> visited)
+	private int longestPath(int currCity, List<Track> visited, String player)
 	{
+		ArrayList<Integer> lengths = new ArrayList<Integer>();
 		for(Track i : map.get(currCity))
 		{
-			if(!visited.contains(i))
+			if(!visited.contains(i) && i.containsPlayerCol(player))
 			{
 				visited.add(getTrack(currCity, i.getOtherCity(currCity)));
-				int length = i.get
+				int length = i.getLength();
+				lengths.add(length + longestPath(i.getOtherCity(currCity), new ArrayList<Track>(visited), player));
 			}
 		}
-	}*/
+		if(lengths.isEmpty())
+			return -1;
+		
+		Collections.sort(lengths);
+		if(lengths.size() >= 2)
+			dp.add(lengths.get(lengths.size() - 1) + lengths.get(lengths.size() - 2));
+		return lengths.get(lengths.size() - 1);
+	}
 	
+	/*public String getPlayerLongest()
+	{
+		
+	}*/
 
 }
 	
