@@ -54,10 +54,10 @@ public class Player {
 		return contracts;
 	}
 
-	public void setContracts(ContractCard[] cards) {
-		for (int i = 0; i < cards.length; i++)
+	public void setContracts(ArrayList<ContractCard> cards) {
+		for (int i = 0; i < cards.size(); i++)
 		{
-			contracts.add(cards[i]);
+			contracts.add(cards.get(i));
 		}
 	}
 }
