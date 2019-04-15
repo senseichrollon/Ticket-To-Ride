@@ -14,6 +14,7 @@ public class GameState {
 	private int currentPlayer, numCardsDrawn;
 	private CityMap board;
 	private Deck deck;
+	private boolean hasWinner;
 	public static int NUMPLAYERS = 4;
 
 	public GameState() throws IOException {
@@ -47,7 +48,7 @@ public class GameState {
 	public void updatePlayer() {
 		currentPlayer++;
 		if (currentPlayer == NUMPLAYERS)
-			currentPlayer = 0;
+			 currentPlayer = 0;
 	}
 
 	public void drawFaceUpCard(int num) {
@@ -96,6 +97,15 @@ public class GameState {
 //		
 //	}
 //	
+	
+	public boolean hasWinner() {
+		for(Player p : players) {
+			if(p.getTrains() <= 3) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public boolean canPlaceTrack(Track track, ArrayList<String> cards) {
 		return false;
 	}
