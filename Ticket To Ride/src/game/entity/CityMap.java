@@ -1,9 +1,12 @@
 package game.entity;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,8 +24,10 @@ public class CityMap {
 		fullMap = new ArrayList<ArrayList<Track>>();
 		try {
 			Scanner in = new Scanner(new File("resources/gamedata/cities.txt"));
-			for(int i = 0; i < in.nextInt(); i++){
-				CITYINDEX.put(in.next(), in.nextInt());
+			int n = in.nextInt();
+			for(int i = 0; i < n; i++){
+				int number = in.nextInt();
+				CITYINDEX.put(in.next(), number);
 				map.add(new ArrayList<Track>());
 				fullMap.add(new ArrayList<Track>());
 			}
@@ -33,7 +38,9 @@ public class CityMap {
 		
 		try {
 			Scanner in = new Scanner(new File("resources/gamedata/tracks.txt"));
-			for(int i = 0; i < in.nextInt(); i++){
+			int n = in.nextInt();
+			in.nextLine();
+			for(int i = 0; i < n; i++){
 				String[] args = in.nextLine().split(" ");
 				
 				 Track add = new Track(Integer.parseInt(args[0]), 
@@ -48,7 +55,7 @@ public class CityMap {
 				fullMap.get(add.getCityOne()).add(add);
 				fullMap.get(add.getCityTwo()).add(add);
 			}
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println("Error reading resources/gamedata/tracks.txt");
 		}
 	}
@@ -146,18 +153,88 @@ public class CityMap {
 		return null;
 	}
 	
-	/*private int longestPath(int currCity, List<Track> visited)
+	private int longestPath(int currCity, List<Track> visited, String player)
 	{
+		ArrayList<Integer> lengths = new ArrayList<Integer>();
 		for(Track i : map.get(currCity))
 		{
-			if(!visited.contains(i))
+			if(!visited.contains(i) && i.containsPlayerCol(player))
 			{
-				visited.add(getTrack(currCity, i.getOtherCity(currCity)));
-				int length = i.get
+				visited.add(i);
+				int length = i.getLength();
+				lpVisited.remove(i);
+				lengths.add(length + longestPath(i.getOtherCity(currCity), new ArrayList<Track>(visited), player));
 			}
 		}
-	}*/
+		if(lengths.isEmpty())
+			return -1;
+		
+		Collections.sort(lengths);
+		if(lengths.size() >= 2)
+			dp.add(lengths.get(lengths.size() - 1) + lengths.get(lengths.size() - 2));
+		return lengths.get(lengths.size() - 1);
+	}
 	
+	public ArrayList<String> getPlayersLongest()
+	{
+		//GAMESTATE NEEDS A GLOBAL COLOR LIST!!!! PLZ ADD ASAP!!! 
+		//get players
+		HashMap<String, Integer> log = new HashMap<String, Integer>();
+		//String[] players = GameState.PLAYER_COLS;
+		//for(String i: players)
+		{
+			lpVisited = getPlayerTracks("INSERT i");
+			ArrayList<Integer> vals = new ArrayList<Integer>();
+			while(!lpVisited.isEmpty())
+			{
+				dp = new ArrayList<Integer>();
+				Iterator<Track> iter = lpVisited.iterator();
+				Track start = iter.next();
+				int temp = longestPath(start.getCityOne(), new ArrayList<Track>(), "INSERT (i)");
+				vals.add(Math.max(Collections.max(dp), temp));
+			}
+			log.put("INSERT i", Collections.max(vals));
+		}
+		return longestColorFinder(log);
+	}
+	
+	private ArrayList<String> longestColorFinder(HashMap<String, Integer> log)
+	{
+		int max = Collections.max(log.values());
+		Iterator<Integer> iter = log.values().iterator();
+		ArrayList<Integer> indices = new ArrayList<Integer>();
+		int c = 0;
+		while(iter.hasNext())
+		{
+			if(iter.next() == max)
+				indices.add(c);
+			c++;
+		}
+		
+		ArrayList<String> out = new ArrayList<String>();
+		Iterator<String> iter2 = log.keySet().iterator();
+		c= 0;
+		while(iter2.hasNext())
+		{
+			if(indices.contains(c++))
+				out.add(iter2.next());
+		}
+		return out;
+	}
+	
+	public HashSet<Track> getPlayerTracks(String col)
+	{
+		HashSet<Track> out = new HashSet<Track>();
+		for(ArrayList<Track> i : map)
+		{
+			for(Track j : i)
+			{
+				if(j.containsPlayerCol(col))
+					out.add(j);
+			}
+		}
+		return out;
+	}
 
 }
 	
