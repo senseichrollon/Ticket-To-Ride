@@ -8,7 +8,6 @@ public class Player {
 	private int trains;
 	private ArrayList<ContractCard> contracts;
 
-	public static ContractCard card = new ContractCard("San Francisco","Atlanta",14);
 	public Player(String n, String c) {
 		name = n;
 		trainColor = c;
@@ -19,7 +18,7 @@ public class Player {
 		}
 		trains = 45;
 		contracts = new ArrayList<>();
-		contracts.add(card);
+		contracts.add(new ContractCard("Bombay","Beijing",14));
 	}
 
 	public void addCard(String color, int cnt) {
@@ -54,10 +53,10 @@ public class Player {
 		return contracts;
 	}
 
-	public void setContracts(ArrayList<ContractCard> cards) {
-		for (int i = 0; i < cards.size(); i++)
+	public void setContracts(ContractCard[] cards) {
+		for (int i = 0; i < cards.length; i++)
 		{
-			contracts.add(cards.get(i));
+			contracts.add(cards[i]);
 		}
 	}
 }
