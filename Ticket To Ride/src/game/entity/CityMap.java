@@ -1,6 +1,7 @@
 package game.entity;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,8 +24,10 @@ public class CityMap {
 		fullMap = new ArrayList<ArrayList<Track>>();
 		try {
 			Scanner in = new Scanner(new File("resources/gamedata/cities.txt"));
-			for(int i = 0; i < in.nextInt(); i++){
-				CITYINDEX.put(in.next(), in.nextInt());
+			int n = in.nextInt();
+			for(int i = 0; i < n; i++){
+				int number = in.nextInt();
+				CITYINDEX.put(in.next(), number);
 				map.add(new ArrayList<Track>());
 				fullMap.add(new ArrayList<Track>());
 			}
@@ -35,7 +38,9 @@ public class CityMap {
 		
 		try {
 			Scanner in = new Scanner(new File("resources/gamedata/tracks.txt"));
-			for(int i = 0; i < in.nextInt(); i++){
+			int n = in.nextInt();
+			in.nextLine();
+			for(int i = 0; i < n; i++){
 				String[] args = in.nextLine().split(" ");
 				
 				 Track add = new Track(Integer.parseInt(args[0]), 
@@ -50,7 +55,7 @@ public class CityMap {
 				fullMap.get(add.getCityOne()).add(add);
 				fullMap.get(add.getCityTwo()).add(add);
 			}
-		} catch (Exception e) {
+		} catch (IOException e) {
 			System.out.println("Error reading resources/gamedata/tracks.txt");
 		}
 	}
