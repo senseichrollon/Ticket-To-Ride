@@ -40,6 +40,7 @@ public class GraphicsPanel extends JPanel implements Runnable {
 		frame.setSize(WIDTH, HEIGHT);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
+		frame.setFocusable(true);
 		frame.add(new GraphicsPanel());
 		frame.setVisible(true);
 		

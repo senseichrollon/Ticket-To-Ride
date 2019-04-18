@@ -68,8 +68,9 @@ public class GameScreen extends ScreenManager implements Runnable {
 	@Override
 	public void run() {
 		while(!game.hasWinner()) {
+			int num = input.requestTypeOfTurn();
 			try {
-				Thread.sleep(100);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -79,6 +80,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 	
 	@Override
 	public void update() {
+		input.update();
 		if(!(contractDrawer.getParent() == GraphicsPanel.getPanel())) {
 			GraphicsPanel.getPanel().add(contractDrawer);
 		}
@@ -125,6 +127,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 //		g.setColor(Color.BLACK.darker().darker());
 //		g.setFont(new Font("Serif", Font.BOLD+Font.ITALIC, 36));
 //		g.drawString("Ticket to Ride", 0, 50);
+		input.draw(g);
 	}
 
 
