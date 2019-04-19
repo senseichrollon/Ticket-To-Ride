@@ -17,7 +17,7 @@ public abstract class ScreenManager {
 	private static ScreenManager currentScreen;
 	
 	public static void init(MouseInput input) {
-		game = new GameScreen();
+		game = new GameScreen(input);
 		menu = new MenuScreen(input);
 		rule = new RuleScreen();
 		currentScreen = menu;
