@@ -3,27 +3,30 @@ package game.main;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import game.entity.CardNode;
 import game.entity.CityMap;
 import game.entity.ContractCard;
 import game.entity.Deck;
 import game.entity.Player;
 import game.entity.Track;
 
-public class GameState {
+public class GameState 
+{
 	private Player[] players;
 	private int currentPlayer, numCardsDrawn;
 	private CityMap board;
 	private Deck deck;
 	private boolean hasWinner;
 	public static int NUMPLAYERS = 4;
-
-	public GameState() throws IOException {
+	
+	public GameState() throws IOException
+	{
 		players = new Player[4];
 		players[0] = new Player("Jim", "blue");
 		players[1] = new Player("Joe", "purple");
 		players[2] = new Player("Bob", "green");
 		players[3] = new Player("John", "yellow");
-		currentPlayer = (int) (Math.random() * 4);
+		currentPlayer = (int)(Math.random() * 4);
 		numCardsDrawn = 0;
 		board = new CityMap();
 		deck = new Deck();
@@ -88,15 +91,37 @@ public class GameState {
 		return numCardsDrawn;
 	}
 	
+	public boolean placeTrack(String city1, String city2)
+	{
+		Track temp = board.getTrack(city1, city1);
+		if (!temp.isFilled())
+		{
+			String color = temp.getTrackColor1();
+			if (board.addTrack(city1, city2, players[this.currentPlayer].getTrainColor(), color))
+			{
+				ArrayList<CardNode> cards = removeCards(temp.getTrackColor1(), temp.getLength());
+				deck.addDrawnCards(cards);
+				return true;
+			}
+			else if (board.addTrack(city1, city2, players[this.currentPlayer].getTrainColor(), temp.getTrackColor2()))
+			{
+				ArrayList<CardNode> cards = removeCards(temp.getTrackColor2(), temp.getLength());
+				deck.addDrawnCards(cards);
+				return true;
+			}
+			
+		}
+		return false;
+	}
 	public void resetNumCardsDrawn() {
 		numCardsDrawn = 0;
 	}
 
-//	public void removeCards()
-//	{
-//		
-//	}
-//	
+	public ArrayList<CardNode> removeCards(String color, int len)
+	{
+		return new ArrayList<CardNode>();
+	}
+	
 	
 	public boolean hasWinner() {
 		for(Player p : players) {
@@ -106,9 +131,5 @@ public class GameState {
 		}
 		return false;
 	}
-	public boolean canPlaceTrack(Track track, ArrayList<String> cards) {
-		return false;
-	}
-	
-	
+
 }
