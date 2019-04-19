@@ -88,9 +88,9 @@ public class CityMapDrawer {
 			Path2D path = new Path2D.Double();
 			path.moveTo(points[0].getX(), points[0].getY());
 			path.quadTo(points[1].getX(), points[1].getY(), points[2].getX(), points[2].getY());
-			g.setStroke(new BasicStroke(20, BasicStroke.CAP_BUTT, 
+			g.setStroke(new BasicStroke(10, BasicStroke.CAP_BUTT, 
 					BasicStroke.JOIN_BEVEL, 0f, 
-					new float[]{50, 6}, 
+					new float[]{40, 6}, 
 					22));
 			path.transform(at);
 			g.draw(path);
