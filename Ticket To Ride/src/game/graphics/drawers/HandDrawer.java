@@ -39,7 +39,7 @@ public class HandDrawer {
 		Color c2 = Color.RED.darker();
 		GradientPaint gp1 = new GradientPaint(298, 720, Color.ORANGE, 1524, (920), c2, false);
 		g.setPaint(gp1);
-		g.fillRect(398, 720, 1226, 180);
+		g.fillRect(398, 720, 1226, 200);
 		
 		for(String s : cards.keySet()) {
 			AffineTransform at = new AffineTransform();
