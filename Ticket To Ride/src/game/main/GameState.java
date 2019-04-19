@@ -16,6 +16,7 @@ public class GameState
 	private int currentPlayer, numCardsDrawn;
 	private CityMap board;
 	private Deck deck;
+	private boolean hasWinner;
 	public static int NUMPLAYERS = 4;
 	
 	public GameState() throws IOException
@@ -31,62 +32,63 @@ public class GameState
 		deck = new Deck();
 	}
 
-	public Player[] getPlayers() 
-	{
+	public Player[] getPlayers() {
 		return players;
 	}
 
-	public int getCurrentPlayer()
-	{
+	public int getCurrentPlayer() {
 		return currentPlayer;
 	}
 
-	public CityMap getBoard() 
-	{
+	public CityMap getBoard() {
 		return board;
 	}
 
-	public Deck getDeck() 
-	{
+	public Deck getDeck() {
 		return deck;
 	}
-	public void updatePlayer()
-	{
+
+	public void updatePlayer() {
 		currentPlayer++;
 		if (currentPlayer == NUMPLAYERS)
-			currentPlayer = 0;
+			 currentPlayer = 0;
 	}
-	
-	public void drawFaceUpCard(int num)
-	{
-		this.numCardsDrawn++;
-		players[currentPlayer].addCard(deck.drawTrain(num), 1);
+
+	public void drawFaceUpCard(int num) {
+		String card = deck.drawTrain(num);
+		players[currentPlayer].addCard(card, 1);
+		if(card.equals("wild")) {
+			if(numCardsDrawn == 1)
+				return;
+			numCardsDrawn += 2;
+		} else {
+			numCardsDrawn++;
+		}
 	}
-	
-	public void drawFaceDownCard()
-	{
-		this.numCardsDrawn++;
+
+	public void drawFaceDownCard() {
 		players[currentPlayer].addCard(deck.drawRandTrain(), 1);
+		numCardsDrawn += 2;
 	}
-	
-	public String getPlayerEdges(int num)
-	{
+
+	public String getPlayerEdges(int num) {
 		return players[num].getEdges();
 	}
-	
-	public void drawContracts()
-	{
-		players[currentPlayer].setContracts(deck.drawContracts());
+
+	public ContractCard[] drawContracts() {
+		return deck.drawContracts();
 	}
 	
-	public void returnContracts(ArrayList<ContractCard> list)
-	{
+	public void setContracts(ArrayList<ContractCard> list) {
+		players[currentPlayer].setContracts(list);
+	}
+
+	public void returnContracts(ArrayList<ContractCard> list) {
 		deck.replaceContract(list);
 	}
 	
-	public ArrayList<CardNode> removeCards(String color, int cnt)
-	{
-		return players[currentPlayer].removeCards(color, cnt);
+	public int getNumCardsDrawn() {
+		return numCardsDrawn;
 	}
 	
 	public boolean placeTrack(String city1, String city2)
@@ -110,6 +112,24 @@ public class GameState
 			
 		}
 		return false;
-		
 	}
+	public void resetNumCardsDrawn() {
+		numCardsDrawn = 0;
+	}
+
+	public ArrayList<CardNode> removeCards(String color, int len)
+	{
+		return new ArrayList<CardNode>();
+	}
+	
+	
+	public boolean hasWinner() {
+		for(Player p : players) {
+			if(p.getTrains() <= 3) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

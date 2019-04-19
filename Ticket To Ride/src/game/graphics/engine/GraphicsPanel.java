@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import game.graphics.input.MouseInput;
@@ -40,6 +39,8 @@ public class GraphicsPanel extends JPanel implements Runnable {
 		frame.setSize(WIDTH, HEIGHT);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
+	//		frame.setFocusable(true);
+		frame.setUndecorated(true);
 		frame.add(new GraphicsPanel());
 		frame.setVisible(true);
 		
