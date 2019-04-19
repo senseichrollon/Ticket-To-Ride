@@ -69,8 +69,15 @@ public class GameScreen extends ScreenManager implements Runnable {
 	public void run() {
 		while(!game.hasWinner()) {
 			int num = input.requestTypeOfTurn();
+			switch(num) {
+				
+			}
+			
+			
+			
+			input.reset();
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -109,7 +116,6 @@ public class GameScreen extends ScreenManager implements Runnable {
 	@Override
 	public void draw(Graphics2D g) {
 		handDrawer.draw(g);
-		cMapDrawer.draw(g);
 		Color c2 = Color.RED.darker();
 		GradientPaint gp1 = new GradientPaint(0, 0, Color.orange, 0, (600), c2, true);
 		Paint p = g.getPaint();
@@ -127,6 +133,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 //		g.setColor(Color.BLACK.darker().darker());
 //		g.setFont(new Font("Serif", Font.BOLD+Font.ITALIC, 36));
 //		g.drawString("Ticket to Ride", 0, 50);
+		cMapDrawer.draw(g);
 		input.draw(g);
 	}
 

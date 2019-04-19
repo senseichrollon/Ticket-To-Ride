@@ -13,6 +13,7 @@ import java.util.Scanner;
 public class CityMap {
 	private List<ArrayList<Track>> map;
 	public static HashMap<String, Integer> CITYINDEX;
+	public static HashMap<Integer,Track> allTracks;
 	private List<ArrayList<Track>> fullMap;
 	private ArrayList<Integer> dp;
 	private  HashSet<Track> lpVisited;
@@ -22,6 +23,7 @@ public class CityMap {
 		CITYINDEX = new HashMap<String, Integer>();
 		map = new ArrayList<ArrayList<Track>>();
 		fullMap = new ArrayList<ArrayList<Track>>();
+		allTracks = new HashMap<>();;
 		try {
 			Scanner in = new Scanner(new File("resources/gamedata/cities.txt"));
 			int n = in.nextInt();
@@ -47,17 +49,20 @@ public class CityMap {
 							  Integer.parseInt(args[1]), 
 							  Integer.parseInt(args[2]),
 							  Integer.parseInt(args[3]), 
-							  args[5]);
+							  args[5].toLowerCase());
 		
 				if(Boolean.parseBoolean(args[4]))
-					add.setTrackColor2(args[6]);
+					add.setTrackColor2(args[6].toLowerCase());
 					 
 				fullMap.get(add.getCityOne()).add(add);
 				fullMap.get(add.getCityTwo()).add(add);
+				allTracks.put(Integer.parseInt(args[0]),add);
 			}
 		} catch (IOException e) {
 			System.out.println("Error reading resources/gamedata/tracks.txt");
 		}
+	
+	
 	}
 	
 	public boolean addTrack(String city1, String city2, String player, String colChoice)

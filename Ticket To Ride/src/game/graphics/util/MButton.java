@@ -23,6 +23,8 @@ public class MButton {
 	private Point2D center;
 	private Shape shape;
 	
+	private int id;
+	
 	private boolean pressed;
 	private boolean cleared;
 	private boolean validRelease;
@@ -49,6 +51,10 @@ public class MButton {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Font getFont() {
@@ -160,6 +166,10 @@ public class MButton {
 			g.draw(shape);
 			g.setStroke(new BasicStroke(1));
 		}
+	}
+	
+	public int getId() {
+		return id;
 	}
 
 	public boolean isValidRelease() {
