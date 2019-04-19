@@ -83,13 +83,14 @@ public class CityMap {
 		{
 			fullMap.get(c1).remove(work);
 			fullMap.get(c2).remove(work);
-			work.occupyTrack(player, null);
+			boolean out = work.occupyTrack(player, null);
 			map.get(c1).add(work);
 			map.get(c2).add(work);
+			return out;
 		}
 		else
 		{
-			work.occupyTrack(player, colChoice);
+			boolean out = work.occupyTrack(player, colChoice);
 			if(work.isFilled())
 			{
 				fullMap.get(c1).remove(work);
@@ -100,10 +101,8 @@ public class CityMap {
 				map.get(c1).add(work);
 				map.get(c2).add(work);
 			}
+			return out;
 		}
-		
-		
-		return true;
 	}
 	
 	public boolean completedContract(String color, ContractCard check)
@@ -234,6 +233,16 @@ public class CityMap {
 			}
 		}
 		return out;
+	}
+	
+	public String printFullMap()
+	{
+		return fullMap.toString();
+	}
+	
+	public String printOGMap()
+	{
+		return map.toString();
 	}
 
 }

@@ -161,4 +161,9 @@ public class Track implements Comparable<Track>{
 	{
 		return length;
 	}
+	
+	public String toString()
+	{
+		return id + " " + cityOne + " " + cityTwo + " " + trackColor1 + " " + trackColor2 + " " + length;
+	}
 }
