@@ -26,7 +26,7 @@ public class GameState
 		players[1] = new Player("Joe", "purple");
 		players[2] = new Player("Bob", "green");
 		players[3] = new Player("John", "yellow");
-		currentPlayer = (int)(Math.random() * 5);
+		currentPlayer = (int)(Math.random() * 4);
 		numCardsDrawn = 0;
 		board = new CityMap();
 		deck = new Deck();
