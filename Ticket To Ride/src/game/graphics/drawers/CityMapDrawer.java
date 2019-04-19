@@ -74,14 +74,16 @@ public class CityMapDrawer {
 	class TrackDrawer {
 		private boolean doubleTrack;
 		private Point[] points;
+		private Color c;
 		
 		public TrackDrawer(Point[] points, boolean doubleTrack) {
 			this.doubleTrack = doubleTrack;
 			this.points = doubleTrack?points:Arrays.copyOfRange(points, 0,3);
+			c = new Color((int)(Math.random() * 255),(int)(Math.random() * 255),(int)(Math.random() * 255));
 
 		}
 		public void draw(Graphics2D g, Color c) {
-			g.setColor(c);
+			g.setColor(this.c);
 			AffineTransform at = new AffineTransform();
 			at.setToTranslation(340, -55);
 			at.scale(1.3, 1.3);
