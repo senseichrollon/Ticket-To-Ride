@@ -83,14 +83,14 @@ public class CityMapDrawer {
 		public void draw(Graphics2D g, Color c) {
 			g.setColor(c);
 			AffineTransform at = new AffineTransform();
-			at.setToTranslation(336, -60);
+			at.setToTranslation(340, -55);
 			at.scale(1.3, 1.3);
 			Path2D path = new Path2D.Double();
 			path.moveTo(points[0].getX(), points[0].getY());
-			path.curveTo(points[0].getX(), points[0].getY(), points[1].getX(), points[1].getY(), points[2].getX(), points[2].getY());
-			g.setStroke(new BasicStroke(20, BasicStroke.CAP_BUTT, 
+			path.quadTo(points[1].getX(), points[1].getY(), points[2].getX(), points[2].getY());
+			g.setStroke(new BasicStroke(10, BasicStroke.CAP_BUTT, 
 					BasicStroke.JOIN_BEVEL, 0f, 
-					new float[]{50, 6}, 
+					new float[]{40, 6}, 
 					22));
 			path.transform(at);
 			g.draw(path);
@@ -98,7 +98,7 @@ public class CityMapDrawer {
 			if(doubleTrack) {
 				path = new Path2D.Double();
 				path.moveTo(points[3].getX(), points[3].getY());
-				path.curveTo(points[3].getX(), points[3].getY(), points[4].getX(), points[4].getY(), points[5].getX(), points[5].getY());
+				path.quadTo(points[4].getX(), points[4].getY(), points[5].getX(), points[5].getY());
 				path.transform(at);
 				g.draw(path);
 			}
