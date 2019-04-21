@@ -92,7 +92,7 @@ public class CityMapDrawer {
 			path.quadTo(points[1].getX(), points[1].getY(), points[2].getX(), points[2].getY());
 			g.setStroke(new BasicStroke(10, BasicStroke.CAP_BUTT, 
 					BasicStroke.JOIN_BEVEL, 0f, 
-					new float[]{40, 6}, 
+					new float[]{43, 4}, 
 					22));
 			path.transform(at);
 			g.draw(path);
