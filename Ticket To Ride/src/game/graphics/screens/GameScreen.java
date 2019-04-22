@@ -99,7 +99,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 			game.updatePlayer();
 			input.reset();
 			try {
-				Thread.sleep(10);
+				Thread.sleep(100000000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

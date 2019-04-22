@@ -191,7 +191,7 @@ public class InputManager   {
 		}
 		
 		public void draw(Graphics2D g) {
-			g.setColor(Color.YELLOW);
+			g.setColor(Color.CYAN);
 			g.setStroke(new BasicStroke(10));
 			if(hover)
 				g.draw(clickBox);
