@@ -5,8 +5,9 @@ import java.util.ArrayList;
 public class Player {
 	private PlayerCardTree cards;
 	private String name, trainColor;
-	private int trains;
+	private int trains, points;
 	private ArrayList<ContractCard> contracts;
+	
 
 	public static ContractCard card = new ContractCard("San Francisco", "Atlanta", 14);
 
@@ -18,6 +19,7 @@ public class Player {
 		for (String s : colors) {
 			cards.add(s, 0);
 		}
+		setPoints(0);
 		setTrains(45);
 		contracts = new ArrayList<>();
 		contracts.add(new ContractCard("Bombay","Beijing",14));
@@ -68,5 +70,13 @@ public class Player {
 
 	public void setTrains(int trains) {
 		this.trains = trains;
+	}
+
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
 	}
 }

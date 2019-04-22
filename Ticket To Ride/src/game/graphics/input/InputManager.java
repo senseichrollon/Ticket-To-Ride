@@ -17,7 +17,7 @@ import game.graphics.util.MButton;
 
 public class InputManager   {
 	private ArrayList<MButton> displayButtons;
-	private ArrayList<ClickBox> trainCardCoords;
+	private ArrayList<ClickBox> clickBoxes;
 	
 	private ClickBox pressedClick;
 	private MButton pressedButton;
@@ -26,7 +26,7 @@ public class InputManager   {
 	
 	public InputManager(MouseInput input) {
 		displayButtons = new ArrayList<MButton>();
-		trainCardCoords = new ArrayList<ClickBox>();
+		clickBoxes = new ArrayList<ClickBox>();
 		pressedButton = null;
 		this.input = input;
 	}
@@ -66,16 +66,16 @@ public class InputManager   {
 	
 	public void updateClickBox(boolean mousePressed, boolean mouseReleased, Point mouseLoc) {
 		if(mousePressed)
-			for(int i = 0; i < trainCardCoords.size(); i++) {
-				 ClickBox b = trainCardCoords.get(i);
+			for(int i = 0; i < clickBoxes.size(); i++) {
+				 ClickBox b = clickBoxes.get(i);
 					if(b.contains(mouseLoc)) {
 						b.setPressed(true);
 					} else
 						b.setHover(false);
 			}
 		if(mouseReleased)
-			for(int i = 0; i < trainCardCoords.size(); i++) {
-				ClickBox b = trainCardCoords.get(i);
+			for(int i = 0; i < clickBoxes.size(); i++) {
+				ClickBox b = clickBoxes.get(i);
 					if(b.contains(mouseLoc)) {
 						pressedClick = b;
 					} else
@@ -83,8 +83,8 @@ public class InputManager   {
 			}
 		
 		if(!mousePressed && !mouseReleased)
-			for(int i = 0; i < trainCardCoords.size(); i++) {
-				ClickBox b = trainCardCoords.get(i);
+			for(int i = 0; i < clickBoxes.size(); i++) {
+				ClickBox b = clickBoxes.get(i);
 					if(b.contains(mouseLoc)) {
 						b.setHover(true);
 						b.setPressed(false);
@@ -127,10 +127,10 @@ public class InputManager   {
 	public int requestTrainCardSelection(Rectangle[] clickArea, int numCardsDrawn,String[] upTrains) {
 		for(int i = 0; i < 5; i++) {
 			if(numCardsDrawn != 1 || !upTrains[i].equals("wild")) {
-				trainCardCoords.add(new ClickBox(clickArea[i],i));
+				clickBoxes.add(new ClickBox(clickArea[i],i));
 			}
 		}
-		trainCardCoords.add(new ClickBox(clickArea[5],5));
+		clickBoxes.add(new ClickBox(clickArea[5],5));
 		while(pressedClick == null) {
 			try {Thread.sleep(100);} catch (InterruptedException e) {}
 		}
@@ -147,7 +147,7 @@ public class InputManager   {
 	}
 	
 	public void reset() {
-		trainCardCoords.clear();
+		clickBoxes.clear();
 		pressedClick = null;
 		clearButtons();
 		pressedButton = null;
@@ -165,8 +165,8 @@ public class InputManager   {
 			b.draw(g);
 		}
 		
-		for(int i = 0; i < trainCardCoords.size(); i++) {
-			trainCardCoords.get(i).draw(g);
+		for(int i = 0; i < clickBoxes.size(); i++) {
+			clickBoxes.get(i).draw(g);
 		}
 	}
 	
