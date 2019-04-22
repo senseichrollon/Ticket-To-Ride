@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.stream.IntStream;
 
+import game.entity.ContractCard;
 import game.entity.Deck;
 import game.entity.Player;
 import game.graphics.drawers.CityMapDrawer;
@@ -74,7 +76,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 	@Override
 	public void run() {
 		while (!game.hasWinner()) {
-			int num = input.requestTypeOfTurn();
+			int num = input.requestTypeOfTurn(game.getPlayers()[game.getCurrentPlayer()].getName());
 			input.reset();
 			switch (num) {
 				case 1: {
@@ -101,14 +103,33 @@ public class GameScreen extends ScreenManager implements Runnable {
 				case 2: {
 
 				}
+				case 3: {
+					ContractCard[] cards = game.drawContracts();
+					BufferedImage[] img = new BufferedImage[cards.length];
+					for(int i = 0; i < cards.length; i++) {
+						img[i] = ImageLoader.getCopy(contractDrawer.getCardImages().get(cards[i]));
+					}
+					ArrayList<Integer> keep = input.requestGovernmentContract(cards, img);
+					ArrayList<ContractCard> retCards = new ArrayList<ContractCard>();
+					ArrayList<ContractCard> keepCards = new ArrayList<ContractCard>();
+					for(int i = 0; i < cards.length; i++) {
+						if(keep.contains(i))
+							keepCards.add(cards[i]);
+						else
+							retCards.add(cards[i]);
+					}
+					game.setContracts(keepCards);
+					game.setContracts(retCards);
+				}
 			}
-			game.updatePlayer();
 			input.reset();
+
 			try {
-				Thread.sleep(100000000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			game.updatePlayer();
 		}
 	}
 
@@ -154,7 +175,29 @@ public class GameScreen extends ScreenManager implements Runnable {
 		g.drawString(String.format("%-8s%-8s%-8s","Player","Points","Trains"), 20, 80);
 		int y = 150;
 		for(Player p : players) {
-			g.drawString(String.format("%-8s%-8d%-8d",p.getName(), p.getPoints(),p.getTrainColor()), 20, y);
+			g.setColor(Color.BLACK);
+			g.drawString(String.format("%-8s%4d  %8d",p.getName(), p.getPoints(),p.getTrains()), 20, y);
+			Color c = null;
+			switch(p.getTrainColor()) {
+				case "blue": {
+					c = Color.BLUE;
+					break;
+				}
+				case "purple": {
+					c = new Color(148,0,211);
+					break;
+				}
+				case "green": {
+					c = Color.GREEN;
+					break;
+				}
+				case "yellow": {
+					c = Color.YELLOW;
+					break;
+				}
+			}
+			g.setColor(c);
+			g.fill(new Ellipse2D.Double(230,y-20,30,30));
 			y+= 70;
 		}
 	}
@@ -178,6 +221,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 		cMapDrawer.draw(g);
 		input.draw(g);
 		drawLeaderBoard(g);
+		
 	}
 
 }

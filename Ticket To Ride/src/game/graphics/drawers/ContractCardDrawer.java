@@ -79,6 +79,10 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 		g.translate(dx, 0);
 	}
 	
+	public HashMap<ContractCard, BufferedImage> getCardImages() {
+		return contractCards;
+	}
+	
 	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e) {
 		dx = e.getAdjustable().getValue() * 10;
