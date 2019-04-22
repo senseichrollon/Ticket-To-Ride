@@ -1,6 +1,7 @@
 package game.graphics.screens;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Paint;
@@ -8,9 +9,14 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.stream.IntStream;
 
 import game.entity.Deck;
+import game.entity.Player;
 import game.graphics.drawers.CityMapDrawer;
 import game.graphics.drawers.ContractCardDrawer;
 import game.graphics.drawers.HandDrawer;
@@ -135,6 +141,23 @@ public class GameScreen extends ScreenManager implements Runnable {
 			y += 130;
 		}
 	}
+	
+	
+	
+	public void drawLeaderBoard(Graphics2D g) {
+		Player[] players = game.getPlayers();
+		ArrayList<Player> sorted = new ArrayList<>();
+		IntStream.range(0, players.length).forEach(i -> sorted.add(players[i]));
+		Collections.sort(sorted, (a,b) -> Integer.compare(b.getPoints(), a.getPoints()));
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("TimesRoman", Font.BOLD | Font.ITALIC, 25));
+		g.drawString(String.format("%-8s%-8s%-8s","Player","Points","Trains"), 20, 80);
+		int y = 150;
+		for(Player p : players) {
+			g.drawString(String.format("%-8s%-8d%-8d",p.getName(), p.getPoints(),p.getTrainColor()), 20, y);
+			y+= 70;
+		}
+	}
 
 	@Override
 	public void draw(Graphics2D g) {
@@ -151,9 +174,10 @@ public class GameScreen extends ScreenManager implements Runnable {
 		gp1 = new GradientPaint(0, 0, Color.ORANGE.darker(), 0, (600), c2, true);
 		g.setPaint(gp1);
 		g.fillRect(0, 400, 398, 680);
-		drawPiles(g);
+	 	drawPiles(g);
 		cMapDrawer.draw(g);
 		input.draw(g);
+		drawLeaderBoard(g);
 	}
 
 }
