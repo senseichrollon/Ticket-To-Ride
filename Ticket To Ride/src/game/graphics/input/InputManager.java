@@ -12,12 +12,14 @@ import java.util.ArrayList;
 
 import game.entity.ContractCard;
 import game.entity.Track;
+import game.graphics.util.ImageLoader;
 import game.graphics.util.MButton;
 
 
 public class InputManager   {
 	private ArrayList<MButton> displayButtons;
-	private ArrayList<ClickBox> trainCardCoords;
+	private ArrayList<ClickBox> clickBoxes;
+	private ArrayList<Text> textDisplay;
 	
 	private ClickBox pressedClick;
 	private MButton pressedButton;
@@ -26,7 +28,8 @@ public class InputManager   {
 	
 	public InputManager(MouseInput input) {
 		displayButtons = new ArrayList<MButton>();
-		trainCardCoords = new ArrayList<ClickBox>();
+		clickBoxes = new ArrayList<ClickBox>();
+		textDisplay = new ArrayList<Text>();
 		pressedButton = null;
 		this.input = input;
 	}
@@ -49,8 +52,8 @@ public class InputManager   {
 		if(mouseReleased)
 			for(int i = 0; i < displayButtons.size(); i++) {
 				 MButton b = displayButtons.get(i);
-					if(b.checkContains(mouseLoc)) {
-					//	b.setValidRelease(true);
+					if(b.isPressed() && b.checkContains(mouseLoc)) {
+						b.setValidRelease(true);
 						pressedButton = b;
 					}
 			}
@@ -58,7 +61,7 @@ public class InputManager   {
 		if(!mousePressed && !mouseReleased)
 			for(int i = 0; i < displayButtons.size(); i++) {
 				 MButton b = displayButtons.get(i);
-					if(b.checkContains(mouseLoc)) {
+					if(!b.checkContains(mouseLoc)) {
 						b.setPressed(false);
 					}
 			}
@@ -66,25 +69,25 @@ public class InputManager   {
 	
 	public void updateClickBox(boolean mousePressed, boolean mouseReleased, Point mouseLoc) {
 		if(mousePressed)
-			for(int i = 0; i < trainCardCoords.size(); i++) {
-				 ClickBox b = trainCardCoords.get(i);
+			for(int i = 0; i < clickBoxes.size(); i++) {
+				 ClickBox b = clickBoxes.get(i);
 					if(b.contains(mouseLoc)) {
 						b.setPressed(true);
 					} else
 						b.setHover(false);
 			}
 		if(mouseReleased)
-			for(int i = 0; i < trainCardCoords.size(); i++) {
-				ClickBox b = trainCardCoords.get(i);
-					if(b.contains(mouseLoc)) {
+			for(int i = 0; i < clickBoxes.size(); i++) {
+				ClickBox b = clickBoxes.get(i);
+					if(b.pressed() && b.contains(mouseLoc)) {
 						pressedClick = b;
 					} else
 						b.setHover(false);
 			}
 		
 		if(!mousePressed && !mouseReleased)
-			for(int i = 0; i < trainCardCoords.size(); i++) {
-				ClickBox b = trainCardCoords.get(i);
+			for(int i = 0; i < clickBoxes.size(); i++) {
+				ClickBox b = clickBoxes.get(i);
 					if(b.contains(mouseLoc)) {
 						b.setHover(true);
 						b.setPressed(false);
@@ -96,7 +99,9 @@ public class InputManager   {
 
 	
 	
-	public int requestTypeOfTurn() {
+	public int requestTypeOfTurn(String playerName) {
+		Text text = new Text(playerName + ", select an action",80,500,new Font("TimesRoman", Font.BOLD | Font.ITALIC, 25));
+		
 		MButton b1 = new MButton("Get Contract Card",new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 15),Color.RED, Color.ORANGE);
 		b1.setCenter(new Point(80,800));
 		b1.setShape(new RoundRectangle2D.Double(0,0,200,50,25,25));
@@ -113,6 +118,7 @@ public class InputManager   {
 		b3.setShape(new RoundRectangle2D.Double(0,0,200,50,25,25));
 		b3.setId(1);
 		
+		textDisplay.add(text);
 		displayButtons.add(b1);
 		displayButtons.add(b2);
 		displayButtons.add(b3);
@@ -127,19 +133,55 @@ public class InputManager   {
 	public int requestTrainCardSelection(Rectangle[] clickArea, int numCardsDrawn,String[] upTrains) {
 		for(int i = 0; i < 5; i++) {
 			if(numCardsDrawn != 1 || !upTrains[i].equals("wild")) {
-				trainCardCoords.add(new ClickBox(clickArea[i],i));
+				clickBoxes.add(new ClickBox(clickArea[i],i));
 			}
 		}
-		trainCardCoords.add(new ClickBox(clickArea[5],5));
+		clickBoxes.add(new ClickBox(clickArea[5],5));
 		while(pressedClick == null) {
 			try {Thread.sleep(100);} catch (InterruptedException e) {}
 		}
 		return pressedClick.getId();
 	}
 	
-	public ArrayList<ContractCard> requestGovernmentContract() {
+	public ArrayList<Integer> requestGovernmentContract(ContractCard[] cards, BufferedImage[] img) {
+		ArrayList<Integer> keep = new ArrayList<Integer>();
+		int y = 450;
+		for(int i = 0; i < cards.length; i++) {
+			keep.add(i);
+			Rectangle rect = new Rectangle(10,y, img[i].getWidth()/7, img[i].getHeight()/8);
+			img[i] = ImageLoader.resize(img[i],(int)rect.getWidth(), (int)rect.getHeight());
+			clickBoxes.add(new ClickBox(rect,i,img[i]));
+			y += 200;
+		}
+		MButton save = new MButton("Save selections",new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 15),Color.RED, Color.ORANGE);
+		save.setCenter(new Point(90,1000));
+		save.setShape(new RoundRectangle2D.Double(0,0,200,50,25,25));
 		
-		return null;
+		displayButtons.add(save);
+		
+		Text k = new Text("Keep",10,420,new Font("TimesRoman", Font.BOLD | Font.ITALIC, 25));
+		Text d = new Text("Discard",200,420,new Font("TimesRoman", Font.BOLD | Font.ITALIC, 25));
+		textDisplay.add(k);
+		textDisplay.add(d);
+		
+		while(!save.isValidRelease()) {
+			for(int i = 0; i < clickBoxes.size(); i++) {
+				if(pressedClick == clickBoxes.get(i)) {
+					Rectangle rect = pressedClick.getBounds();
+					if(!keep.contains(i)) {
+						rect.setBounds(10, (int)rect.getY(), (int)rect.getWidth(), (int)rect.getHeight());
+						keep.add(i);
+
+					} else if(keep.size() > 1) {
+						rect.setBounds(200, (int)rect.getY(), (int)rect.getWidth(), (int)rect.getHeight());
+						keep.remove(new Integer(i));
+					}
+					pressedClick = null;
+				}
+			}
+			try {Thread.sleep(100);} catch (InterruptedException e) {}
+		}
+		return keep;
 	}
 	
 	public Track requestTrackPlacement() {
@@ -147,7 +189,8 @@ public class InputManager   {
 	}
 	
 	public void reset() {
-		trainCardCoords.clear();
+		textDisplay.clear();
+		clickBoxes.clear();
 		pressedClick = null;
 		clearButtons();
 		pressedButton = null;
@@ -165,13 +208,34 @@ public class InputManager   {
 			b.draw(g);
 		}
 		
-		for(int i = 0; i < trainCardCoords.size(); i++) {
-			trainCardCoords.get(i).draw(g);
+		for(int i = 0; i < clickBoxes.size(); i++) {
+			clickBoxes.get(i).draw(g);
+		}
+		
+		for(int i = 0; i < textDisplay.size(); i++) {
+			textDisplay.get(i).draw(g);
 		}
 	}
 	
-	public void drawTrackSelectors(Graphics2D g) {
+
+	
+	class Text {
+		private String text;
+		private int x, y;
+		private Font f;
 		
+		public Text(String text, int x, int y, Font f) {
+			this.text = text;
+			this.x = x;
+			this.y = y;
+			this.f = f;
+		}
+		
+		public void draw(Graphics2D g) {
+			g.setColor(Color.BLACK);
+			g.setFont(f);
+			g.drawString(text, x, y);
+		}
 	}
 	
 	class ClickBox {
@@ -190,11 +254,22 @@ public class InputManager   {
 			img = null;;
 		}
 		
+		public ClickBox(Rectangle rect, int id, BufferedImage img) {
+			this(rect,id);
+			this.img = img;
+		}
+		
 		public void draw(Graphics2D g) {
-			g.setColor(Color.YELLOW);
+			if(img != null)
+				g.drawImage(img,(int)clickBox.getX(), (int)clickBox.getY(), (int)clickBox.getWidth(), (int)clickBox.getHeight(),null);
+			g.setColor(Color.CYAN);
 			g.setStroke(new BasicStroke(10));
 			if(hover)
 				g.draw(clickBox);
+		}
+		
+		public Rectangle getBounds() {
+			return clickBox;
 		}
 		
 		public int getId() {
