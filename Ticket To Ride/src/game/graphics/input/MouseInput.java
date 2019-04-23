@@ -17,7 +17,6 @@ public class MouseInput implements MouseListener, MouseMotionListener {
 		y = e.getY();
 		clicked = true;
 		released = false;
-		System.out.println("hi");
 	}
 
 	@Override
@@ -26,7 +25,6 @@ public class MouseInput implements MouseListener, MouseMotionListener {
 		y = e.getY();
 		clicked = false;
 		released = true;
-		System.out.println("hi2");
 	}
 	
 	@Override
@@ -47,14 +45,12 @@ public class MouseInput implements MouseListener, MouseMotionListener {
 	
 	public boolean clicked() {
 		boolean temp = clicked;
-//		System.out.println(temp);
 		return temp;
 	}
 	
 	public boolean released() {
 		boolean temp = released;
 		released = false;
-//		System.out.println(temp);
 		return (temp);
 	}
 	

@@ -52,6 +52,7 @@ public class GameState
 		currentPlayer++;
 		if (currentPlayer == NUMPLAYERS)
 			 currentPlayer = 0;
+		resetNumCardsDrawn();
 	}
 
 	public void drawFaceUpCard(int num) {
@@ -67,8 +68,9 @@ public class GameState
 	}
 
 	public void drawFaceDownCard() {
+		System.out.println("hello");
 		players[currentPlayer].addCard(deck.drawRandTrain(), 1);
-		numCardsDrawn += 2;
+		numCardsDrawn += 1;
 	}
 
 	public String getPlayerEdges(int num) {
@@ -91,7 +93,7 @@ public class GameState
 		return numCardsDrawn;
 	}
 	
-	public boolean placeTrack(String city1, String city2)
+	public boolean placeTrack(	String city1, String city2)
 	{
 		Track temp = board.getTrack(city1, city1);
 		if (!temp.isFilled())

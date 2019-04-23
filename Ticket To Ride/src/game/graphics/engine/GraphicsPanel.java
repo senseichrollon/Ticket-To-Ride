@@ -10,7 +10,7 @@ import game.graphics.input.MouseInput;
 import game.graphics.screens.ScreenManager;
 
 public class GraphicsPanel extends JPanel implements Runnable {
-	
+		
 	public static final int WIDTH = 1920, HEIGHT = 1080;
 	public static boolean animating;
 	private static GraphicsPanel currentPanel;
