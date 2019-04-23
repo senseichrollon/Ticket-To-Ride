@@ -64,10 +64,15 @@ public class Deck {
 		while (!trainDeck.isEmpty()) {
 			list.add(trainDeck.poll());
 		}
+		for (int i = 0; i < upTrains.length; i++)
+		{
+			list.add(upTrains[i]);
+		}
 		Collections.shuffle(list);
 		for (int i = 0; i < list.size(); i++) {
 			trainDeck.add(list.get(i));
 		}
+		replaceTrains();
 	}
 	
 	public void shuffleIfDeckFinished()
@@ -77,11 +82,16 @@ public class Deck {
 		{
 			temp.add(drawnTrainDeck.poll());
 		}
+		for (int i = 0; i < upTrains.length; i++)
+		{
+			temp.add(upTrains[i]);
+		}
 		Collections.shuffle(temp);
 		for (int i = 0; i < temp.size(); i++) 
 		{
 			trainDeck.add(temp.get(i));
 		}
+		replaceTrains();
 	}
 
 	public void replaceContract(List<ContractCard> ss) {
