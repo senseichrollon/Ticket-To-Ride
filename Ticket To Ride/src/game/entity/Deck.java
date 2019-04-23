@@ -54,7 +54,7 @@ public class Deck {
 	}
 
 	public ContractCard[] drawContracts() {
-		ContractCard[] cc = new ContractCard[5];
+		ContractCard[] cc = new ContractCard[3];
 		for (int i = 0; i < cc.length; i++) {
 			cc[i] = contractDeck.poll();
 		}

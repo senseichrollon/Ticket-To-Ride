@@ -148,10 +148,10 @@ public class InputManager   {
 		int y = 450;
 		for(int i = 0; i < cards.length; i++) {
 			keep.add(i);
-			Rectangle rect = new Rectangle(10,y, img[i].getWidth()/9, img[i].getHeight()/10);
+			Rectangle rect = new Rectangle(10,y, img[i].getWidth()/7, img[i].getHeight()/8);
 			img[i] = ImageLoader.resize(img[i],(int)rect.getWidth(), (int)rect.getHeight());
 			clickBoxes.add(new ClickBox(rect,i,img[i]));
-			y += 100;
+			y += 200;
 		}
 		MButton save = new MButton("Save selections",new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 15),Color.RED, Color.ORANGE);
 		save.setCenter(new Point(90,1000));
@@ -168,19 +168,19 @@ public class InputManager   {
 			for(int i = 0; i < clickBoxes.size(); i++) {
 				if(pressedClick == clickBoxes.get(i)) {
 					Rectangle rect = pressedClick.getBounds();
-					if(keep.contains(i)) {
-						rect.setBounds(200, (int)rect.getY(), (int)rect.getWidth(), (int)rect.getHeight());
-						keep.remove(new Integer(i));
-					} else {
+					if(!keep.contains(i)) {
 						rect.setBounds(10, (int)rect.getY(), (int)rect.getWidth(), (int)rect.getHeight());
 						keep.add(i);
+
+					} else if(keep.size() > 1) {
+						rect.setBounds(200, (int)rect.getY(), (int)rect.getWidth(), (int)rect.getHeight());
+						keep.remove(new Integer(i));
 					}
 					pressedClick = null;
 				}
 			}
 			try {Thread.sleep(100);} catch (InterruptedException e) {}
 		}
-		
 		return keep;
 	}
 	

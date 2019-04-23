@@ -118,8 +118,9 @@ public class GameScreen extends ScreenManager implements Runnable {
 						else
 							retCards.add(cards[i]);
 					}
+
 					game.setContracts(keepCards);
-					game.setContracts(retCards);
+					game.returnContracts(retCards);
 				}
 			}
 			input.reset();
