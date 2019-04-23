@@ -48,7 +48,7 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 			g.setColor(Color.black);
 			String str = c.getCityOne() + "-" + c.getCityTwo();
 			int size = str.length() > 23? 65: 80;
-			g.setFont(new Font("TimesRoman", Font.BOLD, size));
+			g.setFont(new Font("TimesRoman", Font.BOLD, size));	
 			g.drawString(str,120,205);
 			g.setFont(new Font("TimesRoman", Font.BOLD, 120));
 			g.drawString(Integer.toString(c.getPoints()), 770, 780);
@@ -84,7 +84,6 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 			g.drawImage(contractCards.get(card),at,null);
 			x += 200;
 		}
-	//	g.drawString("fffffffffffffffffffffffffffffffffasdafsdafsfjipaojewf/p;jnfweqpjnfapfewnfp;jfn/pufn/apu.n/pur/fffffffffffffff",30 , 100);
 		g.translate(dx, 0);
 	}
 	
