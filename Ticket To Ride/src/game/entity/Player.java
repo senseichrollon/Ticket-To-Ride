@@ -8,18 +8,19 @@ public class Player {
 	private int trains;
 	private ArrayList<ContractCard> contracts;
 
-	public static ContractCard card = new ContractCard("San Francisco","Atlanta",14);
+	public static ContractCard card = new ContractCard("San Francisco", "Atlanta", 14);
+
 	public Player(String n, String c) {
 		name = n;
 		trainColor = c;
 		cards = new PlayerCardTree();
-		String[] colors = {"black","blue", "green", "orange", "purple", "red", "white", "yellow","wild"};
-		for(String s : colors) {
+		String[] colors = { "black", "blue", "green", "orange", "purple", "red", "white", "yellow", "wild" };
+		for (String s : colors) {
 			cards.add(s, 0);
 		}
-		trains = 45;
+		setTrains(45);
 		contracts = new ArrayList<>();
-		contracts.add(card);
+		contracts.add(new ContractCard("Bombay","Beijing",14));
 	}
 
 	public void addCard(String color, int cnt) {
@@ -35,14 +36,14 @@ public class Player {
 	}
 
 	public void decrementTrain(int cnt) {
-		trains -= cnt;
+		setTrains(getTrains() - cnt);
 	}
 
 	public ArrayList<CardNode> removeCards(String color, int cnt) {
 		return cards.remove(color, cnt);
 	}
-	
-	public PlayerCardTree getCards()  {
+
+	public PlayerCardTree getCards() {
 		return cards;
 	}
 
@@ -54,10 +55,18 @@ public class Player {
 		return contracts;
 	}
 
+	
 	public void setContracts(ArrayList<ContractCard> cards) {
-		for (int i = 0; i < cards.size(); i++)
-		{
+		for (int i = 0; i < cards.size(); i++) {
 			contracts.add(cards.get(i));
 		}
+	}
+
+	public int getTrains() {
+		return trains;
+	}
+
+	public void setTrains(int trains) {
+		this.trains = trains;
 	}
 }

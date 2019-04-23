@@ -23,6 +23,8 @@ public class MButton {
 	private Point2D center;
 	private Shape shape;
 	
+	private int id;
+	
 	private boolean pressed;
 	private boolean cleared;
 	private boolean validRelease;
@@ -49,6 +51,10 @@ public class MButton {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Font getFont() {
@@ -93,18 +99,14 @@ public class MButton {
 	
 	public static Shape roundedRect(int width, int height, int borderRadius) {
 		Path2D path = new Path2D.Double();
-		Arc2D arc = new Arc2D.Double();
-		path.moveTo(-width / 2 + borderRadius, -height / 2);
-		arc.setArcByCenter(width / 2 - borderRadius, -height / 2 + borderRadius, borderRadius, 90, -90, Arc2D.OPEN);
-		path.append((Arc2D)arc.clone(), true);
-		arc.setArcByCenter(width / 2 - borderRadius, height / 2 - borderRadius, borderRadius, 0, -90, Arc2D.OPEN);
-		path.append((Arc2D)arc.clone(), true);
-		arc.setArcByCenter(-width / 2 + borderRadius, height / 2 - borderRadius, borderRadius, 270, -90, Arc2D.OPEN);
-		path.append((Arc2D)arc.clone(), true);
-		arc.setArcByCenter(-width / 2 + borderRadius, -height / 2 + borderRadius, borderRadius, 180, -90, Arc2D.OPEN);
-		path.append((Arc2D)arc.clone(), true);
-		path.closePath();
-		return path;
+        path.moveTo(0, 0);
+        path.lineTo(width - borderRadius, 0);
+        path.curveTo(width, 0, width, 0, width, borderRadius);
+        path.lineTo(width, height - borderRadius);
+        path.curveTo(width, height, width, height, width - borderRadius, height);
+        path. lineTo(0, height);
+        path. closePath();
+        return path;
 	}
 	
 	public static Shape ellipse(int width, int height) {
@@ -150,7 +152,10 @@ public class MButton {
 			int width = g.getFontMetrics().stringWidth(text);
 			int height = g.getFontMetrics().getHeight();
 			g.setColor(foreground);
-			g.drawString(text, (int)(-width / 2 + shape.getBounds().getWidth()/2), (int) (-height / 2 + g.getFontMetrics().getAscent() + shape.getBounds().getHeight()/2));
+//			if(shape instanceof Ellipse2D)
+				g.drawString(text, (int)(-width / 2 + shape.getBounds().getWidth()/2), (int) (-height / 2 + g.getFontMetrics().getAscent() + shape.getBounds().getHeight()/2));
+//			else
+//				g.drawString(text, (int)(-width / 2), (int) (-height / 2 + g.getFontMetrics().getAscent()));
 			
 		} else {
 			g.translate(center.getX(), center.getY());
@@ -161,6 +166,10 @@ public class MButton {
 			g.draw(shape);
 			g.setStroke(new BasicStroke(1));
 		}
+	}
+	
+	public int getId() {
+		return id;
 	}
 
 	public boolean isValidRelease() {

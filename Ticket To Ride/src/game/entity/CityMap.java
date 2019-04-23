@@ -13,15 +13,19 @@ import java.util.Scanner;
 public class CityMap {
 	private List<ArrayList<Track>> map;
 	public static HashMap<String, Integer> CITYINDEX;
-	private List<ArrayList<Track>> fullMap;
+	public static List<ArrayList<Track>> FULLMAP;
 	private ArrayList<Integer> dp;
 	private  HashSet<Track> lpVisited;
+	private HashMap<Integer, ArrayList<Track>> loopAlert;
+	private int loopCounter;
 
 	public CityMap() {
-		// TreeSet<String> temp = new TreeSet<String>();
 		CITYINDEX = new HashMap<String, Integer>();
 		map = new ArrayList<ArrayList<Track>>();
-		fullMap = new ArrayList<ArrayList<Track>>();
+		FULLMAP = new ArrayList<ArrayList<Track>>();
+		loopAlert = new HashMap<Integer, ArrayList<Track>>();
+		dp = new ArrayList<Integer>();
+		
 		try {
 			Scanner in = new Scanner(new File("resources/gamedata/cities.txt"));
 			int n = in.nextInt();
@@ -29,7 +33,7 @@ public class CityMap {
 				int number = in.nextInt();
 				CITYINDEX.put(in.next(), number);
 				map.add(new ArrayList<Track>());
-				fullMap.add(new ArrayList<Track>());
+				FULLMAP.add(new ArrayList<Track>());
 			}
 		} catch (Exception e) {
 			System.out.println("Error reading resources/gamedata/cities.txt");
@@ -47,17 +51,19 @@ public class CityMap {
 							  Integer.parseInt(args[1]), 
 							  Integer.parseInt(args[2]),
 							  Integer.parseInt(args[3]), 
-							  args[5]);
+							  args[5].toLowerCase());
 		
 				if(Boolean.parseBoolean(args[4]))
-					add.setTrackColor2(args[6]);
+					add.setTrackColor2(args[6].toLowerCase());
 					 
-				fullMap.get(add.getCityOne()).add(add);
-				fullMap.get(add.getCityTwo()).add(add);
+				FULLMAP.get(add.getCityOne()).add(add);
+				FULLMAP.get(add.getCityTwo()).add(add);
 			}
 		} catch (IOException e) {
 			System.out.println("Error reading resources/gamedata/tracks.txt");
 		}
+	
+	
 	}
 	
 	public boolean addTrack(String city1, String city2, String player, String colChoice)
@@ -66,7 +72,7 @@ public class CityMap {
 		int c2 = CITYINDEX.get(city2);
 		Track work = null;
 		
-		ArrayList<Track> i = fullMap.get(c1);
+		ArrayList<Track> i = FULLMAP.get(c1);
 		for(int j = 0; j < i.size(); j++)
 		{
 			if(i.get(j).getOtherCity(c1) == c2)
@@ -81,8 +87,8 @@ public class CityMap {
 		
 		if(!work.isDoubleTrack())
 		{
-			fullMap.get(c1).remove(work);
-			fullMap.get(c2).remove(work);
+			FULLMAP.get(c1).remove(work);
+			FULLMAP.get(c2).remove(work);
 			boolean out = work.occupyTrack(player, null);
 			map.get(c1).add(work);
 			map.get(c2).add(work);
@@ -93,8 +99,8 @@ public class CityMap {
 			boolean out = work.occupyTrack(player, colChoice);
 			if(work.isFilled())
 			{
-				fullMap.get(c1).remove(work);
-				fullMap.get(c2).remove(work);
+				FULLMAP.get(c1).remove(work);
+				FULLMAP.get(c2).remove(work);
 			}
 			else
 			{
@@ -121,7 +127,6 @@ public class CityMap {
 				visited.add(i);
 				if(dfs(goal, color, i.getOtherCity(curr), visited))
 					return true;
-				break;
 			}
 
 		}
@@ -152,23 +157,50 @@ public class CityMap {
 		return null;
 	}
 	
-	private int longestPath(int currCity, List<Track> visited, String player)
+	public int longestPath(int currCity, List<Track> visited, List<Integer> loopCheck, String player, boolean bfMode)
 	{
 		ArrayList<Integer> lengths = new ArrayList<Integer>();
+		loopCheck.add(currCity);
 		for(Track i : map.get(currCity))
 		{
+			if(loopAlert.containsKey(currCity))
+			{
+				System.out.println("fixing loop for city "  + currCity);
+				visited.addAll(loopAlert.get(currCity));
+				loopAlert.remove(currCity);
+			}
 			if(!visited.contains(i) && i.containsPlayerCol(player))
 			{
 				visited.add(i);
-				int length = i.getLength();
-				lpVisited.remove(i);
-				lengths.add(length + longestPath(i.getOtherCity(currCity), new ArrayList<Track>(visited), player));
+				//int length = i.getLength();
+				if(!bfMode)
+					lpVisited.remove(i);
+				System.out.println(currCity + " " + i.getOtherCity(currCity));
+				if(loopCheck.contains(i.getOtherCity(currCity)))
+				{
+					loopCounter++;
+					if(loopAlert.containsKey(i.getOtherCity(currCity)))
+						loopAlert.get(i.getOtherCity(currCity)).add(i);
+					else
+					{
+						ArrayList<Track> addIn = new ArrayList<Track>();
+						addIn.add(i);
+						loopAlert.put(i.getOtherCity(currCity), addIn);
+					}
+					System.out.println("LOOOOP with track " + i);
+					lengths.add(i.getLength());
+					continue;
+				}
+				else
+					lengths.add(i.getLength() + longestPath(i.getOtherCity(currCity), new ArrayList<Track>(visited), loopCheck, player, bfMode));
 			}
 		}
+		
 		if(lengths.isEmpty())
-			return -1;
+			return 0;
 		
 		Collections.sort(lengths);
+		System.out.println("lengths for city " + currCity + " :" + lengths);
 		if(lengths.size() >= 2)
 			dp.add(lengths.get(lengths.size() - 1) + lengths.get(lengths.size() - 2));
 		return lengths.get(lengths.size() - 1);
@@ -178,45 +210,93 @@ public class CityMap {
 	{
 		//GAMESTATE NEEDS A GLOBAL COLOR LIST!!!! PLZ ADD ASAP!!! 
 		//get players
-		HashMap<String, Integer> log = new HashMap<String, Integer>();
+		//HashMap<String, Integer> log = new HashMap<String, Integer>();
 		//String[] players = GameState.PLAYER_COLS;
-		//for(String i: players)
+		String[] players = {"Yeet"};
+		int[] playerLength = new int[players.length];
+ 		int plc = 0;
+		for(String i: players)
 		{
-			lpVisited = getPlayerTracks("INSERT i");
+			lpVisited = getPlayerTracks(i);
 			ArrayList<Integer> vals = new ArrayList<Integer>();
 			while(!lpVisited.isEmpty())
 			{
-				dp = new ArrayList<Integer>();
+				dp.clear();
 				Iterator<Track> iter = lpVisited.iterator();
+				
 				Track start = iter.next();
-				int temp = longestPath(start.getCityOne(), new ArrayList<Track>(), "INSERT (i)");
-				vals.add(Math.max(Collections.max(dp), temp));
+				int temp = longestPath(start.getCityOne(), new ArrayList<Track>(), new ArrayList<Integer>(), i, false);
+				int segLongest = -1;
+				
+				if(!dp.isEmpty())
+					Math.max(Collections.max(dp), temp);
+				else
+					segLongest = temp;
+				
+				if(loopCounter >= 2)
+				{
+					vals.add(bruteForce(i, start, segLongest));
+					loopCounter = 0;
+					loopAlert.clear();
+					break;
+				}
+				else
+					vals.add(segLongest);
 			}
-			log.put("INSERT i", Collections.max(vals));
-		}
-		return longestColorFinder(log);
-	}
-	
-	private ArrayList<String> longestColorFinder(HashMap<String, Integer> log)
-	{
-		int max = Collections.max(log.values());
-		Iterator<Integer> iter = log.values().iterator();
-		ArrayList<Integer> indices = new ArrayList<Integer>();
-		int c = 0;
-		while(iter.hasNext())
-		{
-			if(iter.next() == max)
-				indices.add(c);
-			c++;
+			playerLength[plc++] = Collections.max(vals);
 		}
 		
 		ArrayList<String> out = new ArrayList<String>();
-		Iterator<String> iter2 = log.keySet().iterator();
-		c= 0;
-		while(iter2.hasNext())
+		ArrayList<Integer> indices = getLargestPos(playerLength);
+		
+		for(int i : indices)
 		{
-			if(indices.contains(c++))
-				out.add(iter2.next());
+			out.add(players[i]);
+		}
+		
+		out.add(String.valueOf(playerLength[indices.get(0)]));
+		return out;
+	}
+	
+	private int bruteForce(String player, Track firstStart, int firstLength)
+	{
+		System.out.println("Start brute force\n");
+		lpVisited = getPlayerTracks(player);
+		lpVisited.remove(firstStart);
+		HashSet<Integer> bfCities = new HashSet<Integer>();
+		for(Track i: lpVisited)
+		{
+			bfCities.add(i.getCityOne());
+			bfCities.add(i.getCityTwo());
+		}
+		lpVisited.clear();
+		
+		int max = firstLength;
+		for(int i: bfCities)
+		{
+			dp.clear();
+			System.out.println("BRUTE FORCE:" + i + "\n");
+			int temp = Math.max(longestPath(i, new ArrayList<Track>(), new ArrayList<Integer>(), player, true), Collections.max(dp));
+			if(temp > max)
+				max = temp;
+		}
+		return max;
+	}
+	
+	private ArrayList<Integer> getLargestPos(int[] test)
+	{
+		int max = Integer.MIN_VALUE;
+		for(int i = 0; i < test.length; i++)
+		{
+			if(test[i] > max)
+				max = test[i];
+		}
+		
+		ArrayList<Integer> out = new ArrayList<Integer>();
+		for(int i = 0; i < test.length; i++)
+		{
+			if(test[i] == max)
+				out.add(i);
 		}
 		return out;
 	}
@@ -235,15 +315,20 @@ public class CityMap {
 		return out;
 	}
 	
-	public String printFullMap()
+	public String printFULLMAP()
 	{
-		return fullMap.toString();
+		return FULLMAP.toString();
 	}
 	
 	public String printOGMap()
 	{
 		return map.toString();
 	}
+	
+	//TESTING ONLY, REMOVE ONCE DONE!!!
+	public ArrayList<Integer> testDP()
+	{
+		return dp;
+	}
 
 }
-	

@@ -71,6 +71,20 @@ public class Deck {
 			trainDeck.add(list.get(i));
 		}
 	}
+	
+	public void shuffleIfDeckFinished()
+	{
+		ArrayList<String> temp = new ArrayList<String>();
+		for (int i = 0; i < drawnTrainDeck.size(); i++)
+		{
+			temp.add(drawnTrainDeck.poll());
+		}
+		Collections.shuffle(temp);
+		for (int i = 0; i < temp.size(); i++) 
+		{
+			trainDeck.add(temp.get(i));
+		}
+	}
 
 	public void replaceContract(List<ContractCard> ss) {
 		for (ContractCard c : ss) {
@@ -81,12 +95,13 @@ public class Deck {
 
 	public String drawTrain(int c) {
 		String temp = upTrains[c];
-		upTrains[c] = drawRandTrain();
+		upTrains[c] = null;
 		check();
+		replaceTrains();
 		return temp;
 	}
 
-	public void replaceTrains(String s, int x) {
+	public void replaceTrains() {
 //		CardNode node = new CardNode(s, x);
 //		if(upTrains[0]==null) {
 //			upTrains[0] = trainDeck.poll();
@@ -120,8 +135,8 @@ public class Deck {
 		}
 		if (cntWild >= 3)
 			shuffle();
-		if (trainDeck.size() <= 5)
-			shuffle();
+		if (trainDeck.size() == 0)
+			shuffleIfDeckFinished();
 	}
 
 	public String[] getUpCards() {
@@ -137,6 +152,14 @@ public class Deck {
 		for (int i = 0; i < cnt; i++)
 		{
 			drawnTrainDeck.add(color);
+		}
+	}
+	
+	public void addDrawnCards(ArrayList<CardNode> cards)
+	{
+		for (int i = 0; i < cards.size(); i++)
+		{
+			drawnTrainDeck.add(cards.get(i).getColor());
 		}
 	}
 }
