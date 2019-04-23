@@ -61,7 +61,7 @@ public class InputManager   {
 		if(!mousePressed && !mouseReleased)
 			for(int i = 0; i < displayButtons.size(); i++) {
 				 MButton b = displayButtons.get(i);
-					if(b.checkContains(mouseLoc)) {
+					if(!b.checkContains(mouseLoc)) {
 						b.setPressed(false);
 					}
 			}
@@ -145,19 +145,24 @@ public class InputManager   {
 	
 	public ArrayList<Integer> requestGovernmentContract(ContractCard[] cards, BufferedImage[] img) {
 		ArrayList<Integer> keep = new ArrayList<Integer>();
-		int y = 500;
+		int y = 450;
 		for(int i = 0; i < cards.length; i++) {
 			keep.add(i);
-			Rectangle rect = new Rectangle(50,y, img[i].getWidth()/10, img[i].getHeight()/10);
+			Rectangle rect = new Rectangle(10,y, img[i].getWidth()/9, img[i].getHeight()/10);
 			img[i] = ImageLoader.resize(img[i],(int)rect.getWidth(), (int)rect.getHeight());
 			clickBoxes.add(new ClickBox(rect,i,img[i]));
 			y += 100;
 		}
 		MButton save = new MButton("Save selections",new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 15),Color.RED, Color.ORANGE);
-		save.setCenter(new Point(200,900));
+		save.setCenter(new Point(90,1000));
 		save.setShape(new RoundRectangle2D.Double(0,0,200,50,25,25));
 		
 		displayButtons.add(save);
+		
+		Text k = new Text("Keep",10,420,new Font("TimesRoman", Font.BOLD | Font.ITALIC, 25));
+		Text d = new Text("Discard",200,420,new Font("TimesRoman", Font.BOLD | Font.ITALIC, 25));
+		textDisplay.add(k);
+		textDisplay.add(d);
 		
 		while(!save.isValidRelease()) {
 			for(int i = 0; i < clickBoxes.size(); i++) {
@@ -167,7 +172,7 @@ public class InputManager   {
 						rect.setBounds(200, (int)rect.getY(), (int)rect.getWidth(), (int)rect.getHeight());
 						keep.remove(new Integer(i));
 					} else {
-						rect.setBounds(50, (int)rect.getY(), (int)rect.getWidth(), (int)rect.getHeight());
+						rect.setBounds(10, (int)rect.getY(), (int)rect.getWidth(), (int)rect.getHeight());
 						keep.add(i);
 					}
 					pressedClick = null;

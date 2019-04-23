@@ -9,7 +9,6 @@ public class Player {
 	private ArrayList<ContractCard> contracts;
 	
 
-	public static ContractCard card = new ContractCard("San Francisco", "Atlanta", 14);
 
 	public Player(String n, String c) {
 		name = n;
@@ -22,7 +21,6 @@ public class Player {
 		setPoints(0);
 		setTrains(45);
 		contracts = new ArrayList<>();
-		contracts.add(new ContractCard("Bombay","Beijing",14));
 	}
 
 	public void addCard(String color, int cnt) {
