@@ -17,8 +17,6 @@ public class Deck {
 		contractDeck = new LinkedList<ContractCard>();
 		for (int i = 0; i < 12; i++) {
 			trainDeck.add("green");
-		}
-		for (int i = 0; i < 12; i++) {
 			trainDeck.add("yellow");
 			trainDeck.add("purple");
 			trainDeck.add("black");
