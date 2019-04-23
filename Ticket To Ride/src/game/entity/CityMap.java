@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
+import game.main.GameState;
+
 public class CityMap {
 	private List<ArrayList<Track>> map;
 	public static HashMap<String, Integer> CITYINDEX;
@@ -212,7 +214,7 @@ public class CityMap {
 		//get players
 		//HashMap<String, Integer> log = new HashMap<String, Integer>();
 		//String[] players = GameState.PLAYER_COLS;
-		String[] players = {"Yeet"};
+		String[] players = GameState.PLAYER_COLS;
 		int[] playerLength = new int[players.length];
  		int plc = 0;
 		for(String i: players)
