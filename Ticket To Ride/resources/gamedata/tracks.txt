@@ -2,8 +2,8 @@
 172 33 2 3 false Gray N/A
 188 33 31 1 true Gray Gray 
 210 24 31 1 true Gray Gray 
-265 24 28 5 true Green Pink 
-289 14 28 3 true Pink Yellow 
+265 24 28 5 true Green Purple 
+289 14 28 3 true Purple Yellow 
 356 14 8 6 false Black N/A
 362 10 8 6 false Green N/A
 418 10 18 2 false Gray N/A
@@ -40,14 +40,14 @@
 2232 4 21 4 false Blue N/A 
 2290 4 7 3 false Red N/A
 2355 4 32 4 false White N/A
-2370 7 32 6 false Pink N/A 
+2370 7 32 6 false Purple N/A 
 2414 26 17 2 false Gray N/A
 2432 26 13 2 false Gray N/A
-2499 26 11 2 true Blue Pink 
+2499 26 11 2 true Blue Purple 
 2504 21 11 1 true Gray Gray 
 2507 20 11 2 true Gray Gray
 2536 6 11 4 true Orange Black 
-2577 6 21 4 false Pink N/A
+2577 6 21 4 false Purple N/A
 2600 6 9 4 false Green N/A
 2653 6 27 3 true Red Yellow 
 2689 6 22 5 false White N/A
@@ -63,7 +63,7 @@
 2979 13 5 2 true Gray Gray 
 3046 21 9 5 false Red N/A
 3079 31 9 6 false Yellow N/A
-3121 27 9 3 false Pink N/A
+3121 27 9 3 false Purple N/A
 3160 27 24 6 false Blue N/A
 3209 27 28 5 true Orange White 
 3242 27 12 3 false Orange N/A 
@@ -72,7 +72,7 @@
 3355 8 22 3 false Gray N/A
 3362 29 22 3 false Gray N/A
 3365 29 8 2 false Gray N/A
-3385 3 15 4 false Pink N/A
+3385 3 15 4 false Purple N/A
 3429 31 2 4 false Gray N/A
 3485 18 0 4 true Orange Yellow
 3499 18 13 3 false Green N/A

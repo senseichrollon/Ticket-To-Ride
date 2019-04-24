@@ -11,14 +11,15 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.stream.IntStream;
 
 import game.entity.ContractCard;
 import game.entity.Deck;
 import game.entity.Player;
+import game.entity.Track;
 import game.graphics.drawers.CityMapDrawer;
 import game.graphics.drawers.ContractCardDrawer;
 import game.graphics.drawers.HandDrawer;
@@ -101,7 +102,8 @@ public class GameScreen extends ScreenManager implements Runnable {
 					break;
 				}
 				case 2: {
-
+					HashMap<Track,boolean[]> map = game.getPlacableTracks();
+					break;
 				}
 				case 3: {
 					ContractCard[] cards = game.drawContracts();

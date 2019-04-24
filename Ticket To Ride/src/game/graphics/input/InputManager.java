@@ -9,9 +9,11 @@ import java.awt.Rectangle;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import game.entity.ContractCard;
 import game.entity.Track;
+import game.graphics.drawers.CityMapDrawer;
 import game.graphics.util.ImageLoader;
 import game.graphics.util.MButton;
 
@@ -21,7 +23,7 @@ public class InputManager   {
 	private ArrayList<ClickBox> clickBoxes;
 	private ArrayList<Text> textDisplay;
 	
-	private ClickBox pressedClick;
+    private ClickBox pressedClick;
 	private MButton pressedButton;
 	private MouseInput input;
 
@@ -184,7 +186,10 @@ public class InputManager   {
 		return keep;
 	}
 	
-	public Track requestTrackPlacement() {
+	public Track requestTrack(HashMap<Track, CityMapDrawer.TrackDrawer> map) {
+		for(Track track : map.keySet()) {
+			
+		}
 		return null;
 	}
 	
@@ -192,15 +197,10 @@ public class InputManager   {
 		textDisplay.clear();
 		clickBoxes.clear();
 		pressedClick = null;
-		clearButtons();
+		displayButtons.clear();
 		pressedButton = null;
 		
 	}
-	public void clearButtons() {
-		displayButtons.clear();
-	}
-	
-
 	
 	public void draw(Graphics2D g) {
 		for(int i = 0; i < displayButtons.size(); i++) {

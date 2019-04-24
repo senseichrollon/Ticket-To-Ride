@@ -71,7 +71,7 @@ public class CityMapDrawer {
 		}
 	}
 	
-	class TrackDrawer {
+	public class TrackDrawer {
 		private boolean doubleTrack;
 		private Point[] points;
 		private Color c;
