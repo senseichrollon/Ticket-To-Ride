@@ -10,10 +10,11 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import game.entity.ContractCard;
 import game.entity.Track;
-import game.graphics.drawers.CityMapDrawer;
+import game.graphics.drawers.CityMapDrawer.TrackDrawer;
 import game.graphics.util.ImageLoader;
 import game.graphics.util.MButton;
 
@@ -186,11 +187,30 @@ public class InputManager   {
 		return keep;
 	}
 	
-	public Track requestTrack(HashMap<Track, CityMapDrawer.TrackDrawer> map) {
+	public int requestTrack(LinkedHashMap<Track, TrackDrawer> map, HashMap<Track, boolean[]> canPlace) {
+		int id = 0;
 		for(Track track : map.keySet()) {
+			TrackDrawer drawer = map.get(track);
+			boolean[] place = canPlace.get(track);
+			if(place[0]) {
+				Point point = drawer.getClick(0);
+				Rectangle rect = new Rectangle((int)point.getX(),(int)point.getY(),15,15);
+				clickBoxes.add(new ClickBox(rect,id,Color.RED));
+			}
 			
+			if(place[1]) {
+				Point point = drawer.getClick(1);
+				Rectangle rect = new Rectangle((int)point.getX(),(int)point.getY(),15,15);
+				clickBoxes.add(new ClickBox(rect,id+1000,Color.RED));	
+			}
+			id++;
 		}
-		return null;
+		
+		while(pressedClick == null) {
+			try {Thread.sleep(100);} catch (InterruptedException e) {}
+
+		}
+		return pressedClick.getId();
 	}
 	
 	public void reset() {
@@ -259,9 +279,18 @@ public class InputManager   {
 			this.img = img;
 		}
 		
+		public ClickBox(Rectangle rect, int id, Color c) {
+			this(rect,id);
+			this.color = c;
+		}
+		
+		
+		
 		public void draw(Graphics2D g) {
+			
 			if(img != null)
 				g.drawImage(img,(int)clickBox.getX(), (int)clickBox.getY(), (int)clickBox.getWidth(), (int)clickBox.getHeight(),null);
+
 			g.setColor(Color.CYAN);
 			g.setStroke(new BasicStroke(10));
 			if(hover)
