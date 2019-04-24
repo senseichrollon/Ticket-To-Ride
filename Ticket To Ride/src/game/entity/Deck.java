@@ -59,9 +59,11 @@ public class Deck {
 		return cc;
 	}
 
-	public void shuffle() {
+	public void shuffle() 
+	{
 		ArrayList<String> list = new ArrayList<String>();
-		while (!trainDeck.isEmpty()) {
+		while (!trainDeck.isEmpty()) 
+		{
 			list.add(trainDeck.poll());
 		}
 		for (int i = 0; i < upTrains.length; i++)
@@ -69,7 +71,8 @@ public class Deck {
 			list.add(upTrains[i]);
 		}
 		Collections.shuffle(list);
-		for (int i = 0; i < list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) 
+		{
 			trainDeck.add(list.get(i));
 		}
 		replaceTrains();
@@ -78,9 +81,13 @@ public class Deck {
 	public void shuffleIfDeckFinished()
 	{
 		ArrayList<String> temp = new ArrayList<String>();
-		for (int i = 0; i < drawnTrainDeck.size(); i++)
+//		for (int i = 0; i < drawnTrainDeck.size(); i++)
+//		{
+//			temp.add(drawnTrainDeck.poll());
+//		}
+		for (int i = 0; i < trainDeck.size(); i++)
 		{
-			temp.add(drawnTrainDeck.poll());
+			temp.add(trainDeck.poll());
 		}
 		for (int i = 0; i < upTrains.length; i++)
 		{
@@ -105,6 +112,7 @@ public class Deck {
 		String temp = upTrains[c];
 		upTrains[c] = null;
 		replaceTrains();
+		
 		check();
 		return temp;
 	}
@@ -123,6 +131,8 @@ public class Deck {
 				cntWild++;
 		}
 		if (cntWild >= 3)
+			System.out.println("osdf");
+		
 			shuffle();
 		if (trainDeck.size() == 0)
 			shuffleIfDeckFinished();
