@@ -1,7 +1,11 @@
 package game.testing;
 
+import java.awt.List;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Queue;
 
 import game.entity.Deck;
 import game.entity.PlayerCardTree;
@@ -27,8 +31,21 @@ public class TestBranch
 //		System.out.println(testerTree);
 		
 		Deck test = new Deck();
+//		System.out.println(Arrays.toString(test.getUpCards()));
+//		test.shuffleIfDeckFinished();
+//		System.out.println(Arrays.toString(test.getUpCards()));
+		
+//		ArrayList<String> temp = new ArrayList<String>();
+//		temp.add(1);
+//		temp.add(2);
+//		temp.add(3);
+//		System.out.println(temp);
+//		Collections.shuffle(temp);
+//		System.out.println(temp);
 		System.out.println(Arrays.toString(test.getUpCards()));
-		test.shuffleIfDeckFinished();
+		String temp = test.drawTrain(1);
+		System.out.println(Arrays.toString(test.getUpCards()));
+		test.shuffle();
 		System.out.println(Arrays.toString(test.getUpCards()));
 	}
 }
