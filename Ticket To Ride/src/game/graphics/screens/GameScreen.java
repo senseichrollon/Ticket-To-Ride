@@ -102,7 +102,8 @@ public class GameScreen extends ScreenManager implements Runnable {
 					break;
 				}
 				case 2: {
-					HashMap<Track,boolean[]> map = game.getPlacableTracks();
+					int id = input.requestTrack(cMapDrawer.getDrawMap(), game.getPlacableTracks());
+					
 					break;
 				}
 				case 3: {

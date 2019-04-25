@@ -202,6 +202,7 @@ public class CityMap {
 			for (Track track : tracks) {
 				boolean[] b = new boolean[2];
 				if (player.getCards().hasEnough(track.getTrackColor1(), track.getLength())) {
+					System.out.println("yo");
 					b[0] = true;
 				}
 				if (track.isDoubleTrack() && player.getCards().hasEnough(track.getTrackColor2(), track.getLength())) {

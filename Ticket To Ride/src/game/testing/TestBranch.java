@@ -11,15 +11,15 @@ public class TestBranch
 		PlayerCardTree testerTree = new PlayerCardTree();
 		testerTree.add("red", 2);
 		testerTree.add("white", 2);
-		testerTree.add("blue", 2);
-		testerTree.add("wild", 1);
+		testerTree.add("blue", 4);
+		testerTree.add("yellow", 1);
 		testerTree.add("green", 2);
-		testerTree.add("pink", 2);
+		testerTree.add("purple", 2);
 		testerTree.add("orange", 2);
-		testerTree.add("wild", 1);
-		testerTree.add("red", 2);
-		System.out.println(testerTree);
-		testerTree.remove("red", 5);
-		System.out.println(testerTree);
+		testerTree.add("wild", 6);
+		testerTree.add("black", 2);
+		
+		
+		System.out.println(testerTree.hasEnough("blue", 10));
 	}
 }

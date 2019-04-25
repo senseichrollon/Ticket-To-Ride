@@ -11,6 +11,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -56,6 +57,7 @@ public class CityMapDrawer {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	
@@ -70,12 +72,12 @@ public class CityMapDrawer {
 	
 	public void drawTracks(Graphics2D g) {
 		for(int i : tracks.keySet()) {
-			tracks.get(i).draw(g, Color.CYAN);
+	//		tracks.get(i).draw(g, Color.CYAN);
 		}
 	}
 	
-	public HashMap<Track,TrackDrawer> getDrawMap() {
-		HashMap<Track,TrackDrawer> drawMap = new HashMap<>();
+	public LinkedHashMap<Track,TrackDrawer> getDrawMap() {
+		LinkedHashMap<Track,TrackDrawer> drawMap = new LinkedHashMap<>();
 		List<ArrayList<Track>> fullMap = map.getFullMap() ;
 		for(ArrayList<Track> tt: fullMap) {
 			for(Track track : tt) {
@@ -123,9 +125,16 @@ public class CityMapDrawer {
 		
 		public Point getClick(int num) {
 			if(num == 0)
-				return points[1];
-			return points[4];
+				return new Point((int)((points[1].getX() *1.3) +340),(int)((points[1].getY() *1.3) -55));
+			return new Point((int)((points[4].getX() *1.3) +340),(int)((points[4].getY() *1.3) -55));
+
 		}
+		@Override
+		public String toString() {
+			return "TrackDrawer [doubleTrack=" + doubleTrack + ", points=" + Arrays.toString(points) + ", c=" + c + "]";
+		}
+		
+		
 	}
 	
 }
