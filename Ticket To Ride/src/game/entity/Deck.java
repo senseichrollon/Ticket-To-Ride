@@ -63,7 +63,6 @@ public class Deck {
 	public String drawRandTrain()
 	{
 		String temp = trainDeck.poll();
-		replaceTrains();
 		check();
 		return temp;
 	}
@@ -147,7 +146,9 @@ public class Deck {
 		if (trainDeck.size() == 0)
 			shuffleIfDeckFinished();
 		int cntWild = 0;
-		for (int i = 0; i < upTrains.length; i++) {
+		for (int i = 0; i < upTrains.length; i++) 
+		{
+			if (upTrains[i].equals("wild"))
 				cntWild++;
 		}
 		if (cntWild >= 3)
