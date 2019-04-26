@@ -139,5 +139,15 @@ public class GameState
 		}
 		return false;
 	}
-
+	
+	public String[][] endgame(Player p)
+	{
+		String[][] points = new String[4][5];
+		for (int y = 0; y < p.getContracts().size(); y++)
+		{
+			ArrayList<ContractCard> temp = p.getContracts();
+				
+					
+		}
+	}
 }
