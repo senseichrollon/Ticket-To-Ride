@@ -19,13 +19,22 @@ public class GameState {
 	private boolean hasWinner;
 	public static int NUMPLAYERS = 4;
 
-	public GameState() throws IOException {
+	public static String[] PLAYER_COLS;
+	
+	public GameState() throws IOException
+	{
 		players = new Player[4];
 		players[0] = new Player("Jim", "blue");
 		players[1] = new Player("Joe", "purple");
 		players[2] = new Player("Bob", "green");
 		players[3] = new Player("John", "yellow");
 		currentPlayer = (int) (Math.random() * 4);
+		PLAYER_COLS = new String[4];
+		PLAYER_COLS[0] = "blue";
+		PLAYER_COLS[1] = "purple";
+		PLAYER_COLS[2] = "green";
+		PLAYER_COLS[3] = "yellow";
+		currentPlayer = (int)(Math.random() * 4);
 		numCardsDrawn = 0;
 		board = new CityMap();
 		deck = new Deck();

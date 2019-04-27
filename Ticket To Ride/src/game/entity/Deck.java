@@ -29,7 +29,20 @@ public class Deck {
 		for (int i = 0; i < 14; i++) {
 			trainDeck.add("wild");
 		}
-		shuffle();
+		
+		// Shuffle
+		ArrayList<String> list = new ArrayList<String>();
+		while (!trainDeck.isEmpty()) 
+		{
+			list.add(trainDeck.poll());
+		}
+		Collections.shuffle(list);
+		for (int i = 0; i < list.size(); i++) 
+		{
+			trainDeck.add(list.get(i));
+		}
+
+
 		for (int i = 0; i < 5; i++) {
 			upTrains[i] = trainDeck.poll();
 		}
@@ -47,8 +60,11 @@ public class Deck {
 
 	}
 
-	public String drawRandTrain() {
-		return trainDeck.poll();
+	public String drawRandTrain()
+	{
+		String temp = trainDeck.poll();
+		check();
+		return temp;
 	}
 
 	public ContractCard[] drawContracts() {
@@ -59,17 +75,21 @@ public class Deck {
 		return cc;
 	}
 
-	public void shuffle() {
+	public void shuffle() 
+	{
 		ArrayList<String> list = new ArrayList<String>();
-		while (!trainDeck.isEmpty()) {
+		while (!trainDeck.isEmpty()) 
+		{
 			list.add(trainDeck.poll());
 		}
 		for (int i = 0; i < upTrains.length; i++)
 		{
 			list.add(upTrains[i]);
+			upTrains[i] = null;
 		}
 		Collections.shuffle(list);
-		for (int i = 0; i < list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) 
+		{
 			trainDeck.add(list.get(i));
 		}
 		replaceTrains();
@@ -85,6 +105,7 @@ public class Deck {
 		for (int i = 0; i < upTrains.length; i++)
 		{
 			temp.add(upTrains[i]);
+			upTrains[i] = null;
 		}
 		Collections.shuffle(temp);
 		for (int i = 0; i < temp.size(); i++) 
@@ -108,6 +129,11 @@ public class Deck {
 		check();
 		return temp;
 	}
+	
+	public Queue getTrainDeck()
+	{
+		return trainDeck;
+	}
 
 	public void replaceTrains() {
 		for (int i = 0; i < upTrains.length; i++) {
@@ -117,15 +143,16 @@ public class Deck {
 	}
 
 	public void check() {
+		if (trainDeck.size() == 0)
+			shuffleIfDeckFinished();
 		int cntWild = 0;
-		for (int i = 0; i < upTrains.length; i++) {
+		for (int i = 0; i < upTrains.length; i++) 
+		{
 			if (upTrains[i].equals("wild"))
 				cntWild++;
 		}
 		if (cntWild >= 3)
 			shuffle();
-		if (trainDeck.size() == 0)
-			shuffleIfDeckFinished();
 	}
 
 	public String[] getUpCards() {

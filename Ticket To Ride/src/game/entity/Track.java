@@ -1,6 +1,6 @@
 package game.entity;
 
-public class Track implements Comparable<Track>{
+public class Track implements Comparable<Track> {
 	private int cityOne;
 	private int cityTwo;
 	private String trackColor1;
@@ -13,7 +13,7 @@ public class Track implements Comparable<Track>{
 	public Track(int id, int cityOne, int cityTwo, int length, String color) {
 		this(id, cityOne, cityTwo, length, color, null);
 	}
-	
+
 	public Track(int id, int cityOne, int cityTwo, int length, String trackColor1, String trackColor2) {
 		this.id = id;
 		this.cityOne = cityOne;
@@ -72,59 +72,44 @@ public class Track implements Comparable<Track>{
 	public String getPlayerColor2() {
 		return playerColor2;
 	}
-	
-	public boolean containsTrackCol(String col)
-	{
-		if(trackColor1.equals(col) || (trackColor2 != null && trackColor2.equals(col)))
+
+	public boolean containsTrackCol(String col) {
+		if (trackColor1.equals(col) || (trackColor2 != null && trackColor2.equals(col)))
 			return true;
 		return false;
 	}
-	
-	public boolean containsPlayerCol(String col)
-	{
-		if((playerColor1 != null && playerColor1.equals(col)) || (playerColor2 != null && trackColor2.equals(col)))
+
+	public boolean containsPlayerCol(String col) {
+		if ((playerColor1 != null && playerColor1.equals(col)) || (playerColor2 != null && trackColor2.equals(col)))
 			return true;
 		return false;
 	}
-	
-	public boolean isFilled()
-	{
-		if(trackColor2 == null)
-		{
-			if(playerColor1 != null)
+
+	public boolean isFilled() {
+		if (trackColor2 == null) {
+			if (playerColor1 != null)
 				return true;
-		}
-		else
-		{
-			if(playerColor1 != null && playerColor2 != null)
+		} else {
+			if (playerColor1 != null && playerColor2 != null)
 				return true;
 		}
 		return false;
 	}
-	
-	public boolean occupyTrack(String pc, String colChoice)
-	{
-		if(trackColor2 == null)
-		{
-			if(playerColor1 == null)
-			{
+
+	public boolean occupyTrack(String pc, String colChoice) {
+		if (trackColor2 == null) {
+			if (playerColor1 == null) {
 				playerColor1 = pc;
 				return true;
 			}
-		}
-		else
-		{
-			if(containsTrackCol(colChoice))
-			{
-				if(trackColor1.equals(colChoice) && playerColor1 == null 
-				&& (playerColor2 == null || !playerColor2.equals(pc))) 
-				{
+		} else {
+			if (containsTrackCol(colChoice)) {
+				if (trackColor1.equals(colChoice) && playerColor1 == null
+						&& (playerColor2 == null || !playerColor2.equals(pc))) {
 					playerColor1 = pc;
 					return true;
-				}
-				else if(trackColor2.equals(colChoice) && playerColor2 == null 
-				&& (playerColor1 == null || !playerColor1.equals(pc))) 
-				{
+				} else if (trackColor2.equals(colChoice) && playerColor2 == null
+						&& (playerColor1 == null || !playerColor1.equals(pc))) {
 					playerColor2 = pc;
 					return true;
 				}
@@ -132,40 +117,32 @@ public class Track implements Comparable<Track>{
 		}
 		return false;
 	}
-	
-	public boolean isDoubleTrack()
-	{
-		if(trackColor2 != null)
+
+	public boolean isDoubleTrack() {
+		if (trackColor2 != null)
 			return true;
 		return false;
 	}
-	
-	public int getID()
-	{
+
+	public int getID() {
 		return id;
 	}
-	
-	public boolean equals(Track other)
-	{
-		if(other.getID() == getID())
+
+	public boolean equals(Track other) {
+		if (other.getID() == getID())
 			return true;
 		return false;
 	}
-	
-	public int compareTo(Track oth)
-	{
+
+	public int compareTo(Track oth) {
 		return getID() - oth.getID();
 	}
-	
-	public int getLength()
-	{
+
+	public int getLength() {
 		return length;
 	}
 
-	@Override
 	public String toString() {
-		return "Track [cityOne=" + cityOne + ", cityTwo=" + cityTwo + ", length=" + length + "]";
+		return id + " " + cityOne + " " + cityTwo + " " + trackColor1 + " " + trackColor2 + " " + length;
 	}
-	
-	
 }
