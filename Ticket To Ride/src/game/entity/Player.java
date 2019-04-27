@@ -16,7 +16,7 @@ public class Player {
 		cards = new PlayerCardTree();
 		String[] colors = { "black", "blue", "green", "orange", "purple", "red", "white", "yellow", "wild"};
 		for (String s : colors) {
-			cards.add(s, 0);
+			cards.add(s, 5);
 		}
 		setPoints(0);
 		setTrains(45);

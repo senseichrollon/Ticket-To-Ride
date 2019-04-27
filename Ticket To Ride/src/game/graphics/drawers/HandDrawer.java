@@ -58,6 +58,10 @@ public class HandDrawer {
 		
 	}
 	
+	public LinkedHashMap<String, BufferedImage> getCards() {
+		return cards;
+	}
+	
 	public void setTree(PlayerCardTree tree) {
 		this.tree = tree;
 	}

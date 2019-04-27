@@ -127,10 +127,12 @@ public class CityMap {
 		return null;
 	}
 
-	public Track getTrack(int city1, int city2) {
-		for (Track i : map.get(city1)) {
-			if (i.getOtherCity(city1) == city2)
-				return i;
+	public Track getTrack(int id) {
+		for (ArrayList<Track> tracks : fullMap) {
+			for (Track track : tracks) {
+				if (track.getID() == id)
+					return track;
+			}
 		}
 		return null;
 	}
@@ -201,11 +203,14 @@ public class CityMap {
 		for (ArrayList<Track> tracks : fullMap) {
 			for (Track track : tracks) {
 				boolean[] b = new boolean[2];
-				if (player.getCards().hasEnough(track.getTrackColor1(), track.getLength())) {
-					System.out.println("yo");
+				if (player.getCards().hasEnough(track.getTrackColor1(), track.getLength())
+						&& (track.getPlayerColor2() == null
+								|| !track.getPlayerColor2().equals(player.getTrainColor()))) {
 					b[0] = true;
 				}
-				if (track.isDoubleTrack() && player.getCards().hasEnough(track.getTrackColor2(), track.getLength())) {
+				if (track.isDoubleTrack() && player.getCards().hasEnough(track.getTrackColor2(), track.getLength())
+						&& (track.getPlayerColor1() == null
+								|| !track.getPlayerColor1().equals(player.getTrainColor()))) {
 					b[1] = true;
 				}
 				ret.put(track, b);

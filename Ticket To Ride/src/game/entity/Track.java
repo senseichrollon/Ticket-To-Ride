@@ -161,4 +161,11 @@ public class Track implements Comparable<Track>{
 	{
 		return length;
 	}
+
+	@Override
+	public String toString() {
+		return "Track [cityOne=" + cityOne + ", cityTwo=" + cityTwo + ", length=" + length + "]";
+	}
+	
+	
 }
