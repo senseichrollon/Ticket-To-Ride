@@ -14,9 +14,9 @@ public class Player {
 		name = n;
 		trainColor = c;
 		cards = new PlayerCardTree();
-		String[] colors = { "black", "blue", "green", "orange", "purple", "red", "white", "yellow", "wild" };
+		String[] colors = { "black", "blue", "green", "orange", "purple", "red", "white", "yellow", "wild"};
 		for (String s : colors) {
-			cards.add(s, 0);
+			cards.add(s, 5);
 		}
 		setPoints(0);
 		setTrains(45);
@@ -39,8 +39,8 @@ public class Player {
 		setTrains(getTrains() - cnt);
 	}
 
-	public ArrayList<CardNode> removeCards(String color, int cnt) {
-		return cards.remove(color, cnt);
+	public void removeCards(String color, int cnt, int wildCnt) {
+		cards.remove(color, cnt, wildCnt);
 	}
 
 	public PlayerCardTree getCards() {

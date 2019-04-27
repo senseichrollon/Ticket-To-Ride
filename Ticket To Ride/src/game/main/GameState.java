@@ -2,6 +2,7 @@ package game.main;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import game.entity.CardNode;
 import game.entity.CityMap;
@@ -10,14 +11,14 @@ import game.entity.Deck;
 import game.entity.Player;
 import game.entity.Track;
 
-public class GameState 
-{
+public class GameState {
 	private Player[] players;
 	private int currentPlayer, numCardsDrawn;
 	private CityMap board;
 	private Deck deck;
 	private boolean hasWinner;
 	public static int NUMPLAYERS = 4;
+
 	public static String[] PLAYER_COLS;
 	
 	public GameState() throws IOException
@@ -27,6 +28,7 @@ public class GameState
 		players[1] = new Player("Joe", "purple");
 		players[2] = new Player("Bob", "green");
 		players[3] = new Player("John", "yellow");
+		currentPlayer = (int) (Math.random() * 4);
 		PLAYER_COLS = new String[4];
 		PLAYER_COLS[0] = "blue";
 		PLAYER_COLS[1] = "purple";
@@ -57,15 +59,15 @@ public class GameState
 	public void updatePlayer() {
 		currentPlayer++;
 		if (currentPlayer == NUMPLAYERS)
-			 currentPlayer = 0;
+			currentPlayer = 0;
 		resetNumCardsDrawn();
 	}
 
 	public void drawFaceUpCard(int num) {
 		String card = deck.drawTrain(num);
 		players[currentPlayer].addCard(card, 1);
-		if(card.equals("wild")) {
-			if(numCardsDrawn == 1)
+		if (card.equals("wild")) {
+			if (numCardsDrawn == 1)
 				return;
 			numCardsDrawn += 2;
 		} else {
@@ -86,7 +88,7 @@ public class GameState
 	public ContractCard[] drawContracts() {
 		return deck.drawContracts();
 	}
-	
+
 	public void setContracts(ArrayList<ContractCard> list) {
 		players[currentPlayer].setContracts(list);
 	}
@@ -94,46 +96,45 @@ public class GameState
 	public void returnContracts(ArrayList<ContractCard> list) {
 		deck.replaceContract(list);
 	}
-	
+
 	public int getNumCardsDrawn() {
 		return numCardsDrawn;
 	}
-	
-	public boolean placeTrack(	String city1, String city2)
-	{
+
+	public boolean placeTrack(String city1, String city2) {
 		Track temp = board.getTrack(city1, city1);
-		if (!temp.isFilled())
-		{
+		if (!temp.isFilled()) {
 			String color = temp.getTrackColor1();
-			if (board.addTrack(city1, city2, players[this.currentPlayer].getTrainColor(), color))
-			{
+			if (board.addTrack(city1, city2, players[this.currentPlayer].getTrainColor(), color)) {
 				ArrayList<CardNode> cards = removeCards(temp.getTrackColor1(), temp.getLength());
 				deck.addDrawnCards(cards);
 				return true;
-			}
-			else if (board.addTrack(city1, city2, players[this.currentPlayer].getTrainColor(), temp.getTrackColor2()))
-			{
+			} else if (board.addTrack(city1, city2, players[this.currentPlayer].getTrainColor(),
+					temp.getTrackColor2())) {
 				ArrayList<CardNode> cards = removeCards(temp.getTrackColor2(), temp.getLength());
 				deck.addDrawnCards(cards);
 				return true;
 			}
-			
+
 		}
 		return false;
 	}
+
 	public void resetNumCardsDrawn() {
 		numCardsDrawn = 0;
 	}
 
-	public ArrayList<CardNode> removeCards(String color, int len)
-	{
+	public ArrayList<CardNode> removeCards(String color, int len) {
 		return new ArrayList<CardNode>();
 	}
-	
-	
+
+	public HashMap<Track, boolean[]> getPlacableTracks() {
+		return board.getPlaceableTracks(players[currentPlayer]);
+	}
+
 	public boolean hasWinner() {
-		for(Player p : players) {
-			if(p.getTrains() <= 3) {
+		for (Player p : players) {
+			if (p.getTrains() <= 3) {
 				return true;
 			}
 		}

@@ -8,11 +8,15 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Scanner;
 
 import game.entity.CityMap;
+import game.entity.Track;
 import game.graphics.util.ImageLoader;
 
 public class CityMapDrawer {
@@ -53,6 +57,7 @@ public class CityMapDrawer {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	
@@ -67,11 +72,22 @@ public class CityMapDrawer {
 	
 	public void drawTracks(Graphics2D g) {
 		for(int i : tracks.keySet()) {
-			tracks.get(i).draw(g, Color.CYAN);
+	//		tracks.get(i).draw(g, Color.CYAN);
 		}
 	}
 	
-	class TrackDrawer {
+	public LinkedHashMap<Track,TrackDrawer> getDrawMap() {
+		LinkedHashMap<Track,TrackDrawer> drawMap = new LinkedHashMap<>();
+		List<ArrayList<Track>> fullMap = map.getFullMap() ;
+		for(ArrayList<Track> tt: fullMap) {
+			for(Track track : tt) {
+				drawMap.put(track, tracks.get(track.getID()) );
+			}
+		} 
+		return drawMap;
+	}
+	
+	public class TrackDrawer {
 		private boolean doubleTrack;
 		private Point[] points;
 		private Color c;
@@ -105,6 +121,20 @@ public class CityMapDrawer {
 				g.draw(path);
 			}
 		}
+		
+		
+		public Point getClick(int num) {
+			if(num == 0)
+				return new Point((int)((points[1].getX() *1.3) +340),(int)((points[1].getY() *1.3) -55));
+			return new Point((int)((points[4].getX() *1.3) +340),(int)((points[4].getY() *1.3) -55));
+
+		}
+		@Override
+		public String toString() {
+			return "TrackDrawer [doubleTrack=" + doubleTrack + ", points=" + Arrays.toString(points) + ", c=" + c + "]";
+		}
+		
+		
 	}
 	
 }

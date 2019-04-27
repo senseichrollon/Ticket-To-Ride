@@ -15,15 +15,19 @@ import game.main.GameState;
 public class CityMap {
 	private List<ArrayList<Track>> map;
 	public static HashMap<String, Integer> CITYINDEX;
+	public static HashMap<Integer, Track> allTracks;
 	public static List<ArrayList<Track>> FULLMAP;
 	private ArrayList<Integer> dp;
-	private  HashSet<Track> lpVisited;
+	private HashSet<Track> lpVisited;
+
 	private HashMap<Integer, ArrayList<Track>> loopAlert;
 	private int loopCounter;
 
 	public CityMap() {
 		CITYINDEX = new HashMap<String, Integer>();
 		map = new ArrayList<ArrayList<Track>>();
+		allTracks = new HashMap<>();
+		
 		FULLMAP = new ArrayList<ArrayList<Track>>();
 		loopAlert = new HashMap<Integer, ArrayList<Track>>();
 		dp = new ArrayList<Integer>();
@@ -31,7 +35,7 @@ public class CityMap {
 		try {
 			Scanner in = new Scanner(new File("resources/gamedata/cities.txt"));
 			int n = in.nextInt();
-			for(int i = 0; i < n; i++){
+			for (int i = 0; i < n; i++) {
 				int number = in.nextInt();
 				CITYINDEX.put(in.next(), number);
 				map.add(new ArrayList<Track>());
@@ -40,23 +44,21 @@ public class CityMap {
 		} catch (Exception e) {
 			System.out.println("Error reading resources/gamedata/cities.txt");
 		}
-		
-		
+
 		try {
 			Scanner in = new Scanner(new File("resources/gamedata/tracks.txt"));
 			int n = in.nextInt();
 			in.nextLine();
-			for(int i = 0; i < n; i++){
+			for (int i = 0; i < n; i++) {
 				String[] args = in.nextLine().split(" ");
-				
-				 Track add = new Track(Integer.parseInt(args[0]), 
-							  Integer.parseInt(args[1]), 
-							  Integer.parseInt(args[2]),
-							  Integer.parseInt(args[3]), 
-							  args[5].toLowerCase());
-		
-				if(Boolean.parseBoolean(args[4]))
+
+				Track add = new Track(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]),
+						Integer.parseInt(args[3]), args[5].toLowerCase());
+
+				if (Boolean.parseBoolean(args[4]))
 					add.setTrackColor2(args[6].toLowerCase());
+
+				allTracks.put(Integer.parseInt(args[0]), add);
 					 
 				FULLMAP.get(add.getCityOne()).add(add);
 				FULLMAP.get(add.getCityTwo()).add(add);
@@ -64,10 +66,9 @@ public class CityMap {
 		} catch (IOException e) {
 			System.out.println("Error reading resources/gamedata/tracks.txt");
 		}
-	
-	
+
 	}
-	
+
 	public boolean addTrack(String city1, String city2, String player, String colChoice)
 	{
 		int c1 = CITYINDEX.get(city1);
@@ -112,53 +113,45 @@ public class CityMap {
 			return out;
 		}
 	}
-	
-	public boolean completedContract(String color, ContractCard check)
-	{
+
+	public boolean completedContract(String color, ContractCard check) {
 		return dfs(CITYINDEX.get(check.getCityTwo()), color, CITYINDEX.get(check.getCityOne()), new ArrayList<Track>());
 	}
-	
-	private boolean dfs(int goal, String color, int curr, List<Track> visited)
-	{
-		for(Track i: map.get(curr))
-		{
-			if(!visited.contains(i) && i.containsPlayerCol(color))
-			{
-				if(i.getOtherCity(curr) == goal)
+
+	private boolean dfs(int goal, String color, int curr, List<Track> visited) {
+		for (Track i : map.get(curr)) {
+			if (!visited.contains(i) && i.containsPlayerCol(color)) {
+				if (i.getOtherCity(curr) == goal)
 					return true;
 				visited.add(i);
-				if(dfs(goal, color, i.getOtherCity(curr), visited))
+				if (dfs(goal, color, i.getOtherCity(curr), visited))
 					return true;
 			}
 
 		}
 		return false;
 	}
-	
-	public Track getTrack(String city1, String city2)
-	{
+
+	public Track getTrack(String city1, String city2) {
 		int c1 = CITYINDEX.get(city1);
 		int c2 = CITYINDEX.get(city2);
-		
-		for(Track i: map.get(c1))
-		{
-			if(i.getOtherCity(c1) == c2)
+
+		for (Track i : map.get(c1)) {
+			if (i.getOtherCity(c1) == c2)
 				return i;
 		}
 		return null;
 	}
-	
-	
-	public Track getTrack(int city1, int city2)
-	{	
-		for(Track i: map.get(city1))
-		{
-			if(i.getOtherCity(city1) == city2)
-				return i;
+
+	public Track getTrack(int id) {
+		for (ArrayList<Track> tracks : FULLMAP) {
+			for (Track track : tracks) {
+				if (track.getID() == id)
+					return track;
+			}
 		}
 		return null;
 	}
-	
 	public int longestPath(int currCity, List<Track> visited, List<Integer> loopCheck, String player, boolean bfMode)
 	{
 		ArrayList<Integer> lengths = new ArrayList<Integer>();
@@ -207,7 +200,7 @@ public class CityMap {
 			dp.add(lengths.get(lengths.size() - 1) + lengths.get(lengths.size() - 2));
 		return lengths.get(lengths.size() - 1);
 	}
-	
+
 	public ArrayList<String> getPlayersLongest()
 	{
 		//GAMESTATE NEEDS A GLOBAL COLOR LIST!!!! PLZ ADD ASAP!!! 
@@ -259,6 +252,7 @@ public class CityMap {
 		out.add(String.valueOf(playerLength[indices.get(0)]));
 		return out;
 	}
+
 	
 	private int bruteForce(String player, Track firstStart, int firstLength)
 	{
@@ -302,15 +296,33 @@ public class CityMap {
 		}
 		return out;
 	}
-	
-	public HashSet<Track> getPlayerTracks(String col)
-	{
+
+	public HashMap<Track, boolean[]> getPlaceableTracks(Player player) {
+		HashMap<Track, boolean[]> ret = new HashMap<>();
+		for (ArrayList<Track> tracks : FULLMAP) {
+			for (Track track : tracks) {
+				boolean[] b = new boolean[2];
+				if (player.getCards().hasEnough(track.getTrackColor1(), track.getLength())
+						&& (track.getPlayerColor2() == null
+								|| !track.getPlayerColor2().equals(player.getTrainColor()))) {
+					b[0] = true;
+				}
+				if (track.isDoubleTrack() && player.getCards().hasEnough(track.getTrackColor2(), track.getLength())
+						&& (track.getPlayerColor1() == null
+								|| !track.getPlayerColor1().equals(player.getTrainColor()))) {
+					b[1] = true;
+				}
+				ret.put(track, b);
+			}
+		}
+		return ret;
+	}
+
+	public HashSet<Track> getPlayerTracks(String col) {
 		HashSet<Track> out = new HashSet<Track>();
-		for(ArrayList<Track> i : map)
-		{
-			for(Track j : i)
-			{
-				if(j.containsPlayerCol(col))
+		for (ArrayList<Track> i : map) {
+			for (Track j : i) {
+				if (j.containsPlayerCol(col))
 					out.add(j);
 			}
 		}
@@ -331,6 +343,10 @@ public class CityMap {
 	public ArrayList<Integer> testDP()
 	{
 		return dp;
+	}
+
+	public List<ArrayList<Track>> getFullMap() {
+		return FULLMAP;
 	}
 
 }

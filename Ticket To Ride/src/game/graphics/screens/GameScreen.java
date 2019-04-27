@@ -11,14 +11,15 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.stream.IntStream;
 
 import game.entity.ContractCard;
 import game.entity.Deck;
 import game.entity.Player;
+import game.entity.Track;
 import game.graphics.drawers.CityMapDrawer;
 import game.graphics.drawers.ContractCardDrawer;
 import game.graphics.drawers.HandDrawer;
@@ -101,7 +102,22 @@ public class GameScreen extends ScreenManager implements Runnable {
 					break;
 				}
 				case 2: {
-
+					int id = input.requestTrack(cMapDrawer.getDrawMap(), game.getPlacableTracks());
+					Track track = game.getBoard().getTrack(id > 100? id-1000:id);
+					HashMap<String,Integer> cards = input.requestCards(track, id>100, handDrawer.getCards(),game.getPlayers()[game.getCurrentPlayer()]);
+					int wildCount = 0;
+					String color = "";
+					int colorCount = 0;
+					
+					for(String s : cards.keySet()) {
+						if(s.equals("wild")) {
+							wildCount = cards.get(s);
+						} else {
+							color = s;
+							colorCount = cards.get(s);
+						}
+					}
+					break;
 				}
 				case 3: {
 					ContractCard[] cards = game.drawContracts();

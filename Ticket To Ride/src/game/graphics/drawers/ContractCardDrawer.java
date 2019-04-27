@@ -48,7 +48,7 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 			g.setColor(Color.black);
 			String str = c.getCityOne() + "-" + c.getCityTwo();
 			int size = str.length() > 23? 65: 80;
-			g.setFont(new Font("TimesRoman", Font.BOLD, size));
+			g.setFont(new Font("TimesRoman", Font.BOLD, size));	
 			g.drawString(str,120,205);
 			g.setFont(new Font("TimesRoman", Font.BOLD, 120));
 			g.drawString(Integer.toString(c.getPoints()), 770, 780);
@@ -60,13 +60,16 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 	public void paintComponent(Graphics gg) {
 		super.paintComponent(gg);
 		Graphics2D g = (Graphics2D)gg;
-		g.translate(dx, 0);
+		g.translate(-dx, 0);
 		Color c1 =  Color.RED;
 		Color c2 = Color.ORANGE;
 		GradientPaint gp1;
 		Paint p = g.getPaint();
 		for(int i = 0; i <= 5000; i+=200) {
-			gp1 = new GradientPaint(i, 0, c1, i+200, (200), c2, false);
+			if(i % 400 == 0)
+				gp1 = new GradientPaint(i, 0, c1, i+200, (200), c2, false);
+			else 
+				gp1 = new GradientPaint(i, 200, c1, i+200, (0), c2, false);
 			g.setPaint(gp1);
 			g.fillRect(i, 0, 200, 200);
 			Color c = c1;
@@ -84,7 +87,6 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 			g.drawImage(contractCards.get(card),at,null);
 			x += 200;
 		}
-	//	g.drawString("fffffffffffffffffffffffffffffffffasdafsdafsfjipaojewf/p;jnfweqpjnfapfewnfp;jfn/pufn/apu.n/pur/fffffffffffffff",30 , 100);
 		g.translate(dx, 0);
 	}
 	
