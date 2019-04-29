@@ -37,7 +37,7 @@ public class CityMap {
 			int n = in.nextInt();
 			for (int i = 0; i < n; i++) {
 				int number = in.nextInt();
-				CITYINDEX.put(in.next(), number);
+				CITYINDEX.put(in.next().replace('_', ' '), number);
 				map.add(new ArrayList<Track>());
 				FULLMAP.add(new ArrayList<Track>());
 			}
@@ -69,12 +69,10 @@ public class CityMap {
 
 	}
 
-	public boolean addTrack(String city1, String city2, String player, String colChoice)
+	public boolean addTrack(Track work, String player, String colChoice)
 	{
-		int c1 = CITYINDEX.get(city1);
-		int c2 = CITYINDEX.get(city2);
-		Track work = null;
-		
+		int c1 = work.getCityOne();
+		int c2 = work.getCityTwo();
 		ArrayList<Track> i = FULLMAP.get(c1);
 		for(int j = 0; j < i.size(); j++)
 		{
@@ -130,17 +128,6 @@ public class CityMap {
 
 		}
 		return false;
-	}
-
-	public Track getTrack(String city1, String city2) {
-		int c1 = CITYINDEX.get(city1);
-		int c2 = CITYINDEX.get(city2);
-
-		for (Track i : map.get(c1)) {
-			if (i.getOtherCity(c1) == c2)
-				return i;
-		}
-		return null;
 	}
 
 	public Track getTrack(int id) {

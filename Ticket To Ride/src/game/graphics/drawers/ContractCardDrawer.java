@@ -78,9 +78,38 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 		}
 		g.setPaint(p);
 		g.setColor(Color.BLACK);
-		g.setFont(new Font("TimesRoman", Font.BOLD, 100));
+		g.setFont(new Font("TimesRoman", Font.BOLD, 20));
 		int x = 30;
+		
+		int numComplete = 0;
+		for(int i = 0; i < playerContracts.size(); i++) {
+			if(playerContracts.get(i).isComplete())
+				numComplete++;
+		}
+		if(numComplete != playerContracts.size()) {
+			g.drawString("Pending", x, 50);
+			g.drawString("Contracts", x, 70);
+		}
+		x+=75;
 		for(ContractCard card : playerContracts) {
+			if(card.isComplete())
+				continue;
+			AffineTransform at = new AffineTransform();
+			at.setToTranslation(x, 20);
+			at.scale(0.17, 0.13);
+			g.drawImage(contractCards.get(card),at,null);
+			x += 200;
+		}
+		
+		
+		if(numComplete != 0) {
+			g.drawString("Completed", x, 50);
+			g.drawString("Contracts", x, 70);
+		}
+		x += 200;
+		for(ContractCard card : playerContracts) {
+			if(!card.isComplete())
+				continue;
 			AffineTransform at = new AffineTransform();
 			at.setToTranslation(x, 20);
 			at.scale(0.17, 0.13);

@@ -5,7 +5,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -19,9 +20,10 @@ import game.entity.Track;
 import game.graphics.drawers.CityMapDrawer.TrackDrawer;
 import game.graphics.util.ImageLoader;
 import game.graphics.util.MButton;
+import game.main.GameState;
 
 public class InputManager {
-	private HashSet<MButton> displayButtons;
+	private ArrayList<MButton> displayButtons;
 	private ArrayList<ClickBox> clickBoxes;
 	private ArrayList<Text> textDisplay;
 
@@ -30,7 +32,7 @@ public class InputManager {
 	private MouseInput input;
 
 	public InputManager(MouseInput input) {
-		displayButtons = new HashSet<>();
+		displayButtons = new ArrayList<>();
 		clickBoxes = new ArrayList<ClickBox>();
 		textDisplay = new ArrayList<Text>();
 		pressedButton = null;
@@ -46,13 +48,15 @@ public class InputManager {
 
 	public void updateButtons(boolean mousePressed, boolean mouseReleased, Point mouseLoc) {
 		if (mousePressed)
-			for (MButton b : displayButtons) {
+			for (int i = 0; i < displayButtons.size(); i++) {
+				MButton b = displayButtons.get(i);
 				if (b.checkContains(mouseLoc)) {
 					b.setPressed(true);
 				}
 			}
 		if (mouseReleased)
-			for (MButton b : displayButtons) {
+			for (int i = 0; i < displayButtons.size(); i++) {
+				MButton b = displayButtons.get(i);
 				if (b.isPressed() && b.checkContains(mouseLoc)) {
 					b.setValidRelease(true);
 					pressedButton = b;
@@ -60,7 +64,8 @@ public class InputManager {
 			}
 
 		if (!mousePressed && !mouseReleased)
-			for (MButton b : displayButtons) {
+			for (int i = 0; i < displayButtons.size(); i++) {
+				MButton b = displayButtons.get(i);
 				if (!b.checkContains(mouseLoc)) {
 					b.setPressed(false);
 				}
@@ -96,10 +101,11 @@ public class InputManager {
 			}
 	}
 
-	public int requestTypeOfTurn(String playerName) {
+	public int requestTypeOfTurn(GameState game) {
+		String playerName = game.getPlayers()[game.getCurrentPlayer()].getName();
 		Text text = new Text(playerName + ", select an action", 80, 500,
 				new Font("TimesRoman", Font.BOLD | Font.ITALIC, 25),Color.BLACK);
-
+		
 		MButton b1 = new MButton("Get Contract Card", new Font("TimesRoman", Font.BOLD | Font.ITALIC, 15), Color.RED,
 				Color.ORANGE);
 		b1.setCenter(new Point(80, 800));
@@ -119,8 +125,10 @@ public class InputManager {
 		b3.setId(1);
 
 		textDisplay.add(text);
-		displayButtons.add(b1);
-		displayButtons.add(b2);
+		if(game.getDeck().getContractCards().size() >= 3)
+			displayButtons.add(b1);
+		if(game.getPlacableTracks().size() > 0)
+			displayButtons.add(b2);
 		displayButtons.add(b3);
 
 		while (pressedButton == null) {
@@ -133,7 +141,7 @@ public class InputManager {
 		return pressedButton.getId();
 	}
 
-	public int requestTrainCardSelection(Rectangle[] clickArea, int numCardsDrawn, String[] upTrains) {
+	public int requestTrainCardSelection(Rectangle2D.Double[] clickArea, int numCardsDrawn, String[] upTrains) {
 		for (int i = 0; i < 5; i++) {
 			if (numCardsDrawn != 1 || !upTrains[i].equals("wild")) {
 				clickBoxes.add(new ClickBox(clickArea[i], i));
@@ -154,7 +162,7 @@ public class InputManager {
 		int y = 450;
 		for (int i = 0; i < cards.length; i++) {
 			keep.add(i);
-			Rectangle rect = new Rectangle(10, y, img[i].getWidth() / 7, img[i].getHeight() / 8);
+			Rectangle2D.Double rect = new Rectangle2D.Double(10, y, img[i].getWidth() / 7, img[i].getHeight() / 8);
 			img[i] = ImageLoader.resize(img[i], (int) rect.getWidth(), (int) rect.getHeight());
 			clickBoxes.add(new ClickBox(rect, i, img[i]));
 			y += 200;
@@ -174,13 +182,13 @@ public class InputManager {
 		while (!save.isValidRelease()) {
 			for (int i = 0; i < clickBoxes.size(); i++) {
 				if (pressedClick == clickBoxes.get(i)) {
-					Rectangle rect = pressedClick.getBounds();
+					Rectangle2D.Double rect = pressedClick.getBounds();
 					if (!keep.contains(i)) {
-						rect.setBounds(10, (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight());
+						rect.setRect(10, rect.getY(), rect.getWidth(), rect.getHeight());
 						keep.add(i);
 
 					} else if (keep.size() > 1) {
-						rect.setBounds(200, (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight());
+						rect.setRect(200, rect.getY(), rect.getWidth(), rect.getHeight());
 						keep.remove(new Integer(i));
 					}
 					pressedClick = null;
@@ -199,15 +207,17 @@ public class InputManager {
 			TrackDrawer drawer = map.get(track);
 			boolean[] place = canPlace.get(track);
 			if (place[0]) {
-				Point point = drawer.getClick(0);
-				Rectangle rect = new Rectangle((int) point.getX(), (int) point.getY(), 10, 10);
+				Point2D.Double point = drawer.getClick(0);
+				Rectangle2D.Double rect = new Rectangle2D.Double( point.getX(), point.getY(), 10, 10);
 				clickBoxes.add(new ClickBox(rect, track.getID(), Color.RED));
 			}
 			
 			if (place[1]) {
-				Point point = drawer.getClick(1);
-				Rectangle rect = new Rectangle((int) point.getX(), (int) point.getY(), 10, 10);
+				Point2D.Double point = drawer.getClick(1);
+				
+				Rectangle2D.Double rect = new Rectangle2D.Double( point.getX(), point.getY(), 10, 10);
 				clickBoxes.add(new ClickBox(rect, track.getID() + 1000, Color.RED));
+				
 			}
 		}
 		while (pressedClick == null) {
@@ -240,7 +250,7 @@ public class InputManager {
 		int y = 420;
 		for (String s : cardImage.keySet()) {
 			ClickBox box = new ClickBox(
-					new Rectangle(x, y, (int) cardImage.get(s).getWidth()/2, (int) cardImage.get(s).getHeight()/2),
+					new Rectangle2D.Double(x, y, (int) cardImage.get(s).getWidth()/2, (int) cardImage.get(s).getHeight()/2),
 					s.hashCode(), cardImage.get(s));
 			box.setCanHover(false);
 
@@ -281,13 +291,15 @@ public class InputManager {
 				int val = map.get(s);
 				if (button.isValidRelease()) {
 					button.setValidRelease(false);
+					button.setPressed(false);
 					map.put(s, ++val);
 					Text text = textMap.get(s);
 					text.setText(Integer.toString(map.get(s)));
-					if (val == player.getCards().getCard(s).getCount()) {
-						displayButtons.remove(button);
-					}
+
 					displayButtons.add(subtractMap.get(s));
+				}
+				if (val == player.getCards().getCard(s).getCount()) {
+					displayButtons.remove(button);
 				}
 			}
 			for (String s : subtractMap.keySet()) {
@@ -295,13 +307,15 @@ public class InputManager {
 				int val = map.get(s);
 				if (button.isValidRelease()) {
 					button.setValidRelease(false);
+					button.setPressed(false);
 					map.put(s, --val);
 					Text text = textMap.get(s);
 					text.setText(Integer.toString(map.get(s)));
-					if (val == 0) {
-						displayButtons.remove(button);
-					}
+
 					displayButtons.add(addMap.get(s));
+				}
+				if (val == 0) {
+					displayButtons.remove(button);
 				}
 				if(!s.equals("wild"))
 					allZeroes &= (val == 0);
@@ -332,7 +346,8 @@ public class InputManager {
 	}
 
 	public void draw(Graphics2D g) {
-		for (MButton b : displayButtons) {
+		for (int i = 0; i < displayButtons.size(); i++) {
+			MButton b = displayButtons.get(i);
 			if(b == null)
 				continue;
 			b.draw(g);
@@ -373,7 +388,7 @@ public class InputManager {
 	}
 
 	class ClickBox {
-		private Rectangle clickBox;
+		private Rectangle2D.Double clickBox;
 		private int id;
 		private boolean hover;
 		private boolean canHover;
@@ -381,7 +396,7 @@ public class InputManager {
 		private Color color;
 		private BufferedImage img;
 
-		public ClickBox(Rectangle rect, int id) {
+		public ClickBox(Rectangle2D.Double rect, int id) {
 			this.clickBox = rect;
 			this.id = id;
 			hover = false;
@@ -390,12 +405,12 @@ public class InputManager {
 			img = null;
 		}
 
-		public ClickBox(Rectangle rect, int id, BufferedImage img) {
+		public ClickBox(Rectangle2D.Double rect, int id, BufferedImage img) {
 			this(rect, id);
 			this.img = img;
 		}
 
-		public ClickBox(Rectangle rect, int id, Color c) {
+		public ClickBox(Rectangle2D.Double rect, int id, Color c) {
 			this(rect, id);
 			this.color = c;
 		}
@@ -415,7 +430,7 @@ public class InputManager {
 				g.draw(clickBox);
 		}
 
-		public Rectangle getBounds() {
+		public Rectangle2D.Double getBounds() {
 			return clickBox;
 		}
 

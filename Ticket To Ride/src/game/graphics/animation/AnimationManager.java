@@ -1,5 +1,61 @@
 package game.graphics.animation;
 
-public class AnimationManager {
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import game.graphics.drawers.HandDrawer;
+import game.graphics.util.ImageLoader;
+
+public class AnimationManager {
+	private static ArrayList<Animator> animations;
+	
+	public static void init() {
+		animations = new ArrayList<Animator>();
+	}
+	
+	public static void update() {
+		for(int i = 0; i < animations.size(); i++) {
+			if(animations.get(i).canEnd()) {
+				animations.get(i).stop();
+				animations.remove(i);
+				i--;
+			}
+		}
+	}
+	
+	public static void draw(Graphics2D g) {
+		for(int i = 0; i < animations.size(); i++) {
+			animations.get(i).draw(g);
+		}
+	}
+	
+	public static void replaceTrainsAnimation(int idx,String color) {
+		Point[] points = new Point[5];
+		int y = 20;
+		for(int i = 0; i < 5; i++) {
+			points[i] = new Point(1700,y);
+			y += 130;
+		}
+		BufferedImage size = HandDrawer.getCards().get(color);
+		BufferedImage img = ImageLoader.loadImage("resources/traincards/backtrain.png");
+		img = ImageLoader.resize(img, img.getWidth()/4, img.getHeight()/4);
+		CardAnimator cardAnim = new CardAnimator(1800,760,(int)points[idx].getX(),(int)points[idx].getY(),img,1000000000L,3,1,1);
+		cardAnim.start();
+		animations.add(cardAnim);
+	}
+	
+	public static void addTrainCardAnimation(int idx) {
+		
+	}
+	
+	public static void returnGovernmentContractAnimation() {
+		
+	}
+	
+	public static boolean animating() {
+		return animations.size() != 0;
+	}
+	
 }
