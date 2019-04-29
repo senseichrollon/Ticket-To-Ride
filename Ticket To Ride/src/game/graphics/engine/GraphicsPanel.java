@@ -74,6 +74,8 @@ public class GraphicsPanel extends JPanel implements Runnable {
 		}
 	}
 	
+	
+	
 	public static GraphicsPanel getPanel() {
 		return currentPanel;
 	}

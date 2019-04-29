@@ -136,6 +136,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 
 	@Override
 	public void update() {
+		
 		input.update();
 		if (!(contractDrawer.getParent() == GraphicsPanel.getPanel())) {
 			GraphicsPanel.getPanel().add(contractDrawer);
