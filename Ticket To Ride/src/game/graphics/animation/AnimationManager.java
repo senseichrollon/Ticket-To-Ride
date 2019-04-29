@@ -38,7 +38,6 @@ public class AnimationManager {
 			points[i] = new Point(1700,y);
 			y += 130;
 		}
-		BufferedImage size = HandDrawer.getCards().get(color);
 		BufferedImage img = ImageLoader.loadImage("resources/traincards/backtrain.png");
 		img = ImageLoader.resize(img, img.getWidth()/4, img.getHeight()/4);
 		CardAnimator cardAnim = new CardAnimator(1800,760,(int)points[idx].getX(),(int)points[idx].getY(),img,1000000000L,3,1,1);
