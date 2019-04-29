@@ -3,6 +3,8 @@ package game.entity;
 import java.io.*;
 import java.util.*;
 
+import game.graphics.animation.AnimationManager;
+
 public class Deck {
 	private Queue<String> trainDeck, drawnTrainDeck;
 	private Queue<ContractCard> contractDeck;
@@ -137,8 +139,14 @@ public class Deck {
 
 	public void replaceTrains() {
 		for (int i = 0; i < upTrains.length; i++) {
-			if (upTrains[i] == null)
-				upTrains[i] = trainDeck.poll();
+			if (upTrains[i] == null) {
+				String s = trainDeck.poll();
+				AnimationManager.replaceTrainsAnimation(i, s);
+				while(AnimationManager.animating()) {
+					try {Thread.sleep(10);} catch (InterruptedException e) {}
+				}
+				upTrains[i] = s;
+			}
 		}
 	}
 

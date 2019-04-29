@@ -17,6 +17,7 @@ public class GameState {
 	private CityMap board;
 	private Deck deck;
 	private boolean hasWinner;
+	private int lastRound;
 	public static int NUMPLAYERS = 4;
 
 	public static String[] PLAYER_COLS;
@@ -28,6 +29,15 @@ public class GameState {
 		players[1] = new Player("Joe", "purple");
 		players[2] = new Player("Bob", "green");
 		players[3] = new Player("John", "yellow");
+		deck = new Deck();
+
+		for(Player ply : players) {
+			for(int i = 0; i < 3; i++) {
+				String card = deck.drawRandTrain();
+				ply.addCard(card, 1);
+			}
+		}
+		
 		currentPlayer = (int) (Math.random() * 4);
 		PLAYER_COLS = new String[4];
 		PLAYER_COLS[0] = "blue";
@@ -36,8 +46,8 @@ public class GameState {
 		PLAYER_COLS[3] = "yellow";
 		currentPlayer = (int)(Math.random() * 4);
 		numCardsDrawn = 0;
+		lastRound = -1;
 		board = new CityMap();
-		deck = new Deck();
 	}
 
 	public Player[] getPlayers() {
@@ -60,7 +70,25 @@ public class GameState {
 		currentPlayer++;
 		if (currentPlayer == NUMPLAYERS)
 			currentPlayer = 0;
+		if(lastRound != -1)
+			lastRound++;
+		for(Player ply : players) {
+			if(ply.getTrains()  <= 3) {
+				lastRound = 1;
+			}
+		}
+		
 		resetNumCardsDrawn();
+		setContractCompletion();
+	}
+	
+	public void setContractCompletion() {
+		ArrayList<ContractCard> contracts = players[currentPlayer].getContracts();
+		for(int i = 0; i < contracts.size(); i++) {
+			if(!contracts.get(i).isComplete()) {
+				contracts.get(i).setComplete(board.completedContract(players[currentPlayer].getTrainColor(), contracts.get(i)));
+			}
+		}
 	}
 
 	public void drawFaceUpCard(int num) {
@@ -76,7 +104,6 @@ public class GameState {
 	}
 
 	public void drawFaceDownCard() {
-		System.out.println("hello");
 		players[currentPlayer].addCard(deck.drawRandTrain(), 1);
 		numCardsDrawn += 1;
 	}
@@ -101,23 +128,41 @@ public class GameState {
 		return numCardsDrawn;
 	}
 
-	public boolean placeTrack(String city1, String city2) {
-		Track temp = board.getTrack(city1, city1);
-		if (!temp.isFilled()) {
-			String color = temp.getTrackColor1();
-			if (board.addTrack(city1, city2, players[this.currentPlayer].getTrainColor(), color)) {
-				ArrayList<CardNode> cards = removeCards(temp.getTrackColor1(), temp.getLength());
-				deck.addDrawnCards(cards);
-				return true;
-			} else if (board.addTrack(city1, city2, players[this.currentPlayer].getTrainColor(),
-					temp.getTrackColor2())) {
-				ArrayList<CardNode> cards = removeCards(temp.getTrackColor2(), temp.getLength());
-				deck.addDrawnCards(cards);
-				return true;
+	public boolean placeTrack(Track track, String color, int colorCount, int wildCount,boolean second) {
+		players[currentPlayer].removeCards(color, colorCount, wildCount);
+		players[currentPlayer].decrementTrain(track.getLength());
+		boolean ret = board.addTrack(track, players[currentPlayer].getTrainColor(), second?track.getTrackColor2():track.getTrackColor1());
+		if(ret) {
+			int points = 0;
+			switch(track.getLength()) {
+				case 1 : {
+					points = 1;
+					break;
+				}
+				case 2: {
+					points = 2;
+					break;
+				}
+				case 3: {
+					points = 4;
+					break;
+				}
+				case 4: {
+					points = 7;
+					break;
+				}
+				case 5: {
+					points = 10;
+					break;
+				}
+				case 6: {
+					points = 15;
+					break;
+				}
 			}
-
+			players[currentPlayer].addPoints(points);
 		}
-		return false;
+		return ret;
 	}
 
 	public void resetNumCardsDrawn() {
@@ -132,13 +177,22 @@ public class GameState {
 		return board.getPlaceableTracks(players[currentPlayer]);
 	}
 
-	public boolean hasWinner() {
-		for (Player p : players) {
-			if (p.getTrains() <= 3) {
-				return true;
+	public int hasWinner() {
+		return lastRound;
+	}
+	
+	public int[][] endGame() {
+		int[][] mat = new int[3][3];
+		for(int i = 0; i < players.length; i++) {
+			mat[0][i] = players[i].getPoints();
+			for(ContractCard card : players[i].getContracts()) {
+				if(card.isComplete()) {
+					mat[1][i] += card.getPoints();
+				} else {
+					mat[2][i] += card.getPoints();
+				}
 			}
 		}
-		return false;
+		return mat;
 	}
-
 }

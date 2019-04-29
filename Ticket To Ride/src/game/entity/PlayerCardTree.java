@@ -120,6 +120,15 @@ public class PlayerCardTree {
 		CardNode wild = getCard("wild");
 		wild.setCount(wild.getCount()-wildCnt);
 	}
+	
+	public int getNumCards() {
+		String[] colors = {"black", "blue", "green", "orange", "purple", "red", "white", "yellow"};
+		int total = 0;
+		for(String s : colors) {
+			total += getCard(s).getCount();
+		}
+		return total;
+	}
 
 	public String toString() {
 		return inOrder(root);

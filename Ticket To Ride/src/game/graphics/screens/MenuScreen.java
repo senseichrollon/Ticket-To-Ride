@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import game.graphics.drawers.TrainBackGround;
 import game.graphics.engine.GraphicsPanel;
 import game.graphics.input.MouseInput;
 import game.graphics.util.ImageLoader;
@@ -22,11 +23,9 @@ public class MenuScreen extends ScreenManager {
 	private MButton playButton;
 	private MButton exitButton;
 	private MButton creditButton;
-	private int trainX;
-	private int trainY;
-	private int dx;
-	private BufferedImage train;
 	private BufferedImage logo;
+
+
 	private JFrame credits;
 	
 	public MenuScreen(MouseInput input) {
@@ -44,23 +43,19 @@ public class MenuScreen extends ScreenManager {
 		exitButton.setCenter(new Point(850,850));
 		exitButton.setShape(MButton.ellipse(200,100));
 		
-		train = ImageLoader.resize(ImageLoader.loadImage("resources/menuscreen/chootrain.png"), 500, 200);
-		trainX = GraphicsPanel.WIDTH - train.getWidth();
-		trainY = 0;
-		dx = 3;
-		
+
 		logo = ImageLoader.resize(ImageLoader.loadImage("resources/menuscreen/logo.png"), 550, 550);
+		TrainBackGround.init();
 	}
 	
 	@Override
 	public void update() {
-		if(trainX <= -1*train.getWidth())
-			trainX = GraphicsPanel.WIDTH + train.getWidth();
-		trainX -= dx;
+		TrainBackGround.update();
 		updateButton(input.clicked(), input.released(), new Point(input.getX(), input.getY()));
 		if(playButton.isValidRelease()) {
 			playButton.setValidRelease(false);
 			ScreenManager.switchScreen(ScreenManager.GAME);
+			((GameScreen)ScreenManager.getCurrentScreen()).startGame();
 		}
 		
 		if(exitButton.isValidRelease()) {
@@ -97,23 +92,13 @@ public class MenuScreen extends ScreenManager {
 
 	
 	@Override
-	public void draw(Graphics2D g) {
-		Color c2 = Color.CYAN.darker().darker();
-		GradientPaint gp1 = new GradientPaint(0, 0, Color.CYAN, 0, (GraphicsPanel.HEIGHT), c2, true);
-		g.setPaint(gp1);
-		g.fillRect(0, 0, GraphicsPanel.WIDTH, GraphicsPanel.HEIGHT);
-		
+	public void draw(Graphics2D g) {	
+		TrainBackGround.draw(g);
 		playButton.draw(g);
 		exitButton.draw(g);
 		creditButton.draw(g);
 		
 		g.drawImage(logo, 700, 250, null);
-		g.drawImage(train, trainX, trainY, null);
-		
-		g.setStroke(new BasicStroke(20));
-		g.setColor(Color.BLACK);
-		int lineY = trainY + train.getHeight()-15;
-		g.drawLine(0, lineY, GraphicsPanel.WIDTH, lineY);
 	}
 
 }
