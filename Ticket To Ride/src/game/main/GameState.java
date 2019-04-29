@@ -2,6 +2,7 @@ package game.main;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import game.entity.CardNode;
 import game.entity.CityMap;
@@ -10,14 +11,15 @@ import game.entity.Deck;
 import game.entity.Player;
 import game.entity.Track;
 
-public class GameState 
-{
+public class GameState {
 	private Player[] players;
 	private int currentPlayer, numCardsDrawn;
 	private CityMap board;
 	private Deck deck;
 	private boolean hasWinner;
+	private int lastRound;
 	public static int NUMPLAYERS = 4;
+
 	public static String[] PLAYER_COLS;
 	
 	public GameState() throws IOException
@@ -27,6 +29,16 @@ public class GameState
 		players[1] = new Player("Joe", "purple");
 		players[2] = new Player("Bob", "green");
 		players[3] = new Player("John", "yellow");
+		deck = new Deck();
+
+		for(Player ply : players) {
+			for(int i = 0; i < 3; i++) {
+				String card = deck.drawRandTrain();
+				ply.addCard(card, 1);
+			}
+		}
+		
+		currentPlayer = (int) (Math.random() * 4);
 		PLAYER_COLS = new String[4];
 		PLAYER_COLS[0] = "blue";
 		PLAYER_COLS[1] = "purple";
@@ -34,8 +46,8 @@ public class GameState
 		PLAYER_COLS[3] = "yellow";
 		currentPlayer = (int)(Math.random() * 4);
 		numCardsDrawn = 0;
+		lastRound = -1;
 		board = new CityMap();
-		deck = new Deck();
 	}
 
 	public Player[] getPlayers() {
@@ -57,15 +69,33 @@ public class GameState
 	public void updatePlayer() {
 		currentPlayer++;
 		if (currentPlayer == NUMPLAYERS)
-			 currentPlayer = 0;
+			currentPlayer = 0;
+		if(lastRound != -1)
+			lastRound++;
+		for(Player ply : players) {
+			if(ply.getTrains()  <= 3) {
+				lastRound = 1;
+			}
+		}
+		
 		resetNumCardsDrawn();
+		setContractCompletion();
+	}
+	
+	public void setContractCompletion() {
+		ArrayList<ContractCard> contracts = players[currentPlayer].getContracts();
+		for(int i = 0; i < contracts.size(); i++) {
+			if(!contracts.get(i).isComplete()) {
+				contracts.get(i).setComplete(board.completedContract(players[currentPlayer].getTrainColor(), contracts.get(i)));
+			}
+		}
 	}
 
 	public void drawFaceUpCard(int num) {
 		String card = deck.drawTrain(num);
 		players[currentPlayer].addCard(card, 1);
-		if(card.equals("wild")) {
-			if(numCardsDrawn == 1)
+		if (card.equals("wild")) {
+			if (numCardsDrawn == 1)
 				return;
 			numCardsDrawn += 2;
 		} else {
@@ -74,7 +104,6 @@ public class GameState
 	}
 
 	public void drawFaceDownCard() {
-		System.out.println("hello");
 		players[currentPlayer].addCard(deck.drawRandTrain(), 1);
 		numCardsDrawn += 1;
 	}
@@ -86,7 +115,7 @@ public class GameState
 	public ContractCard[] drawContracts() {
 		return deck.drawContracts();
 	}
-	
+
 	public void setContracts(ArrayList<ContractCard> list) {
 		players[currentPlayer].setContracts(list);
 	}
@@ -94,60 +123,83 @@ public class GameState
 	public void returnContracts(ArrayList<ContractCard> list) {
 		deck.replaceContract(list);
 	}
-	
+
 	public int getNumCardsDrawn() {
 		return numCardsDrawn;
 	}
-	
-	public boolean placeTrack(	String city1, String city2)
-	{
-		Track temp = board.getTrack(city1, city1);
-		if (!temp.isFilled())
-		{
-			String color = temp.getTrackColor1();
-			if (board.addTrack(city1, city2, players[this.currentPlayer].getTrainColor(), color))
-			{
-				ArrayList<CardNode> cards = removeCards(temp.getTrackColor1(), temp.getLength());
-				deck.addDrawnCards(cards);
-				return true;
+
+	public boolean placeTrack(Track track, String color, int colorCount, int wildCount,boolean second) {
+		players[currentPlayer].removeCards(color, colorCount, wildCount);
+		players[currentPlayer].decrementTrain(track.getLength());
+		boolean ret = board.addTrack(track, players[currentPlayer].getTrainColor(), second?track.getTrackColor2():track.getTrackColor1());
+		if(ret) {
+			int points = 0;
+			switch(track.getLength()) {
+				case 1 : {
+					points = 1;
+					break;
+				}
+				case 2: {
+					points = 2;
+					break;
+				}
+				case 3: {
+					points = 4;
+					break;
+				}
+				case 4: {
+					points = 7;
+					break;
+				}
+				case 5: {
+					points = 10;
+					break;
+				}
+				case 6: {
+					points = 15;
+					break;
+				}
 			}
-			else if (board.addTrack(city1, city2, players[this.currentPlayer].getTrainColor(), temp.getTrackColor2()))
-			{
-				ArrayList<CardNode> cards = removeCards(temp.getTrackColor2(), temp.getLength());
-				deck.addDrawnCards(cards);
-				return true;
-			}
-			
+			players[currentPlayer].addPoints(points);
 		}
-		return false;
+		return ret;
 	}
+
 	public void resetNumCardsDrawn() {
 		numCardsDrawn = 0;
 	}
 
-	public ArrayList<CardNode> removeCards(String color, int len)
-	{
+	public ArrayList<CardNode> removeCards(String color, int len) {
 		return new ArrayList<CardNode>();
 	}
-	
-	
-	public boolean hasWinner() {
-		for(Player p : players) {
-			if(p.getTrains() <= 3) {
-				return true;
-			}
-		}
-		return false;
+
+	public HashMap<Track, boolean[]> getPlacableTracks() {
+		return board.getPlaceableTracks(players[currentPlayer]);
+	}
+
+
+	public int hasWinner() {
+		return lastRound;
 	}
 	
-	public String[][] endgame(Player p)
-	{
-		String[][] points = new String[4][5];
-		for (int y = 0; y < p.getContracts().size(); y++)
-		{
-			ArrayList<ContractCard> temp = p.getContracts();
-				
-					
+	public int[][] endGame() {
+		int[][] mat = new int[4][5];
+		mat[0][0] = 0;
+		mat[1][0] = 1;
+		mat[2][0] = 2;
+		mat[3][0] = 3;
+		for(int i = 0; i < players.length; i++) {
+			mat[i][1] = players[i].getPoints();
+			for(ContractCard card : players[i].getContracts()) {
+				if(card.isComplete()) {
+					mat[i][2] += card.getPoints();
+				} else {
+					mat[i][3] += card.getPoints();
+				}
+			}
 		}
+		ArrayList<String> longestPath = board.getPlayersLongest();
+		System.out.println(longestPath);
+		return mat;
 	}
 }
