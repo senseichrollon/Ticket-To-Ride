@@ -17,6 +17,7 @@ import java.util.LinkedHashMap;
 import game.entity.ContractCard;
 import game.entity.Player;
 import game.entity.Track;
+import game.graphics.animation.AnimationManager;
 import game.graphics.drawers.CityMapDrawer.TrackDrawer;
 import game.graphics.util.ImageLoader;
 import game.graphics.util.MButton;
@@ -40,6 +41,8 @@ public class InputManager {
 	}
 
 	public void update() {
+		if(AnimationManager.animating())
+			return;
 		boolean clicked = input.clicked();
 		boolean released = input.released();
 		updateButtons(clicked, released, new Point(input.getX(), input.getY()));
@@ -297,6 +300,7 @@ public class InputManager {
 					text.setText(Integer.toString(map.get(s)));
 
 					displayButtons.add(subtractMap.get(s));
+					System.out.println(map);
 				}
 				if (val == player.getCards().getCard(s).getCount()) {
 					displayButtons.remove(button);
@@ -346,6 +350,8 @@ public class InputManager {
 	}
 
 	public void draw(Graphics2D g) {
+		if(AnimationManager.animating())
+			return;
 		for (int i = 0; i < displayButtons.size(); i++) {
 			MButton b = displayButtons.get(i);
 			if(b == null)
