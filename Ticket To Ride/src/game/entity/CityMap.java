@@ -113,7 +113,9 @@ public class CityMap {
 	}
 
 	public boolean completedContract(String color, ContractCard check) {
+		System.out.println(check.getCityOne() + " " + check.getCityTwo());
 		return dfs(CITYINDEX.get(check.getCityTwo()), color, CITYINDEX.get(check.getCityOne()), new ArrayList<Track>());
+		
 	}
 
 	private boolean dfs(int goal, String color, int curr, List<Track> visited) {

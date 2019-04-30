@@ -177,22 +177,29 @@ public class GameState {
 		return board.getPlaceableTracks(players[currentPlayer]);
 	}
 
+
 	public int hasWinner() {
 		return lastRound;
 	}
 	
 	public int[][] endGame() {
-		int[][] mat = new int[3][3];
+		int[][] mat = new int[4][5];
+		mat[0][0] = 0;
+		mat[1][0] = 1;
+		mat[2][0] = 2;
+		mat[3][0] = 3;
 		for(int i = 0; i < players.length; i++) {
-			mat[0][i] = players[i].getPoints();
+			mat[i][1] = players[i].getPoints();
 			for(ContractCard card : players[i].getContracts()) {
 				if(card.isComplete()) {
-					mat[1][i] += card.getPoints();
+					mat[i][2] += card.getPoints();
 				} else {
-					mat[2][i] += card.getPoints();
+					mat[i][3] += card.getPoints();
 				}
 			}
 		}
+		ArrayList<String> longestPath = board.getPlayersLongest();
+		System.out.println(longestPath);
 		return mat;
 	}
 }
