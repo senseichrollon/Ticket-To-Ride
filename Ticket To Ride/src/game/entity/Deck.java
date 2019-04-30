@@ -62,9 +62,14 @@ public class Deck {
 
 	}
 
-	public String drawRandTrain()
+	public String drawRandTrain(boolean def)
 	{
 		String temp = trainDeck.poll();
+		if(def)
+			AnimationManager.faceDownCardAnimation(temp);
+		while(AnimationManager.animating()) {
+			try {Thread.sleep(10);} catch (InterruptedException e) {}
+		}
 		check();
 		return temp;
 	}
@@ -94,7 +99,7 @@ public class Deck {
 		{
 			trainDeck.add(list.get(i));
 		}
-		replaceTrains();
+		replaceTrains(null,false);
 	}
 	
 	public void shuffleIfDeckFinished()
@@ -114,7 +119,7 @@ public class Deck {
 		{
 			trainDeck.add(temp.get(i));
 		}
-		replaceTrains();
+		replaceTrains(null,false);
 	}
 
 	public void replaceContract(List<ContractCard> ss) {
@@ -127,7 +132,7 @@ public class Deck {
 	public String drawTrain(int c) {
 		String temp = upTrains[c];
 		upTrains[c] = null;
-		replaceTrains();
+		replaceTrains(temp,true);
 		check();
 		return temp;
 	}
@@ -137,14 +142,18 @@ public class Deck {
 		return trainDeck;
 	}
 
-	public void replaceTrains() {
+	public void replaceTrains(String prev,boolean draw) {
 		for (int i = 0; i < upTrains.length; i++) {
 			if (upTrains[i] == null) {
 				String s = trainDeck.poll();
-				AnimationManager.replaceTrainsAnimation(i, s);
-				while(AnimationManager.animating()) {
-					try {Thread.sleep(10);} catch (InterruptedException e) {}
+				if(draw) {
+					AnimationManager.replaceTrainsAnimation(i, s);
+					AnimationManager.addTrainCardAnimation(i,prev);
+					while(AnimationManager.animating()) {
+						try {Thread.sleep(10);} catch (InterruptedException e) {}
+					}
 				}
+
 				upTrains[i] = s;
 			}
 		}

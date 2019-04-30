@@ -33,7 +33,7 @@ public class GameState {
 
 		for(Player ply : players) {
 			for(int i = 0; i < 3; i++) {
-				String card = deck.drawRandTrain();
+				String card = deck.drawRandTrain(false);
 				ply.addCard(card, 1);
 			}
 		}
@@ -104,7 +104,7 @@ public class GameState {
 	}
 
 	public void drawFaceDownCard() {
-		players[currentPlayer].addCard(deck.drawRandTrain(), 1);
+		players[currentPlayer].addCard(deck.drawRandTrain(true), 1);
 		numCardsDrawn += 1;
 	}
 

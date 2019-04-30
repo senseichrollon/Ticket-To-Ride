@@ -33,7 +33,5 @@ public class TestMap
 		
 		System.out.println(cm.getPlayersLongest());
 		System.out.println(cm.testDP());
-		
-		
 	}
 }
