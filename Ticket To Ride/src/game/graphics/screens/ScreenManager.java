@@ -9,10 +9,12 @@ public abstract class ScreenManager {
 	public static final int GAME = 0;
 	public static final int MENU = 1;
 	public static final int RULE = 2;
+	public static final int END = 3;
 	
 	private static GameScreen game;
 	private static MenuScreen menu;
 	private static RuleScreen rule;
+	private static Endgame end;
 	
 	private static ScreenManager currentScreen;
 	
@@ -20,6 +22,7 @@ public abstract class ScreenManager {
 		game = new GameScreen(input);
 		menu = new MenuScreen(input);
 		rule = new RuleScreen();
+		end = new Endgame();
 		currentScreen = menu;
 	}
 	
@@ -30,6 +33,10 @@ public abstract class ScreenManager {
 	public static MenuScreen getMenu() {
 		return menu;
 	}
+	
+	public static Endgame getEnd(){
+		return end;
+	}
 		
 	public static ScreenManager getCurrentScreen() {
 		return currentScreen;
@@ -39,7 +46,9 @@ public abstract class ScreenManager {
 		if(key == GAME) 
 			currentScreen = game;
 		else if(key == MENU) 
-			currentScreen = menu;		
+			currentScreen = menu;
+		//else if(key == END)
+			//currentScreen = end;
 	}
 	
 	
