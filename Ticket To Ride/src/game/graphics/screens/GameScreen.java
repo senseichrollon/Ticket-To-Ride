@@ -278,7 +278,6 @@ public class GameScreen extends ScreenManager implements Runnable {
 		input.draw(g);
 		drawLeaderBoard(g);
 		AnimationManager.draw(g);
-		
 	}
 	
 

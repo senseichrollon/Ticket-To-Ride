@@ -9,7 +9,7 @@ public class Deck {
 	private Queue<String> trainDeck, drawnTrainDeck;
 	private Queue<ContractCard> contractDeck;
 	private String[] upTrains = new String[5];
-	
+
 	// list of all contract cards to be returned in get method
 	private ArrayList<ContractCard> contractList;
 
@@ -31,19 +31,16 @@ public class Deck {
 		for (int i = 0; i < 14; i++) {
 			trainDeck.add("wild");
 		}
-		
+
 		// Shuffle
 		ArrayList<String> list = new ArrayList<String>();
-		while (!trainDeck.isEmpty()) 
-		{
+		while (!trainDeck.isEmpty()) {
 			list.add(trainDeck.poll());
 		}
 		Collections.shuffle(list);
-		for (int i = 0; i < list.size(); i++) 
-		{
+		for (int i = 0; i < list.size(); i++) {
 			trainDeck.add(list.get(i));
 		}
-
 
 		for (int i = 0; i < 5; i++) {
 			upTrains[i] = trainDeck.poll();
@@ -53,7 +50,7 @@ public class Deck {
 		while (kb.hasNextLine()) {
 			String s = kb.nextLine();
 			String[] ss = s.split("; ");
-		//	System.out.println(Arrays.toString(ss));
+			// System.out.println(Arrays.toString(ss));
 			Integer x = new Integer(ss[0]);
 			ContractCard card = new ContractCard(ss[1], ss[2], x);
 			contractDeck.add(card);
@@ -62,13 +59,15 @@ public class Deck {
 
 	}
 
-	public String drawRandTrain(boolean def)
-	{
+	public String drawRandTrain(boolean def) {
 		String temp = trainDeck.poll();
-		if(def)
+		if (def)
 			AnimationManager.faceDownCardAnimation(temp);
-		while(AnimationManager.animating()) {
-			try {Thread.sleep(10);} catch (InterruptedException e) {}
+		while (AnimationManager.animating()) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+			}
 		}
 		check();
 		return temp;
@@ -82,44 +81,36 @@ public class Deck {
 		return cc;
 	}
 
-	public void shuffle() 
-	{
+	public void shuffle() {
 		ArrayList<String> list = new ArrayList<String>();
-		while (!trainDeck.isEmpty()) 
-		{
+		while (!trainDeck.isEmpty()) {
 			list.add(trainDeck.poll());
 		}
-		for (int i = 0; i < upTrains.length; i++)
-		{
+		for (int i = 0; i < upTrains.length; i++) {
 			list.add(upTrains[i]);
 			upTrains[i] = null;
 		}
 		Collections.shuffle(list);
-		for (int i = 0; i < list.size(); i++) 
-		{
+		for (int i = 0; i < list.size(); i++) {
 			trainDeck.add(list.get(i));
 		}
-		replaceTrains(null,false);
+		replaceTrains(null, false);
 	}
-	
-	public void shuffleIfDeckFinished()
-	{
+
+	public void shuffleIfDeckFinished() {
 		ArrayList<String> temp = new ArrayList<String>();
-		for (int i = 0; i < drawnTrainDeck.size(); i++)
-		{
+		for (int i = 0; i < drawnTrainDeck.size(); i++) {
 			temp.add(drawnTrainDeck.poll());
 		}
-		for (int i = 0; i < upTrains.length; i++)
-		{
+		for (int i = 0; i < upTrains.length; i++) {
 			temp.add(upTrains[i]);
 			upTrains[i] = null;
 		}
 		Collections.shuffle(temp);
-		for (int i = 0; i < temp.size(); i++) 
-		{
+		for (int i = 0; i < temp.size(); i++) {
 			trainDeck.add(temp.get(i));
 		}
-		replaceTrains(null,false);
+		replaceTrains(null, false);
 	}
 
 	public void replaceContract(List<ContractCard> ss) {
@@ -132,25 +123,27 @@ public class Deck {
 	public String drawTrain(int c) {
 		String temp = upTrains[c];
 		upTrains[c] = null;
-		replaceTrains(temp,true);
+		replaceTrains(temp, true);
 		check();
 		return temp;
 	}
-	
-	public Queue getTrainDeck()
-	{
+
+	public Queue getTrainDeck() {
 		return trainDeck;
 	}
 
-	public void replaceTrains(String prev,boolean draw) {
+	public void replaceTrains(String prev, boolean draw) {
 		for (int i = 0; i < upTrains.length; i++) {
 			if (upTrains[i] == null) {
 				String s = trainDeck.poll();
-				if(draw) {
+				if (draw) {
 					AnimationManager.replaceTrainsAnimation(i, s);
-					AnimationManager.addTrainCardAnimation(i,prev);
-					while(AnimationManager.animating()) {
-						try {Thread.sleep(10);} catch (InterruptedException e) {}
+					AnimationManager.addTrainCardAnimation(i, prev);
+					while (AnimationManager.animating()) {
+						try {
+							Thread.sleep(10);
+						} catch (InterruptedException e) {
+						}
 					}
 				}
 
@@ -163,8 +156,7 @@ public class Deck {
 		if (trainDeck.size() == 0)
 			shuffleIfDeckFinished();
 		int cntWild = 0;
-		for (int i = 0; i < upTrains.length; i++) 
-		{
+		for (int i = 0; i < upTrains.length; i++) {
 			if (upTrains[i].equals("wild"))
 				cntWild++;
 		}
@@ -175,23 +167,19 @@ public class Deck {
 	public String[] getUpCards() {
 		return upTrains;
 	}
-	
+
 	public ArrayList<ContractCard> getContractCards() {
 		return contractList;
 	}
-	
-	public void addDrawnCards(String color, int cnt)
-	{
-		for (int i = 0; i < cnt; i++)
-		{
+
+	public void addDrawnCards(String color, int cnt) {
+		for (int i = 0; i < cnt; i++) {
 			drawnTrainDeck.add(color);
 		}
 	}
-	
-	public void addDrawnCards(ArrayList<CardNode> cards)
-	{
-		for (int i = 0; i < cards.size(); i++)
-		{
+
+	public void addDrawnCards(ArrayList<CardNode> cards) {
+		for (int i = 0; i < cards.size(); i++) {
 			drawnTrainDeck.add(cards.get(i).getColor());
 		}
 	}
