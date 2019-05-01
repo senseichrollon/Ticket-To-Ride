@@ -86,6 +86,14 @@ public class AnimationManager {
 		
 	}
 	
+	public static void keepGovernmentContractAnimation() {
+		
+	}
+	
+	public static void placeTrainsAnimation() {
+		
+	}
+	
 	public static boolean animating() {
 		return animations.size() != 0;
 	}
