@@ -124,7 +124,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 					int id = input.requestTrack(cMapDrawer.getDrawMap(), game.getPlacableTracks());
 					input.reset();
 					Track track = game.getBoard().getTrack(id > 100? id-1000:id);
-					HashMap<String,Integer> cards = input.requestCards(track, id>100, handDrawer.getCards(),game.getPlayers()[game.getCurrentPlayer()]);
+					HashMap<String,Integer> cards = input.requestCards(track, id>100, HandDrawer.getCards(),game.getPlayers()[game.getCurrentPlayer()]);
 					int wildCount = 0;
 					String color = "";
 					int colorCount = 0;
@@ -132,7 +132,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 					for(String s : cards.keySet()) {
 						if(s.equals("wild")) {
 							wildCount = cards.get(s);
-						} else {
+						} else if(cards.get(s) != 0) {
 							color = s;
 							colorCount = cards.get(s);
 						}

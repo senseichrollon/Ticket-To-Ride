@@ -113,16 +113,15 @@ public class CityMapDrawer {
 			at.setToTranslation(340, -55);
 			at.scale(1.3, 1.3);
 			Path2D path = new Path2D.Double();
+			g.setStroke(new BasicStroke(10, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0f, new float[] { 43, 4 },
+					22));
 			if (!second) {
 				path.moveTo(points[0].getX(), points[0].getY());
 				path.quadTo(points[1].getX(), points[1].getY(), points[2].getX(), points[2].getY());
-				g.setStroke(new BasicStroke(10, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0f, new float[] { 43, 4 },
-						22));
+
 				path.transform(at);
 				g.draw(path);
 			} else {
-				g.setStroke(new BasicStroke(10, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0f, new float[] { 43, 4 },
-						22));
 				path.moveTo(points[3].getX(), points[3].getY());
 				path.quadTo(points[4].getX(), points[4].getY(), points[5].getX(), points[5].getY());
 				path.transform(at);

@@ -32,8 +32,9 @@ public class GameState {
 		deck = new Deck();
 
 		for(Player ply : players) {
-			for(int i = 0; i < 3; i++) {
-				String card = deck.drawRandTrain();
+			for(int i = 0; i < 4; i++) {
+				System.out.println(i);
+				String card = deck.drawRandTrain(false);
 				ply.addCard(card, 1);
 			}
 		}
@@ -104,7 +105,7 @@ public class GameState {
 	}
 
 	public void drawFaceDownCard() {
-		players[currentPlayer].addCard(deck.drawRandTrain(), 1);
+		players[currentPlayer].addCard(deck.drawRandTrain(true), 1);
 		numCardsDrawn += 1;
 	}
 
@@ -182,24 +183,58 @@ public class GameState {
 		return lastRound;
 	}
 	
-	public int[][] endGame() {
+	public int[][] endGame() 
+	{
 		int[][] mat = new int[4][5];
 		mat[0][0] = 0;
 		mat[1][0] = 1;
 		mat[2][0] = 2;
 		mat[3][0] = 3;
-		for(int i = 0; i < players.length; i++) {
+		for(int i = 0; i < players.length; i++) 
+		{
 			mat[i][1] = players[i].getPoints();
-			for(ContractCard card : players[i].getContracts()) {
-				if(card.isComplete()) {
+			int cnt = 0;
+			for(ContractCard card : players[i].getContracts()) 
+			{
+				if(card.isComplete()) 
+				{
 					mat[i][2] += card.getPoints();
-				} else {
+					cnt++;
+				} 
+				else 
+				{
 					mat[i][3] += card.getPoints();
 				}
 			}
+			players[i].setNumCompletedContracts(cnt);
 		}
 		ArrayList<String> longestPath = board.getPlayersLongest();
-		System.out.println(longestPath);
+		if (longestPath.size() > 1)
+		{
+			ArrayList<Integer> temp = new ArrayList<Integer>();
+			int j = 0;
+			for (int i = 0; i < PLAYER_COLS.length; i++)
+			{
+				if (longestPath.get(j).equals(PLAYER_COLS[i]))
+					temp.add(i);
+					j++;
+			}
+			int mostCompleted = temp.get(0);
+			for (int x = 1; x < temp.size(); x++)
+			{
+				if (players[temp.get(x)].getNumCompletedContracts() > players[mostCompleted].getNumCompletedContracts())
+					mostCompleted = temp.get(x);
+			}
+			mat[mostCompleted][4] = 10;
+		}
+		else
+		{
+			for (int i = 0; i < PLAYER_COLS.length; i++)
+			{
+				if (longestPath.get(0).equals(PLAYER_COLS[i]))
+					mat[i][4] = 10;
+			}
+		}
 		return mat;
 	}
 }

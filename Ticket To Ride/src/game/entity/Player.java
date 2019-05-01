@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Player {
 	private PlayerCardTree cards;
 	private String name, trainColor;
-	private int trains, points;
+	private int trains, points, numCompletedContracts;
 	private ArrayList<ContractCard> contracts;
 	
 
@@ -13,6 +13,7 @@ public class Player {
 	public Player(String n, String c) {
 		name = n;
 		trainColor = c;
+		numCompletedContracts = 0;
 		cards = new PlayerCardTree();
 		String[] colors = { "black", "blue", "green", "orange", "purple", "red", "white", "yellow", "wild"};
 		for (String s : colors) {
@@ -76,5 +77,15 @@ public class Player {
 
 	public void addPoints(int points) {
 		this.points += points;
+	}
+	
+	public int getNumCompletedContracts()
+	{
+		return this.numCompletedContracts;
+	}
+	
+	public void setNumCompletedContracts(int num)
+	{
+		this.numCompletedContracts = num;
 	}
 }
