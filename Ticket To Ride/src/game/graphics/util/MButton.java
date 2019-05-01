@@ -97,7 +97,7 @@ public class MButton {
 		this.cleared = cleared;
 	}
 	
-	public static Shape roundedRect(int width, int height, int borderRadius) {
+	public static Shape roundedRect	(int width, int height, int borderRadius) {
 		Path2D path = new Path2D.Double();
         path.moveTo(0, 0);
         path.lineTo(width - borderRadius, 0);

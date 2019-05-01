@@ -1,75 +1,81 @@
 package game.graphics.screens;
 
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
-import game.entity.Player;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import game.graphics.engine.GraphicsPanel;
 import game.graphics.util.ImageLoader;
 
 public class Endgame extends ScreenManager{
 
 	private BufferedImage background;
-	private Player[] players;
+	private int[][] data;
 	
 	public Endgame()
 	{
-		background = ImageLoader.loadImage("resources/gamedata/End game summary.jpg");
+		super();
+		background = ImageLoader.loadImage("resources/gameboard/End game summary.jpg");
 		background = ImageLoader.resize(background, GraphicsPanel.WIDTH, GraphicsPanel.HEIGHT);
 	}
 	
 	@Override
 	public void update() {}
 	
-	public void setPlayers(Player[] ps)
+	public void setData(int[][] vals)
 	{
-		players = ps;
-		sortPlayers();
+		data = vals;
+		sortData();
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		if(players == null)
+		if(data == null)
 			return;
 		g.drawImage(background, 0, 0, null);
+		g.setFont(new Font("Arial", Font.BOLD, 60));
+		//Y-START AT 380, ADD 180 EACH TIME
+		//X-USE HARDCODE POINTS
 		
-		
+		for(int i = 0; i < data.length; i++) {
+			g.drawString(String.valueOf(data[i][1]), 230, (380 + 180*i));
+			g.drawString(String.valueOf(data[i][2]), 560, (380 + 180*i));
+			g.drawString(String.valueOf(data[i][3]), 1060, (380 + 180*i));
+			g.drawString(String.valueOf(data[i][4]), 1480, (380 + 180*i));
+			g.drawString(String.valueOf(data[i][5]), 1720, (380 + 180*i));
+		}
 	}
 	
-	private void sortPlayers()
+	private void sortData()
 	{
-		if(players == null)
+		if(data == null)
 			return;
 		
-		for(int i = 1; i < players.length; i++)
+		for(int i = 1; i < data.length; i++)
 		{
-			Player check = players[i];
+			int[] check = data[i];
 			int c = i-1;
-			while(c >= 0 && players[c].getPoints() < check.getPoints())
+			while(c >= 0 && data[c][1] < check[1])
 			{
-				players[c+1] = players[c]; 
+				data[c+1] = data[c]; 
 				c--;
 			}
-			players[c+1] = check;
+			data[c+1] = check;
 		}
-		
-		for(Player i: players)
-			System.out.println(i.getPoints());
 	}
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args)
+	{
+		JFrame jf = new JFrame("Test");
 		Endgame eg = new Endgame();
-		Player[] add = new Player[3];
-		Player p = new Player("Bob", "Green");
-		p.setPoints(100);
-		add[0] = p;
-		p = new Player("Dob", "Been");
-		p.setPoints(100);
-		add[1] = p;
-		p = new Player("Job", "een");
-		p.setPoints(100);
-		add[2] = p;
-		eg.setPlayers(add);
-	}
+		int[][] data = {{15, 15, 15, 15, 15, 15}, {15, 15, 15, 15, 15, 15}, {15, 15, 15, 15, 15, 15}, {15, 15, 15, 15, 15, 15}};
+		eg.setData(data);
+		jf.add(eg);
+		jf.setSize(GraphicsPanel.WIDTH, GraphicsPanel.HEIGHT);
+		jf.setVisible(true);
+	}*/
 }

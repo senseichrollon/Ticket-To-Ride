@@ -26,7 +26,7 @@ public class GraphicsPanel extends JPanel implements Runnable {
 		currentPanel = this;
 		MouseInput input = new MouseInput();
 		ScreenManager.init(input);
-		addMouseListener(input);
+		addMouseListener(	input);
 		addMouseMotionListener(input);
 		running = true;
 		thread = new Thread(this);

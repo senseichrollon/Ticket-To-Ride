@@ -15,12 +15,12 @@ import game.graphics.util.ImageLoader;
 
 public class HandDrawer {
 	
-	private LinkedHashMap<String, BufferedImage> cards;
-	private LinkedHashMap<String, Point> cardCoords;
+	private static LinkedHashMap<String, BufferedImage> cards;
+	private static LinkedHashMap<String, Point> cardCoords;
 	private PlayerCardTree tree;
 	
 	public HandDrawer(LinkedHashMap<String, BufferedImage> cards) {
-		this.cards = cards;
+		HandDrawer.cards = cards;
 		cardCoords = new LinkedHashMap<>();
 		int x = 520;
 		int y = 770;
@@ -58,7 +58,17 @@ public class HandDrawer {
 		
 	}
 	
+	public static LinkedHashMap<String, BufferedImage> getCards() {
+		return cards;
+	}
+	
+	
+	
 	public void setTree(PlayerCardTree tree) {
 		this.tree = tree;
+	}
+	
+	public static Point getCardPoint(String s) {
+		return cardCoords.get(s);
 	}
 }

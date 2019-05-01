@@ -14,11 +14,11 @@ public class Player {
 		name = n;
 		trainColor = c;
 		cards = new PlayerCardTree();
-		String[] colors = { "black", "blue", "green", "orange", "purple", "red", "white", "yellow", "wild" };
+		String[] colors = { "black", "blue", "green", "orange", "purple", "red", "white", "yellow", "wild"};
 		for (String s : colors) {
 			cards.add(s, 0);
 		}
-		setPoints(0);
+		
 		setTrains(45);
 		contracts = new ArrayList<>();
 	}
@@ -39,8 +39,8 @@ public class Player {
 		setTrains(getTrains() - cnt);
 	}
 
-	public ArrayList<CardNode> removeCards(String color, int cnt) {
-		return cards.remove(color, cnt);
+	public void removeCards(String color, int cnt, int wildCnt) {
+		cards.remove(color, cnt, wildCnt);
 	}
 
 	public PlayerCardTree getCards() {
@@ -74,7 +74,7 @@ public class Player {
 		return points;
 	}
 
-	public void setPoints(int points) {
-		this.points = points;
+	public void addPoints(int points) {
+		this.points += points;
 	}
 }

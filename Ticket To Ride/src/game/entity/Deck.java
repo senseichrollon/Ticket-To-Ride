@@ -3,6 +3,8 @@ package game.entity;
 import java.io.*;
 import java.util.*;
 
+import game.graphics.animation.AnimationManager;
+
 public class Deck {
 	private Queue<String> trainDeck, drawnTrainDeck;
 	private Queue<ContractCard> contractDeck;
@@ -17,8 +19,6 @@ public class Deck {
 		contractDeck = new LinkedList<ContractCard>();
 		for (int i = 0; i < 12; i++) {
 			trainDeck.add("green");
-		}
-		for (int i = 0; i < 12; i++) {
 			trainDeck.add("yellow");
 			trainDeck.add("purple");
 			trainDeck.add("black");
@@ -31,7 +31,20 @@ public class Deck {
 		for (int i = 0; i < 14; i++) {
 			trainDeck.add("wild");
 		}
-		shuffle();
+		
+		// Shuffle
+		ArrayList<String> list = new ArrayList<String>();
+		while (!trainDeck.isEmpty()) 
+		{
+			list.add(trainDeck.poll());
+		}
+		Collections.shuffle(list);
+		for (int i = 0; i < list.size(); i++) 
+		{
+			trainDeck.add(list.get(i));
+		}
+
+
 		for (int i = 0; i < 5; i++) {
 			upTrains[i] = trainDeck.poll();
 		}
@@ -49,8 +62,11 @@ public class Deck {
 
 	}
 
-	public String drawRandTrain() {
-		return trainDeck.poll();
+	public String drawRandTrain()
+	{
+		String temp = trainDeck.poll();
+		check();
+		return temp;
 	}
 
 	public ContractCard[] drawContracts() {
@@ -61,15 +77,24 @@ public class Deck {
 		return cc;
 	}
 
-	public void shuffle() {
+	public void shuffle() 
+	{
 		ArrayList<String> list = new ArrayList<String>();
-		while (!trainDeck.isEmpty()) {
+		while (!trainDeck.isEmpty()) 
+		{
 			list.add(trainDeck.poll());
 		}
+		for (int i = 0; i < upTrains.length; i++)
+		{
+			list.add(upTrains[i]);
+			upTrains[i] = null;
+		}
 		Collections.shuffle(list);
-		for (int i = 0; i < list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) 
+		{
 			trainDeck.add(list.get(i));
 		}
+		replaceTrains();
 	}
 	
 	public void shuffleIfDeckFinished()
@@ -79,11 +104,17 @@ public class Deck {
 		{
 			temp.add(drawnTrainDeck.poll());
 		}
+		for (int i = 0; i < upTrains.length; i++)
+		{
+			temp.add(upTrains[i]);
+			upTrains[i] = null;
+		}
 		Collections.shuffle(temp);
 		for (int i = 0; i < temp.size(); i++) 
 		{
 			trainDeck.add(temp.get(i));
 		}
+		replaceTrains();
 	}
 
 	public void replaceContract(List<ContractCard> ss) {
@@ -100,24 +131,36 @@ public class Deck {
 		check();
 		return temp;
 	}
+	
+	public Queue getTrainDeck()
+	{
+		return trainDeck;
+	}
 
 	public void replaceTrains() {
 		for (int i = 0; i < upTrains.length; i++) {
-			if (upTrains[i] == null)
-				upTrains[i] = trainDeck.poll();
+			if (upTrains[i] == null) {
+				String s = trainDeck.poll();
+				AnimationManager.replaceTrainsAnimation(i, s);
+				while(AnimationManager.animating()) {
+					try {Thread.sleep(10);} catch (InterruptedException e) {}
+				}
+				upTrains[i] = s;
+			}
 		}
 	}
 
 	public void check() {
+		if (trainDeck.size() == 0)
+			shuffleIfDeckFinished();
 		int cntWild = 0;
-		for (int i = 0; i < upTrains.length; i++) {
+		for (int i = 0; i < upTrains.length; i++) 
+		{
 			if (upTrains[i].equals("wild"))
 				cntWild++;
 		}
 		if (cntWild >= 3)
 			shuffle();
-		if (trainDeck.size() == 0)
-			shuffleIfDeckFinished();
 	}
 
 	public String[] getUpCards() {

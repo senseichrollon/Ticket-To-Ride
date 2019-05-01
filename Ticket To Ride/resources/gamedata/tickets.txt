@@ -7,7 +7,7 @@
 7; Salt Lake City; Kansas City
 19; Portland; Pittsburgh
 20; Seattle; New York
-4; Washingston; Atlanta
+4; Washington; Atlanta
 9; Los Angeles; Oklahoma City
 9; Seattle; Los Angeles
 4; Boston; Washington
