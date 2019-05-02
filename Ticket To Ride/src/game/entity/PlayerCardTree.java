@@ -116,13 +116,14 @@ public class PlayerCardTree {
 	
 	public void remove(String color, int cnt, int wildCnt) {
 		CardNode card = getCard(color);
-		card.setCount(card.getCount()-cnt);
+		if(card != null)
+			card.setCount(card.getCount()-cnt);
 		CardNode wild = getCard("wild");
 		wild.setCount(wild.getCount()-wildCnt);
 	}
 	
 	public int getNumCards() {
-		String[] colors = {"black", "blue", "green", "orange", "purple", "red", "white", "yellow"};
+		String[] colors = {"black", "blue", "green", "orange", "purple", "red", "white", "yellow","wild"};
 		int total = 0;
 		for(String s : colors) {
 			total += getCard(s).getCount();

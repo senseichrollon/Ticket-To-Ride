@@ -3,9 +3,12 @@ package game.testing;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.TexturePaint;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,7 +23,7 @@ public class TestCardAnimationraphicsPanel extends JPanel implements Runnable, M
 	private int x, y;
 	private Thread thread;
 	private boolean running;
-	private int FPS = 60;
+	private int FPS = 30;
 	private long targetTime = 1000 / FPS;
 	private CardAnimator anim;	
 	private int x2;
@@ -64,14 +67,18 @@ public class TestCardAnimationraphicsPanel extends JPanel implements Runnable, M
 	public void paintComponent(Graphics gg) {
 		super.paintComponent(gg);
 		Graphics2D g = (Graphics2D)gg;
+		
+
+		
+
+		BufferedImage img = ImageLoader.loadImage("resources/gameboard/crystaltexture.jpg");
+		g.setPaint(new TexturePaint(img,new Rectangle(0,0,100,100)));
+		g.fillRect(0, 0, 1920, 1080);
+		g.setFont(new Font("TimesRoman", Font.BOLD, 60));
+		g.drawString(x + " " + y, x2, 1000);
 		if(anim.hasStarted()) {
 			anim.draw(g);
 		}
-		
-		g.drawRect(20, 20, 50, 50);
-		g.drawRect(900, 200, 50, 50);
-		g.setFont(new Font("TimesRoman", Font.BOLD, 60));
-		g.drawString(x + " " + y, x2, 1000);
 	}
 
 	@Override
