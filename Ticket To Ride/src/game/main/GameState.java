@@ -84,11 +84,10 @@ public class GameState {
 		if(lastRound != -1)
 			lastRound++;
 		for(Player ply : players) {
-			if(ply.getTrains() <= 3) {
+			if(ply.getTrains()  <= 3 && lastRound == -1) {
 				lastRound = 1;
 			}
 		}
-		
 		resetNumCardsDrawn();
 		setContractCompletion();
 	}

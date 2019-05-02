@@ -401,6 +401,8 @@ public class InputManager {
 		private boolean pressed;
 		private Color color;
 		private BufferedImage img;
+		
+		private Color hoverColor;
 
 		public ClickBox(Rectangle2D.Double rect, int id) {
 			this.clickBox = rect;
@@ -409,11 +411,13 @@ public class InputManager {
 			canHover = true;
 			color = null;
 			img = null;
+			hoverColor = Color.CYAN;
 		}
 
 		public ClickBox(Rectangle2D.Double rect, int id, BufferedImage img) {
 			this(rect, id);
 			this.img = img;
+			hoverColor = Color.YELLOW;
 		}
 
 		public ClickBox(Rectangle2D.Double rect, int id, Color c) {
@@ -430,7 +434,7 @@ public class InputManager {
 				g.drawImage(img, (int) clickBox.getX(), (int) clickBox.getY(), (int) clickBox.getWidth(),
 						(int) clickBox.getHeight(), null);
 
-			g.setColor(Color.CYAN);
+			g.setColor(hoverColor);
 			g.setStroke(new BasicStroke(10));
 			if (canHover && hover)
 				g.draw(clickBox);

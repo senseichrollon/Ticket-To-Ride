@@ -7,19 +7,17 @@ public class Player {
 	private String name, trainColor;
 	private int trains, points, numCompletedContracts;
 	private ArrayList<ContractCard> contracts;
-	
-
 
 	public Player(String n, String c) {
 		name = n;
 		trainColor = c;
 		numCompletedContracts = 0;
 		cards = new PlayerCardTree();
-		String[] colors = { "black", "blue", "green", "orange", "purple", "red", "white", "yellow", "wild"};
+		String[] colors = { "black", "blue", "green", "orange", "purple", "red", "white", "yellow", "wild" };
 		for (String s : colors) {
 			cards.add(s, 0);
 		}
-		
+
 		setTrains(45);
 		contracts = new ArrayList<>();
 	}
@@ -56,7 +54,6 @@ public class Player {
 		return contracts;
 	}
 
-	
 	public void setContracts(ArrayList<ContractCard> cards) {
 		for (int i = 0; i < cards.size(); i++) {
 			contracts.add(cards.get(i));
@@ -78,14 +75,12 @@ public class Player {
 	public void addPoints(int points) {
 		this.points += points;
 	}
-	
-	public int getNumCompletedContracts()
-	{
+
+	public int getNumCompletedContracts() {
 		return this.numCompletedContracts;
 	}
-	
-	public void setNumCompletedContracts(int num)
-	{
+
+	public void setNumCompletedContracts(int num) {
 		this.numCompletedContracts = num;
 	}
 }
