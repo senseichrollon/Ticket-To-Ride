@@ -14,6 +14,7 @@ public class CardAnimator implements Animator {
 	private int endY;
 	
 	private double numRotations;
+	private double initialRotation;
 	private double scaleX,scaleY;
 
 	private long startTime;
@@ -46,7 +47,7 @@ public class CardAnimator implements Animator {
 		double y = ((endY - startY) * ratio) + startY;
 		
 		double rotRatio = ratio*numRotations;
-		double angle = Math.PI * 2 * rotRatio;
+		double angle = Math.PI * 2 * rotRatio + initialRotation;
 		
 		double sX = 1;
 		double sY = 1;
@@ -60,34 +61,17 @@ public class CardAnimator implements Animator {
 		} else {
 			sY = 1 + ((scaleY-1) * ratio);
 		}
-		double newW = sX * cardImage.getWidth();
-		double newH = sY * cardImage.getHeight();
 		AffineTransform at = new AffineTransform();
 		at.setToTranslation(x, y);
 		at.scale(sX,sY);
 		at.rotate(angle,(cardImage.getWidth()/2),(cardImage.getHeight())/2);
 		g.drawImage(cardImage,at,null);
-//		g.drawOval((int)x,(int)y,50,50);
 
-//		BufferedImage img = rotate(cardImage,angle,newW,newH);
-//		
-//		g.drawImage(img,(int)x,(int)y,null);
 	}
 	
-
-
-	public static BufferedImage rotate(BufferedImage image, double angle, double neww, double newh) {
-	    int w = image.getWidth(), h = image.getHeight();
-	    BufferedImage result = ImageLoader.resize(image, (int)neww, (int)newh);
-	    Graphics2D g = result.createGraphics();
-	    g.clearRect(0, 0, result.getWidth(), result.getHeight());
-	    g.translate((neww-w)/2, (newh-h)/2);
-	    g.rotate(angle, w/2, h/2);
-	    g.drawRenderedImage(image, null);
-	    g.dispose();
-	    return result;
+	public void setInitialRotation(double rot) {
+		this.initialRotation = rot;
 	}
-	
 	public boolean hasStarted() {
 		return running;
 	}

@@ -10,6 +10,7 @@ import game.entity.ContractCard;
 import game.entity.Deck;
 import game.entity.Player;
 import game.entity.Track;
+import game.graphics.animation.AnimationManager;
 
 public class GameState {
 	private Player[] players;
@@ -79,7 +80,6 @@ public class GameState {
 			}
 		}
 		resetNumCardsDrawn();
-		setContractCompletion();
 	}
 	
 	public void setContractCompletion() {
@@ -130,6 +130,7 @@ public class GameState {
 
 	public boolean placeTrack(Track track, String color, int colorCount, int wildCount,boolean second) {
 		players[currentPlayer].removeCards(color, colorCount, wildCount);
+		AnimationManager.placeTrainsAnimation(color, colorCount, wildCount);
 		players[currentPlayer].decrementTrain(track.getLength());
 		boolean ret = board.addTrack(track, players[currentPlayer].getTrainColor(), second?track.getTrackColor2():track.getTrackColor1());
 		if(ret) {
@@ -160,6 +161,7 @@ public class GameState {
 					break;
 				}
 			}
+			setContractCompletion();
 			players[currentPlayer].addPoints(points);
 		}
 		return ret;

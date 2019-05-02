@@ -122,6 +122,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 				}
 				case 2: {
 					int id = input.requestTrack(cMapDrawer.getDrawMap(), game.getPlacableTracks());
+					System.out.println(game.getPlayers()[game.getCurrentPlayer()].getTrainColor());
 					input.reset();
 					Track track = game.getBoard().getTrack(id > 100? id-1000:id);
 					HashMap<String,Integer> cards = input.requestCards(track, id>100, HandDrawer.getCards(),game.getPlayers()[game.getCurrentPlayer()]);
@@ -251,7 +252,6 @@ public class GameScreen extends ScreenManager implements Runnable {
 			y+= 70;
 		}
 	}
-
 	@Override
 	public void draw(Graphics2D g) {
 		if(init) {
@@ -279,6 +279,4 @@ public class GameScreen extends ScreenManager implements Runnable {
 		drawLeaderBoard(g);
 		AnimationManager.draw(g);
 	}
-	
-
 }

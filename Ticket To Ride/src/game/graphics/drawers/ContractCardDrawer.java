@@ -90,7 +90,7 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 			g.drawString("Pending", x, 50);
 			g.drawString("Contracts", x, 70);
 		}
-		x+=75;
+		x+=100;
 		for(ContractCard card : playerContracts) {
 			if(card.isComplete())
 				continue;
@@ -106,7 +106,7 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 			g.drawString("Completed", x, 50);
 			g.drawString("Contracts", x, 70);
 		}
-		x += 200;
+		x += 100;
 		for(ContractCard card : playerContracts) {
 			if(!card.isComplete())
 				continue;

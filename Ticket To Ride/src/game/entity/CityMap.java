@@ -71,6 +71,7 @@ public class CityMap {
 
 	public boolean addTrack(Track work, String player, String colChoice)
 	{
+		System.out.println(player + "  fsds");
 		int c1 = work.getCityOne();
 		int c2 = work.getCityTwo();
 		ArrayList<Track> i = FULLMAP.get(c1);
@@ -113,7 +114,7 @@ public class CityMap {
 	}
 
 	public boolean completedContract(String color, ContractCard check) {
-		System.out.println(check.getCityOne() + " " + check.getCityTwo());
+//		System.out.println(check.getCityOne() + " " + check.getCityTwo());
 		return dfs(CITYINDEX.get(check.getCityTwo()), color, CITYINDEX.get(check.getCityOne()), new ArrayList<Track>());
 		
 	}
@@ -299,6 +300,7 @@ public class CityMap {
 				if (track.isDoubleTrack() && player.getCards().hasEnough(track.getTrackColor2(), track.getLength())
 						&& (track.getPlayerColor1() == null
 								|| !track.getPlayerColor1().equals(player.getTrainColor()))) {
+//					System.out.println(track.getCityOne() + " " + track.getCityTwo() + " " + track.getPlayerColor1() + " " + player.getTrainColor());
 					b[1] = true;
 				}
 				ret.put(track, b);

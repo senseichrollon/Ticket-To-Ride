@@ -135,10 +135,7 @@ public class InputManager {
 		displayButtons.add(b3);
 
 		while (pressedButton == null) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-			}
+			try {Thread.sleep(100);} catch (InterruptedException e) {}
 		}
 		pressedButton.setValidRelease(false);
 		return pressedButton.getId();
@@ -152,10 +149,7 @@ public class InputManager {
 		}
 		clickBoxes.add(new ClickBox(clickArea[5], 5));
 		while (pressedClick == null) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-			}
+			try {Thread.sleep(100);} catch (InterruptedException e) {}
 		}
 		return pressedClick.getId();
 	}
@@ -197,10 +191,7 @@ public class InputManager {
 					pressedClick = null;
 				}
 			}
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-			}
+			try {Thread.sleep(100);	} catch (InterruptedException e) {}
 		}
 		return keep;
 	}
@@ -224,17 +215,12 @@ public class InputManager {
 			}
 		}
 		while (pressedClick == null) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-			}
-
+			try {Thread.sleep(100);} catch (InterruptedException e) {}
 		}
 		return pressedClick.getId();
 	}
 
-	public HashMap<String,Integer> requestCards(Track track, boolean second, LinkedHashMap<String, BufferedImage> cardImage,
-			Player player) {
+	public HashMap<String,Integer> requestCards(Track track, boolean second, LinkedHashMap<String, BufferedImage> cardImage,Player player) {
 		HashMap<String, Integer> map = new HashMap<>();
 		map.put("wild", 0);
 
@@ -281,13 +267,11 @@ public class InputManager {
 
 		}
 
-		MButton placeCards = new MButton("Place trains", new Font("TimesRoman", Font.BOLD | Font.ITALIC, 30), Color.BLUE,
-				Color.CYAN);
+		MButton placeCards = new MButton("Place trains", new Font("TimesRoman", Font.BOLD | Font.ITALIC, 30), Color.BLUE,Color.CYAN);
 		placeCards.setCenter(new Point(140,1020));
 		placeCards.setShape(new RoundRectangle2D.Double(0, 0, 200, 50, 25, 25));
 		while (pressedButton != placeCards) {
 			int total = 0;
-			boolean allZeroes = true;
 			HashSet<String> set = new HashSet<>();
 			for (String s : addMap.keySet()) {
 				MButton button = addMap.get(s);
@@ -300,7 +284,6 @@ public class InputManager {
 					text.setText(Integer.toString(map.get(s)));
 
 					displayButtons.add(subtractMap.get(s));
-					System.out.println(map);
 				}
 				if (val == player.getCards().getCard(s).getCount()) {
 					displayButtons.remove(button);
@@ -322,7 +305,6 @@ public class InputManager {
 					displayButtons.remove(button);
 				}
 				if(!s.equals("wild"))
-					allZeroes &= (val == 0);
 				total += val;
 			}
 			for(String s : map.keySet()) {
