@@ -47,8 +47,14 @@ public abstract class ScreenManager {
 			currentScreen = game;
 		else if(key == MENU) 
 			currentScreen = menu;
-		//else if(key == END)
-			//currentScreen = end;
+		else if(key == END)
+			currentScreen = end;
+	}
+	
+	public static void switchEndGame(int[][] data)
+	{
+		end.setData(data);
+		switchScreen(END);
 	}
 	
 	
