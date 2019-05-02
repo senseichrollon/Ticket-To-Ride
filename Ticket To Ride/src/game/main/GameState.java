@@ -84,8 +84,7 @@ public class GameState {
 		if(lastRound != -1)
 			lastRound++;
 		for(Player ply : players) {
-			//delete && lastRound == -1
-			if(ply.getTrains() <= 3 && lastRound == -1) {
+			if(ply.getTrains() <= 3) {
 				lastRound = 1;
 			}
 		}
