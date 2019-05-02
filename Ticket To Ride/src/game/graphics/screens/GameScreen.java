@@ -45,6 +45,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 
 	private InputManager input;
 	private boolean init;
+	
 
 	public GameScreen(MouseInput in) {
 		input = new InputManager(in);
@@ -96,6 +97,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 
 		}
 		while (game.hasWinner() <= 4) {
+			System.out.println("status: " + game.hasWinner());
 			int num = input.requestTypeOfTurn(game);
 			input.reset();
 			switch (num) {
@@ -153,8 +155,8 @@ public class GameScreen extends ScreenManager implements Runnable {
 			}
 			game.updatePlayer();
 		}
-		
-		int[][] mat = game.endGame();
+		GraphicsPanel.getPanel().remove(contractDrawer);
+		ScreenManager.switchEndGame(game.endGame());
 	}
 	
 	public void requestGovContract() {
