@@ -19,6 +19,7 @@ import java.util.Scanner;
 
 import game.entity.CityMap;
 import game.entity.Track;
+import game.graphics.engine.GraphicsPanel;
 import game.graphics.util.ImageLoader;
 
 public class CityMapDrawer {
@@ -69,6 +70,8 @@ public class CityMapDrawer {
 		g.drawImage(city, 400, 0, null);
 		g.drawRect(400, 0, city.getWidth(), city.getHeight());
 		drawTracks(g);
+		g.drawLine(400, city.getHeight(), 400, GraphicsPanel.WIDTH);
+		g.drawLine(city.getWidth() + 400, city.getHeight(), city.getWidth() + 400, GraphicsPanel.WIDTH);
 	}
 
 	public void drawTracks(Graphics2D g) {
