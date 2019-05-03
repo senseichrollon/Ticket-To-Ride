@@ -304,14 +304,14 @@ public class InputManager {
 				if (val == 0) {
 					displayButtons.remove(button);
 				}
-				if(!s.equals("wild"))
 				total += val;
 			}
 			for(String s : map.keySet()) {
 				if(map.get(s) != 0)
 					set.add(s);
 			}
-			
+//			System.out.println(set);
+//			System.out.println(total + " " + track.getLength());
 			if(total == track.getLength() && !((set.size() >= 2 && !set.contains("wild")) || (set.size() >= 3 && set.contains("wild")))) {
 				displayButtons.add(placeCards);
 			} else {
