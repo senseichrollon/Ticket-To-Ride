@@ -38,7 +38,7 @@ public class Track implements Comparable<Track> {
 	}
 
 	public void setCityTwo(int cityTwo) {
-		this.cityTwo = cityTwo;
+		this.cityTwo  = cityTwo;
 	}
 
 	public int getOtherCity(int oth) {
