@@ -228,7 +228,10 @@ public class CityMap {
 				else
 					vals.add(segLongest);
 			}
-			playerLength[plc++] = Collections.max(vals);
+			if(!vals.isEmpty())
+				playerLength[plc++] = Collections.max(vals);
+			else
+				playerLength[plc++] = 0;
 		}
 		
 		ArrayList<String> out = new ArrayList<String>();
@@ -239,7 +242,7 @@ public class CityMap {
 			out.add(players[i]);
 		}
 		
-		out.add(String.valueOf(playerLength[indices.get(0)]));
+		//out.add(String.valueOf(playerLength[indices.get(0)]));
 		return out;
 	}
 

@@ -22,6 +22,7 @@ public class GameState {
 	public static int NUMPLAYERS = 4;
 
 	public static String[] PLAYER_COLS;
+	public static String[] PLAYER_NAMES;
 	
 	public GameState() throws IOException
 	{
@@ -41,11 +42,20 @@ public class GameState {
 		}
 		
 		currentPlayer = (int) (Math.random() * 4);
+		
 		PLAYER_COLS = new String[4];
 		PLAYER_COLS[0] = "blue";
 		PLAYER_COLS[1] = "purple";
 		PLAYER_COLS[2] = "green";
 		PLAYER_COLS[3] = "yellow";
+		
+		PLAYER_NAMES = new String[4];
+		PLAYER_NAMES[0] = "Jim";
+		PLAYER_NAMES[1] = "Joe";
+		PLAYER_NAMES[2] = "Bob";
+		PLAYER_NAMES[3] = "John";
+		
+		
 		currentPlayer = (int)(Math.random() * 4);
 		numCardsDrawn = 0;
 		lastRound = -1;
@@ -210,6 +220,7 @@ public class GameState {
 			players[i].setNumCompletedContracts(cnt);
 		}
 		ArrayList<String> longestPath = board.getPlayersLongest();
+		System.out.println(longestPath);
 		if (longestPath.size() > 1)
 		{
 			ArrayList<Integer> temp = new ArrayList<Integer>();

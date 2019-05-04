@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import game.graphics.engine.GraphicsPanel;
 import game.graphics.util.ImageLoader;
+import game.main.GameState;
 
 public class Endgame extends ScreenManager{
 
@@ -43,11 +44,12 @@ public class Endgame extends ScreenManager{
 		//X-USE HARDCODE POINTS
 		
 		for(int i = 0; i < data.length; i++) {
+			g.drawString(GameState.PLAYER_NAMES[data[i][0]], 10, (380 + 180*i));
 			g.drawString(String.valueOf(data[i][1]), 230, (380 + 180*i));
 			g.drawString(String.valueOf(data[i][2]), 560, (380 + 180*i));
 			g.drawString(String.valueOf(data[i][3]), 1060, (380 + 180*i));
 			g.drawString(String.valueOf(data[i][4]), 1480, (380 + 180*i));
-			g.drawString(String.valueOf(data[i][5]), 1720, (380 + 180*i));
+			g.drawString(String.valueOf(sumPts(data[i])), 1720, (380 + 180*i));
 		}
 	}
 	
@@ -59,14 +61,20 @@ public class Endgame extends ScreenManager{
 		for(int i = 1; i < data.length; i++)
 		{
 			int[] check = data[i];
+			int sumCheck = sumPts(check);
 			int c = i-1;
-			while(c >= 0 && data[c][1] < check[1])
+			while(c >= 0 && sumPts(data[c]) < sumCheck)
 			{
 				data[c+1] = data[c]; 
 				c--;
 			}
 			data[c+1] = check;
 		}
+	}
+	
+	private int sumPts(int[] vals)
+	{
+		return vals[1] + vals[2] - vals[3] + vals[4];
 	}
 	
 	/*public static void main(String[] args)
