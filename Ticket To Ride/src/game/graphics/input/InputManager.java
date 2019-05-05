@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
+import game.entity.CityMap;
 import game.entity.ContractCard;
 import game.entity.Player;
 import game.entity.Track;
@@ -53,14 +54,14 @@ public class InputManager {
 		if (mousePressed)
 			for (int i = 0; i < displayButtons.size(); i++) {
 				MButton b = displayButtons.get(i);
-				if (b.checkContains(mouseLoc)) {
+				if (b != null && b.checkContains(mouseLoc)) {
 					b.setPressed(true);
 				}
 			}
 		if (mouseReleased)
 			for (int i = 0; i < displayButtons.size(); i++) {
 				MButton b = displayButtons.get(i);
-				if (b.isPressed() && b.checkContains(mouseLoc)) {
+				if (b != null && b.isPressed() && b.checkContains(mouseLoc)) {
 					b.setValidRelease(true);
 					pressedButton = b;
 				}
@@ -69,7 +70,7 @@ public class InputManager {
 		if (!mousePressed && !mouseReleased)
 			for (int i = 0; i < displayButtons.size(); i++) {
 				MButton b = displayButtons.get(i);
-				if (!b.checkContains(mouseLoc)) {
+				if (b != null && !b.checkContains(mouseLoc)) {
 					b.setPressed(false);
 				}
 			}
@@ -128,7 +129,7 @@ public class InputManager {
 		b3.setId(1);
 
 		textDisplay.add(text);
-		if(game.getDeck().getContractCards().size() >= 3)
+		if(game.getDeck().canDrawContracts())
 			displayButtons.add(b1);
 		if(game.getPlacableTracks().size() > 0)
 			displayButtons.add(b2);
@@ -156,13 +157,17 @@ public class InputManager {
 
 	public ArrayList<Integer> requestGovernmentContract(ContractCard[] cards, BufferedImage[] img) {
 		ArrayList<Integer> keep = new ArrayList<Integer>();
-		int y = 450;
+		int numKeep = (cards.length == 5)?3:1;
+		int y = 420;
+		int xScale = ((cards.length == 5)?8:7);
+		int yScale = ((cards.length == 5)?9:8);
+
 		for (int i = 0; i < cards.length; i++) {
 			keep.add(i);
-			Rectangle2D.Double rect = new Rectangle2D.Double(10, y, img[i].getWidth() / 7, img[i].getHeight() / 8);
+			Rectangle2D.Double rect = new Rectangle2D.Double(10, y, img[i].getWidth() / xScale, img[i].getHeight() / yScale);
 			img[i] = ImageLoader.resize(img[i], (int) rect.getWidth(), (int) rect.getHeight());
 			clickBoxes.add(new ClickBox(rect, i, img[i]));
-			y += 200;
+			y += (cards.length == 5)?115:200;
 		}
 		MButton save = new MButton("Save selections", new Font("TimesRoman", Font.BOLD | Font.ITALIC, 15), Color.RED,
 				Color.ORANGE);
@@ -175,7 +180,7 @@ public class InputManager {
 		Text d = new Text("Discard", 200, 420, new Font("TimesRoman", Font.BOLD | Font.ITALIC, 25),Color.BLACK);
 		textDisplay.add(k);
 		textDisplay.add(d);
-
+		
 		while (!save.isValidRelease()) {
 			for (int i = 0; i < clickBoxes.size(); i++) {
 				if (pressedClick == clickBoxes.get(i)) {
@@ -184,7 +189,7 @@ public class InputManager {
 						rect.setRect(10, rect.getY(), rect.getWidth(), rect.getHeight());
 						keep.add(i);
 
-					} else if (keep.size() > 1) {
+					} else if (keep.size() > numKeep) {
 						rect.setRect(200, rect.getY(), rect.getWidth(), rect.getHeight());
 						keep.remove(new Integer(i));
 					}
@@ -228,6 +233,12 @@ public class InputManager {
 		HashMap<String, MButton> subtractMap = new HashMap<>();
 		HashMap<String, Text> textMap = new HashMap<>();
 
+		textDisplay.add(new Text("Place trains for:",170,650,new Font("TimesRoman", Font.BOLD, 28),Color.BLACK));
+		Text city1 = new Text(CityMap.INDEX_TO_CITY.get(track.getCityOne()),200,700,new Font("TimesRoman", Font.BOLD, 25),Color.BLACK);
+		Text city2 = new Text(CityMap.INDEX_TO_CITY.get(track.getCityTwo()),200,800,new Font("TimesRoman", Font.BOLD, 25),Color.BLACK);
+		textDisplay.add(city1);
+		textDisplay.add(new Text("to",200,750,new Font("TimesRoman", Font.BOLD, 25),Color.BLACK));
+		textDisplay.add(city2);
 		String search = "";
 		if (second) {
 			search = track.getTrackColor2();

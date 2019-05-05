@@ -90,7 +90,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 	public void run() {
 		initGame();
 		for(int i = 0; i < game.getPlayers().length; i++) {
-			requestGovContract();
+			requestGovContract(5);
 			input.reset();
 			try {Thread.sleep(1000);} catch (InterruptedException e) {	}
 			game.updatePlayer();
@@ -144,7 +144,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 					break;
 				}
 				case 3: {
-					requestGovContract();
+					requestGovContract(3);
 				}
 			}
 			input.reset();
@@ -160,8 +160,8 @@ public class GameScreen extends ScreenManager implements Runnable {
 		ScreenManager.switchEndGame(game.endGame());
 	}
 	
-	public void requestGovContract() {
-		ContractCard[] cards = game.drawContracts();
+	public void requestGovContract(int n) {
+		ContractCard[] cards = game.drawContracts(n);
 		BufferedImage[] img = new BufferedImage[cards.length];
 		for(int i = 0; i < cards.length; i++) {
 			img[i] = ImageLoader.getCopy(contractDrawer.getCardImages().get(cards[i]));

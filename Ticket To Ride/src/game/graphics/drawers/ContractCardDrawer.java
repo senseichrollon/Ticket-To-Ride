@@ -61,17 +61,17 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 		super.paintComponent(gg);
 		Graphics2D g = (Graphics2D)gg;
 		g.translate(-dx, 0);
-		Color c1 =  Color.RED;
-		Color c2 = Color.ORANGE;
+		Color c2 =  new Color(126, 249, 255);
+		Color c1 = Color.YELLOW;
 		GradientPaint gp1;
 		Paint p = g.getPaint();
-		for(int i = 0; i <= 5000; i+=200) {
+		for(int i = 0; i <= 5000; i+=600) {
 			if(i % 400 == 0)
-				gp1 = new GradientPaint(i, 0, c1, i+200, (200), c2, false);
+				gp1 = new GradientPaint(i, 0, c1, i+600, (200), c2, false);
 			else 
-				gp1 = new GradientPaint(i, 200, c1, i+200, (0), c2, false);
+				gp1 = new GradientPaint(i, 200, c1, i+600, (0), c2, false);
 			g.setPaint(gp1);
-			g.fillRect(i, 0, 200, 200);
+			g.fillRect(i, 0, 600, 200);
 			Color c = c1;
 			c1 = c2;
 			c2 = c;

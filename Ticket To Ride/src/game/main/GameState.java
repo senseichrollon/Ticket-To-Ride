@@ -122,8 +122,8 @@ public class GameState {
 		return players[num].getEdges();
 	}
 
-	public ContractCard[] drawContracts() {
-		return deck.drawContracts();
+	public ContractCard[] drawContracts(int n) {
+		return deck.drawContracts(n);
 	}
 
 	public void setContracts(ArrayList<ContractCard> list) {

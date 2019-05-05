@@ -73,8 +73,8 @@ public class Deck {
 		return temp;
 	}
 
-	public ContractCard[] drawContracts() {
-		ContractCard[] cc = new ContractCard[3];
+	public ContractCard[] drawContracts(int n) {
+		ContractCard[] cc = new ContractCard[n];
 		for (int i = 0; i < cc.length; i++) {
 			cc[i] = contractDeck.poll();
 		}
@@ -182,5 +182,9 @@ public class Deck {
 		for (int i = 0; i < cards.size(); i++) {
 			drawnTrainDeck.add(cards.get(i).getColor());
 		}
+	}
+	
+	public boolean canDrawContracts() {
+		return contractDeck.size() >= 3;
 	}
 }
