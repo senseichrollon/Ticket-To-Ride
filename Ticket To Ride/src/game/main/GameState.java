@@ -138,10 +138,10 @@ public class GameState {
 		return numCardsDrawn;
 	}
 
-	public boolean placeTrack(Track track, String color, int colorCount, int wildCount,boolean second) {
+	public boolean placeTrack(Track track, String color, int colorCount, int wildCount, boolean second) {
 		players[currentPlayer].removeCards(color, colorCount, wildCount);
 		players[currentPlayer].decrementTrain(track.getLength());
-		boolean ret = board.addTrack(track, players[currentPlayer].getTrainColor(), second?track.getTrackColor2():track.getTrackColor1());
+		boolean ret = board.addTrack(track, players[currentPlayer].getTrainColor(), second?track.getTrackColor2():track.getTrackColor1(), second?2:1);
 		if(ret) {
 			int points = 0;
 			switch(track.getLength()) {

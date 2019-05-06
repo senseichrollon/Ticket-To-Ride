@@ -69,7 +69,7 @@ public class CityMap {
 
 	}
 
-	public boolean addTrack(Track work, String player, String colChoice)
+	public boolean addTrack(Track work, String player, String colChoice, int side)
 	{
 		int c1 = work.getCityOne();
 		int c2 = work.getCityTwo();
@@ -90,14 +90,14 @@ public class CityMap {
 		{
 			FULLMAP.get(c1).remove(work);
 			FULLMAP.get(c2).remove(work);
-			boolean out = work.occupyTrack(player, null);
+			boolean out = work.occupyTrack(player, null, side);
 			map.get(c1).add(work);
 			map.get(c2).add(work);
 			return out;
 		}
 		else
 		{
-			boolean out = work.occupyTrack(player, colChoice);
+			boolean out = work.occupyTrack(player, colChoice, side);
 			if(work.isFilled())
 			{
 				FULLMAP.get(c1).remove(work);
