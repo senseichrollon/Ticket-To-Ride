@@ -21,6 +21,7 @@ public class Endgame extends ScreenManager{
 	{
 		super();
 		background = ImageLoader.loadImage("resources/gameboard/End game summary.jpg");
+	
 		background = ImageLoader.resize(background, GraphicsPanel.WIDTH, GraphicsPanel.HEIGHT);
 	}
 	

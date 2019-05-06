@@ -70,11 +70,8 @@ public class GraphicsPanel extends JPanel implements Runnable {
 			} catch (Exception e) {
 			}
 			repaint();
-			
 		}
 	}
-	
-	
 	
 	public static GraphicsPanel getPanel() {
 		return currentPanel;

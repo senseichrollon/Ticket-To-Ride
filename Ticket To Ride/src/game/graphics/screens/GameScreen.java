@@ -90,7 +90,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 	public void run() {
 		initGame();
 		for(int i = 0; i < game.getPlayers().length; i++) {
-			requestGovContract();
+			requestGovContract(5);
 			input.reset();
 			try {Thread.sleep(1000);} catch (InterruptedException e) {	}
 			game.updatePlayer();
@@ -124,6 +124,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 				}
 				case 2: {
 					int id = input.requestTrack(cMapDrawer.getDrawMap(), game.getPlacableTracks());
+					System.out.println(game.getPlayers()[game.getCurrentPlayer()].getTrainColor());
 					input.reset();
 					Track track = game.getBoard().getTrack(id > 100? id-1000:id);
 					HashMap<String,Integer> cards = input.requestCards(track, id>100, HandDrawer.getCards(),game.getPlayers()[game.getCurrentPlayer()]);
@@ -143,7 +144,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 					break;
 				}
 				case 3: {
-					requestGovContract();
+					requestGovContract(3);
 				}
 			}
 			input.reset();
@@ -159,8 +160,8 @@ public class GameScreen extends ScreenManager implements Runnable {
 		ScreenManager.switchEndGame(game.endGame());
 	}
 	
-	public void requestGovContract() {
-		ContractCard[] cards = game.drawContracts();
+	public void requestGovContract(int n) {
+		ContractCard[] cards = game.drawContracts(n);
 		BufferedImage[] img = new BufferedImage[cards.length];
 		for(int i = 0; i < cards.length; i++) {
 			img[i] = ImageLoader.getCopy(contractDrawer.getCardImages().get(cards[i]));
@@ -221,13 +222,13 @@ public class GameScreen extends ScreenManager implements Runnable {
 		Player[] players = game.getPlayers();
 		ArrayList<Player> sorted = new ArrayList<>();
 		IntStream.range(0, players.length).forEach(i -> sorted.add(players[i]));
-		Collections.sort(sorted, (a,b) -> Integer.compare(b.getPoints(), a.getPoints()));
+//		Collections.sort(sorted, (a,b) -> Integer.compare(b.getPoints(), a.getPoints()));
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("TimesRoman", Font.BOLD | Font.ITALIC, 15));
 		g.drawString(String.format("%8s   %8s %8s   %14s    %14s","","Points","Trains","Train Cards","Contract Cards"), 20, 80);
 		int y = 150;
 		for(Player p : sorted) {
-			g.setColor(p == players[game.getCurrentPlayer()]?Color.RED:Color.BLACK);
+			g.setColor(p == players[game.getCurrentPlayer()]?Color.PINK:Color.BLACK);
 			g.drawString(String.format("%-8s     %4d    %8d      %12d   %21d",p.getName(), p.getPoints(),p.getTrains(),p.getCards().getNumCards(),p.getContracts().size()), 20, y);
 			Color c = null;
 			switch(p.getTrainColor()) {
@@ -253,7 +254,6 @@ public class GameScreen extends ScreenManager implements Runnable {
 			y+= 70;
 		}
 	}
-
 	@Override
 	public void draw(Graphics2D g) {
 		if(init) {
@@ -285,6 +285,4 @@ public class GameScreen extends ScreenManager implements Runnable {
 		drawLeaderBoard(g);
 		AnimationManager.draw(g);
 	}
-	
-
 }

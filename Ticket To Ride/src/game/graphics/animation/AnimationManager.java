@@ -40,7 +40,7 @@ public class AnimationManager {
 		}
 		BufferedImage img = ImageLoader.loadImage("resources/traincards/backtrain.png");
 		img = ImageLoader.resize(img, img.getWidth()/4, img.getHeight()/4);
-		CardAnimator cardAnim = new CardAnimator(1750,760,(int)points[idx].getX(),(int)points[idx].getY(),img,1000000000L,3,1,1);
+		CardAnimator cardAnim = new CardAnimator(1750,760,(int)points[idx].getX(),(int)points[idx].getY(),img,500000000L,1,1,1);
 		cardAnim.start();
 		animations.add(cardAnim);
 	}
@@ -61,7 +61,7 @@ public class AnimationManager {
 		int x2 = (int)HandDrawer.getCardPoint(color).getX()-100;
 		int y2 = (int)HandDrawer.getCardPoint(color).getY()+50;
 		
-		CardAnimator cardAnim = new CardAnimator(x1,y1,x2,y2,img,1000000000L,2.25,0.65/(8.0/10),0.65/(8.0/10));
+		CardAnimator cardAnim = new CardAnimator(x1,y1,x2,y2,img,500000000L,1.25,0.65/(8.0/10),0.65/(8.0/10));
 		cardAnim.start();
 		animations.add(cardAnim);
 	}
@@ -77,7 +77,7 @@ public class AnimationManager {
 		
 
 		
-		CardAnimator cardAnim = new CardAnimator(x1,y1,x2,y2,img,1000000000L,0.5,0.7,0.7);
+		CardAnimator cardAnim = new CardAnimator(x1,y1,x2,y2,img,500000000L,0.5,0.7,0.7);
 		cardAnim.start();
 		animations.add(cardAnim);
 	}
@@ -90,7 +90,46 @@ public class AnimationManager {
 		
 	}
 	
-	public static void placeTrainsAnimation() {
+	public static void placeTrainsAnimation(String color, int count, int wildCount) {
+		int x1 = 0,y1 = 0;
+		BufferedImage img = null;
+
+		if(!color.equals("")) {
+			 x1 = (int)HandDrawer.getCardPoint(color).getX()-100;
+			 y1 = (int)HandDrawer.getCardPoint(color).getY()-20;
+			 img = HandDrawer.getCards().get(color);
+			img = ImageLoader.resize(img, (int)(img.getWidth() * 0.65), (int)(img.getHeight() * 0.65));
+		}
+		int x2 = (int)HandDrawer.getCardPoint("wild").getX()-100;
+		int y2 = (int)HandDrawer.getCardPoint("wild").getY()-20;
+		
+		int x3 = 1700;
+		int y3 = 760;
+		
+		
+		long ratio = (long)Math.max(count, wildCount);
+
+		
+		
+		BufferedImage wild = HandDrawer.getCards().get("wild");
+		wild = ImageLoader.resize(wild, (int)(wild.getWidth() * 0.65), (int)(wild.getHeight() * 0.65));
+		for(int i = 0; i < Math.max(count, wildCount); i++) {
+			if(i < count) {
+				CardAnimator anim = new CardAnimator(x1,y1,x3,y3, img,1500000000L/ratio,1,1.42,1.42);
+				anim.start();
+				animations.add(anim);
+			}
+			
+			if(i < wildCount) {
+				CardAnimator anim = new CardAnimator(x2,y2,x3,y3, wild,1500000000L/ratio,1,1.42,1.42);
+				anim.start();
+				animations.add(anim);
+			}
+			try {Thread.sleep(100);} catch (InterruptedException e) {}
+		}
+		while(animating()) {
+			try {Thread.sleep(10);} catch (InterruptedException e) {}
+		}
 		
 	}
 	

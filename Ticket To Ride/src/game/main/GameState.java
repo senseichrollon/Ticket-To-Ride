@@ -10,6 +10,7 @@ import game.entity.ContractCard;
 import game.entity.Deck;
 import game.entity.Player;
 import game.entity.Track;
+import game.graphics.animation.AnimationManager;
 
 public class GameState {
 	private Player[] players;
@@ -89,7 +90,6 @@ public class GameState {
 			}
 		}
 		resetNumCardsDrawn();
-		setContractCompletion();
 	}
 	
 	public void setContractCompletion() {
@@ -122,8 +122,8 @@ public class GameState {
 		return players[num].getEdges();
 	}
 
-	public ContractCard[] drawContracts() {
-		return deck.drawContracts();
+	public ContractCard[] drawContracts(int n) {
+		return deck.drawContracts(n);
 	}
 
 	public void setContracts(ArrayList<ContractCard> list) {
@@ -140,7 +140,10 @@ public class GameState {
 
 	public boolean placeTrack(Track track, String color, int colorCount, int wildCount,boolean second) {
 		players[currentPlayer].removeCards(color, colorCount, wildCount);
+		AnimationManager.placeTrainsAnimation(color, colorCount, wildCount);
 		players[currentPlayer].decrementTrain(track.getLength());
+		deck.addDrawnCards(color, colorCount);
+		deck.addDrawnCards("wild", wildCount);
 		boolean ret = board.addTrack(track, players[currentPlayer].getTrainColor(), second?track.getTrackColor2():track.getTrackColor1());
 		if(ret) {
 			int points = 0;
@@ -170,6 +173,7 @@ public class GameState {
 					break;
 				}
 			}
+			setContractCompletion();
 			players[currentPlayer].addPoints(points);
 		}
 		return ret;
@@ -225,7 +229,7 @@ public class GameState {
 			int j = 0;
 			for (int i = 0; i < PLAYER_COLS.length; i++)
 			{
-				if (longestPath.get(j).equals(PLAYER_COLS[i]))
+				if (longestPath.get(j).equals(PLAYER_COLS[i])) 
 					temp.add(i);
 					j++;
 			}

@@ -10,6 +10,7 @@ public class CardNode
 
 	public CardNode() 
 	{
+		
 		left = null;
 		right = null;
 	}
