@@ -64,10 +64,11 @@ public class CityMapDrawer {
 
 	public void draw(Graphics2D g) {
 		g.setColor(Color.BLACK);
-		g.setStroke(new BasicStroke(5));
 		g.drawImage(city, 400, 0, null);
 		g.drawRect(400, 0, city.getWidth(), city.getHeight());
 		drawTracks(g);
+		g.setStroke(new BasicStroke(5));
+		g.setColor(Color.BLACK);
 		g.drawLine(400, city.getHeight(), 400, GraphicsPanel.WIDTH);
 		g.drawLine(city.getWidth() + 400, city.getHeight(), city.getWidth() + 400, GraphicsPanel.WIDTH);
 	}
