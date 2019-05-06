@@ -32,7 +32,9 @@ public class Node {
 		this.parent = parent;
 	}
 
-	public void setChildren(ArrayList<Node> children) {
-		this.children = children;
+
+	public ArrayList<Node> getChildren() {
+		return children;
 	}
+
 }
