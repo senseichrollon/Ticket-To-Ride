@@ -91,8 +91,9 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 			g.drawString("Contracts", x, 70);
 		}
 		x+=100;
-		for(ContractCard card : playerContracts) {
-			if(card.isComplete())
+		for(int i = 0; i < playerContracts.size(); i++) {
+			ContractCard card = playerContracts.get(i);
+			if(card == null || card.isComplete())
 				continue;
 			AffineTransform at = new AffineTransform();
 			at.setToTranslation(x, 20);
@@ -107,8 +108,9 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 			g.drawString("Contracts", x, 70);
 		}
 		x += 100;
-		for(ContractCard card : playerContracts) {
-			if(!card.isComplete())
+		for(int i = 0; i < playerContracts.size(); i++) {
+			ContractCard card = playerContracts.get(i);
+			if(card == null || !card.isComplete())
 				continue;
 			AffineTransform at = new AffineTransform();
 			at.setToTranslation(x, 20);

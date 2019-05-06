@@ -32,6 +32,8 @@ public class InputManager {
 	private ClickBox pressedClick;
 	private MButton pressedButton;
 	private MouseInput input;
+	
+	private boolean buttonIter;
 
 	public InputManager(MouseInput input) {
 		displayButtons = new ArrayList<>();
@@ -51,6 +53,7 @@ public class InputManager {
 	}
 
 	public void updateButtons(boolean mousePressed, boolean mouseReleased, Point mouseLoc) {
+		buttonIter = true;
 		if (mousePressed)
 			for (int i = 0; i < displayButtons.size(); i++) {
 				MButton b = displayButtons.get(i);
@@ -74,6 +77,7 @@ public class InputManager {
 					b.setPressed(false);
 				}
 			}
+		buttonIter = false;
 	}
 
 	public void updateClickBox(boolean mousePressed, boolean mouseReleased, Point mouseLoc) {
@@ -245,7 +249,8 @@ public class InputManager {
 		} else {
 			search = track.getTrackColor1();
 		}
-
+		int one = 0;
+			
 		int x = 10;
 		int y = 420;
 		for (String s : cardImage.keySet()) {
@@ -280,10 +285,11 @@ public class InputManager {
 
 		MButton placeCards = new MButton("Place trains", new Font("TimesRoman", Font.BOLD | Font.ITALIC, 30), Color.BLUE,Color.CYAN);
 		placeCards.setCenter(new Point(140,1020));
+		int total = 0;
 		placeCards.setShape(new RoundRectangle2D.Double(0, 0, 200, 50, 25, 25));
-		while (pressedButton != placeCards) {
-			int total = 0;
-			HashSet<String> set = new HashSet<>();
+		HashSet<String> set = new HashSet<>();
+		while (pressedButton != placeCards || !(total == track.getLength() && !((set.size() >= 2 && !set.contains("wild")) || (set.size() >= 3 && set.contains("wild"))))) {
+			total = 0;
 			for (String s : addMap.keySet()) {
 				MButton button = addMap.get(s);
 				int val = map.get(s);
@@ -320,16 +326,22 @@ public class InputManager {
 			for(String s : map.keySet()) {
 				if(map.get(s) != 0)
 					set.add(s);
+				else
+					set.remove(s);
 			}
 //			System.out.println(set);
 //			System.out.println(total + " " + track.getLength());
 			if(total == track.getLength() && !((set.size() >= 2 && !set.contains("wild")) || (set.size() >= 3 && set.contains("wild")))) {
 				displayButtons.add(placeCards);
-			} else {
+			} else if(displayButtons.contains(placeCards)) {
+				while(buttonIter)
+					try {Thread.sleep(10);} catch (InterruptedException e) {}
 				displayButtons.remove(placeCards);
+
 			}
 			try {Thread.sleep(10);} catch (InterruptedException e) {}
 		}
+		reset();
 		return map;
 	}
 
@@ -345,13 +357,14 @@ public class InputManager {
 	public void draw(Graphics2D g) {
 		if(AnimationManager.animating())
 			return;
+		buttonIter = true;
 		for (int i = 0; i < displayButtons.size(); i++) {
 			MButton b = displayButtons.get(i);
 			if(b == null)
 				continue;
 			b.draw(g);
 		}
-
+		buttonIter = false;
 		for (int i = 0; i < clickBoxes.size(); i++) {
 			clickBoxes.get(i).draw(g);
 		}
@@ -404,13 +417,13 @@ public class InputManager {
 			canHover = true;
 			color = null;
 			img = null;
-			hoverColor = Color.CYAN;
+			hoverColor = Color.PINK;
 		}
 
 		public ClickBox(Rectangle2D.Double rect, int id, BufferedImage img) {
 			this(rect, id);
 			this.img = img;
-			hoverColor = Color.YELLOW;
+			hoverColor = Color.RED;
 		}
 
 		public ClickBox(Rectangle2D.Double rect, int id, Color c) {
@@ -428,7 +441,7 @@ public class InputManager {
 						(int) clickBox.getHeight(), null);
 
 			g.setColor(hoverColor);
-			g.setStroke(new BasicStroke(10));
+			g.setStroke(new BasicStroke(6));
 			if (canHover && hover)
 				g.draw(clickBox);
 		}

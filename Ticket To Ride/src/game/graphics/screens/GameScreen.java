@@ -222,13 +222,13 @@ public class GameScreen extends ScreenManager implements Runnable {
 		Player[] players = game.getPlayers();
 		ArrayList<Player> sorted = new ArrayList<>();
 		IntStream.range(0, players.length).forEach(i -> sorted.add(players[i]));
-		Collections.sort(sorted, (a,b) -> Integer.compare(b.getPoints(), a.getPoints()));
+//		Collections.sort(sorted, (a,b) -> Integer.compare(b.getPoints(), a.getPoints()));
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("TimesRoman", Font.BOLD | Font.ITALIC, 15));
 		g.drawString(String.format("%8s   %8s %8s   %14s    %14s","","Points","Trains","Train Cards","Contract Cards"), 20, 80);
 		int y = 150;
 		for(Player p : sorted) {
-			g.setColor(p == players[game.getCurrentPlayer()]?Color.RED:Color.BLACK);
+			g.setColor(p == players[game.getCurrentPlayer()]?Color.BLUE:Color.BLACK);
 			g.drawString(String.format("%-8s     %4d    %8d      %12d   %21d",p.getName(), p.getPoints(),p.getTrains(),p.getCards().getNumCards(),p.getContracts().size()), 20, y);
 			Color c = null;
 			switch(p.getTrainColor()) {

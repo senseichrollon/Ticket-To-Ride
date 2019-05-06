@@ -142,6 +142,8 @@ public class GameState {
 		players[currentPlayer].removeCards(color, colorCount, wildCount);
 		AnimationManager.placeTrainsAnimation(color, colorCount, wildCount);
 		players[currentPlayer].decrementTrain(track.getLength());
+		deck.addDrawnCards(color, colorCount);
+		deck.addDrawnCards("wild", wildCount);
 		boolean ret = board.addTrack(track, players[currentPlayer].getTrainColor(), second?track.getTrackColor2():track.getTrackColor1());
 		if(ret) {
 			int points = 0;
@@ -227,7 +229,7 @@ public class GameState {
 			int j = 0;
 			for (int i = 0; i < PLAYER_COLS.length; i++)
 			{
-				if (longestPath.get(j).equals(PLAYER_COLS[i]))
+				if (longestPath.get(j).equals(PLAYER_COLS[i])) 
 					temp.add(i);
 					j++;
 			}
