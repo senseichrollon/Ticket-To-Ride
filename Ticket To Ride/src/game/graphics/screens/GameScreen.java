@@ -228,7 +228,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 		g.drawString(String.format("%8s   %8s %8s   %14s    %14s","","Points","Trains","Train Cards","Contract Cards"), 20, 80);
 		int y = 150;
 		for(Player p : sorted) {
-			g.setColor(p == players[game.getCurrentPlayer()]?Color.BLUE:Color.BLACK);
+			g.setColor(p == players[game.getCurrentPlayer()]?Color.PINK:Color.BLACK);
 			g.drawString(String.format("%-8s     %4d    %8d      %12d   %21d",p.getName(), p.getPoints(),p.getTrains(),p.getCards().getNumCards(),p.getContracts().size()), 20, y);
 			Color c = null;
 			switch(p.getTrainColor()) {
