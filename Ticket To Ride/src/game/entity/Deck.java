@@ -64,7 +64,10 @@ public class Deck {
 		if (def)
 			AnimationManager.faceDownCardAnimation(temp);
 		while (AnimationManager.animating()) {
-			try {Thread.sleep(10);} catch (InterruptedException e) {}
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+			}
 		}
 		check();
 		return temp;
@@ -137,7 +140,10 @@ public class Deck {
 					AnimationManager.replaceTrainsAnimation(i, s);
 					AnimationManager.addTrainCardAnimation(i, prev);
 					while (AnimationManager.animating()) {
-						try {Thread.sleep(10);} catch (InterruptedException e) {	}
+						try {
+							Thread.sleep(10);
+						} catch (InterruptedException e) {
+						}
 					}
 				}
 
@@ -177,7 +183,7 @@ public class Deck {
 //			drawnTrainDeck.add(cards.get(i).getColor());
 //		}
 //	}
-	
+
 	public boolean canDrawContracts() {
 		return contractDeck.size() >= 3;
 	}
