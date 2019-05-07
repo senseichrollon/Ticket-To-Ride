@@ -219,8 +219,7 @@ public class InputManager {
 				Point2D.Double point = drawer.getClick(1);
 				
 				Rectangle2D.Double rect = new Rectangle2D.Double( point.getX(), point.getY(), 10, 10);
-				clickBoxes.add(new ClickBox(rect, track.getID() + 1000, Color.RED));
-				
+				clickBoxes.add(new ClickBox(rect, track.getID() + 1000, Color.RED));		
 			}
 		}
 		while (pressedClick == null) {
