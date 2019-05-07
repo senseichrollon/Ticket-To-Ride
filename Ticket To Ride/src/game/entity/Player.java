@@ -3,10 +3,10 @@ package game.entity;
 import java.util.ArrayList;
 
 public class Player {
-	protected PlayerCardTree cards;
-	protected String name, trainColor;
-	protected int trains, points, numCompletedContracts;
-	protected ArrayList<ContractCard> contracts;
+	private PlayerCardTree cards;
+	private String name, trainColor;
+	private int trains, points, numCompletedContracts;
+	private ArrayList<ContractCard> contracts;
 
 	public Player(String n, String c) {
 		name = n;

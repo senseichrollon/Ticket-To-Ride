@@ -16,9 +16,10 @@ public class CityMap {
 	public static HashMap<String, Integer> CITYINDEX;
 	public static HashMap<Integer,String> INDEX_TO_CITY;
 	public static HashMap<Integer, Track> allTracks;
+	public static List<ArrayList<Track>> FULLMAP;
 	
 	
-	private List<ArrayList<Track>> FULLMAP;
+	
 	private ArrayList<Integer> dp;
 	private HashSet<Track> lpVisited;
 	private List<ArrayList<Track>> map;

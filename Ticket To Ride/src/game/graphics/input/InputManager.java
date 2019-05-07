@@ -230,6 +230,7 @@ public class InputManager {
 	}
 
 	public HashMap<String,Integer> requestCards(Track track, boolean second, LinkedHashMap<String, BufferedImage> cardImage,Player player) {
+		
 		HashMap<String, Integer> map = new HashMap<>();
 		map.put("wild", 0);
 
@@ -289,6 +290,11 @@ public class InputManager {
 		placeCards.setShape(new RoundRectangle2D.Double(0, 0, 200, 50, 25, 25));
 		HashSet<String> set = new HashSet<>();
 		while (pressedButton != placeCards || !(total == track.getLength() && !((set.size() >= 2 && !set.contains("wild")) || (set.size() >= 3 && set.contains("wild"))))) {
+			if(pressedButton == placeCards) {
+				placeCards.setValidRelease(false);
+			}
+			
+			long time = System.currentTimeMillis();
 			total = 0;
 			for (String s : addMap.keySet()) {
 				MButton button = addMap.get(s);
@@ -340,6 +346,7 @@ public class InputManager {
 
 			}
 			try {Thread.sleep(10);} catch (InterruptedException e) {}
+			System.out.println(System.currentTimeMillis() - time);
 		}
 		reset();
 		return map;
