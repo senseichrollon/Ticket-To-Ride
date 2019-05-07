@@ -3,11 +3,9 @@ package game.graphics.drawers;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -19,6 +17,7 @@ import java.util.Scanner;
 
 import game.entity.CityMap;
 import game.entity.Track;
+import game.graphics.engine.GraphicsPanel;
 import game.graphics.util.ImageLoader;
 
 public class CityMapDrawer {
@@ -65,10 +64,13 @@ public class CityMapDrawer {
 
 	public void draw(Graphics2D g) {
 		g.setColor(Color.BLACK);
-		g.setStroke(new BasicStroke(5));
 		g.drawImage(city, 400, 0, null);
 		g.drawRect(400, 0, city.getWidth(), city.getHeight());
 		drawTracks(g);
+		g.setStroke(new BasicStroke(5));
+		g.setColor(Color.BLACK);
+		g.drawLine(400, city.getHeight(), 400, GraphicsPanel.WIDTH);
+		g.drawLine(city.getWidth() + 400, city.getHeight(), city.getWidth() + 400, GraphicsPanel.WIDTH);
 	}
 
 	public void drawTracks(Graphics2D g) {

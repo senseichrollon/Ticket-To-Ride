@@ -13,13 +13,16 @@ import java.util.Scanner;
 import game.main.GameState;
 
 public class CityMap {
-	private List<ArrayList<Track>> map;
 	public static HashMap<String, Integer> CITYINDEX;
+	public static HashMap<Integer,String> INDEX_TO_CITY;
 	public static HashMap<Integer, Track> allTracks;
 	public static List<ArrayList<Track>> FULLMAP;
+	
+	
+	
 	private ArrayList<Integer> dp;
 	private HashSet<Track> lpVisited;
-
+	private List<ArrayList<Track>> map;
 	private HashMap<Integer, ArrayList<Track>> loopAlert;
 	private int loopCounter;
 
@@ -27,6 +30,7 @@ public class CityMap {
 		CITYINDEX = new HashMap<String, Integer>();
 		map = new ArrayList<ArrayList<Track>>();
 		allTracks = new HashMap<>();
+		INDEX_TO_CITY = new HashMap<>();
 		
 		FULLMAP = new ArrayList<ArrayList<Track>>();
 		loopAlert = new HashMap<Integer, ArrayList<Track>>();
@@ -37,7 +41,9 @@ public class CityMap {
 			int n = in.nextInt();
 			for (int i = 0; i < n; i++) {
 				int number = in.nextInt();
-				CITYINDEX.put(in.next().replace('_', ' '), number);
+				String city = in.next().replace('_', ' ');
+				CITYINDEX.put(city, number);
+				INDEX_TO_CITY.put(number, city);
 				map.add(new ArrayList<Track>());
 				FULLMAP.add(new ArrayList<Track>());
 			}
@@ -71,6 +77,7 @@ public class CityMap {
 
 	public boolean addTrack(Track work, String player, String colChoice, int side)
 	{
+		System.out.println(player + "  fsds");
 		int c1 = work.getCityOne();
 		int c2 = work.getCityTwo();
 		ArrayList<Track> i = FULLMAP.get(c1);
@@ -90,7 +97,7 @@ public class CityMap {
 		{
 			FULLMAP.get(c1).remove(work);
 			FULLMAP.get(c2).remove(work);
-			boolean out = work.occupyTrack(player, null, side);
+			boolean out = work.occupyTrack(player, "", side);
 			map.get(c1).add(work);
 			map.get(c2).add(work);
 			return out;
@@ -113,7 +120,7 @@ public class CityMap {
 	}
 
 	public boolean completedContract(String color, ContractCard check) {
-		System.out.println(check.getCityOne() + " " + check.getCityTwo());
+//		System.out.println(check.getCityOne() + " " + check.getCityTwo());
 		return dfs(CITYINDEX.get(check.getCityTwo()), color, CITYINDEX.get(check.getCityOne()), new ArrayList<Track>());
 		
 	}
@@ -294,17 +301,15 @@ public class CityMap {
 		for (ArrayList<Track> tracks : FULLMAP) {
 			for (Track track : tracks) {
 				boolean[] b = new boolean[2];
-				if (player.getCards().hasEnough(track.getTrackColor1(), track.getLength())
-						&& (track.getPlayerColor2() == null
-								|| !track.getPlayerColor2().equals(player.getTrainColor()))) {
+				if (player.getCards().hasEnough(track.getTrackColor1(), track.getLength()) && track.getPlayerColor1() == null && !track.containsPlayerCol(player.getTrainColor()) &&  player.getTrains() >= track.getLength()) {
 					b[0] = true;
 				}
-				if (track.isDoubleTrack() && player.getCards().hasEnough(track.getTrackColor2(), track.getLength())
-						&& (track.getPlayerColor1() == null
-								|| !track.getPlayerColor1().equals(player.getTrainColor()))) {
+				if (track.isDoubleTrack() && player.getCards().hasEnough(track.getTrackColor2(), track.getLength()) && track.getPlayerColor2() == null && !track.containsPlayerCol(player.getTrainColor())&& player.getTrains() >= track.getLength()) {
+//					System.out.println(track.getCityOne() + " " + track.getCityTwo() + " " + track.getPlayerColor1() + " " + player.getTrainColor());
 					b[1] = true;
 				}
-				ret.put(track, b);
+				if(b[0] || b[1])
+					ret.put(track, b);
 			}
 		}
 		return ret;
@@ -328,6 +333,7 @@ public class CityMap {
 	
 	public String printOGMap()
 	{
+
 		return map.toString();
 	}
 	
