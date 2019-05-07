@@ -96,13 +96,27 @@ public class Track implements Comparable<Track> {
 		return false;
 	}
 
-	public boolean occupyTrack(String pc, String colChoice) {
+	public boolean occupyTrack(String pc, String colChoice, int side) {
 		if (trackColor2 == null) {
 			if (playerColor1 == null) {
 				playerColor1 = pc;
 				return true;
 			}
-		} else {
+		} 
+		else if(trackColor1.equals("gray") && trackColor2.equals("gray")){
+			if(containsPlayerCol(pc))
+				return false;
+			if(side == 1 && playerColor1 == null){
+				playerColor1 = pc;
+				return true;
+			}
+			else if(side == 2 && playerColor2 == null){
+				playerColor2 = pc;
+				return true;
+			}
+			return false;
+		}
+		else {
 			if (containsTrackCol(colChoice)) {
 				if (trackColor1.equals(colChoice) && playerColor1 == null
 						&& (playerColor2 == null || !playerColor2.equals(pc))) {

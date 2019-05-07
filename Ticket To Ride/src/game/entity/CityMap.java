@@ -75,7 +75,7 @@ public class CityMap {
 
 	}
 
-	public boolean addTrack(Track work, String player, String colChoice)
+	public boolean addTrack(Track work, String player, String colChoice, int side)
 	{
 		System.out.println(player + "  fsds");
 		int c1 = work.getCityOne();
@@ -97,14 +97,14 @@ public class CityMap {
 		{
 			FULLMAP.get(c1).remove(work);
 			FULLMAP.get(c2).remove(work);
-			boolean out = work.occupyTrack(player, null);
+			boolean out = work.occupyTrack(player, "", side);
 			map.get(c1).add(work);
 			map.get(c2).add(work);
 			return out;
 		}
 		else
 		{
-			boolean out = work.occupyTrack(player, colChoice);
+			boolean out = work.occupyTrack(player, colChoice, side);
 			if(work.isFilled())
 			{
 				FULLMAP.get(c1).remove(work);
@@ -301,17 +301,15 @@ public class CityMap {
 		for (ArrayList<Track> tracks : FULLMAP) {
 			for (Track track : tracks) {
 				boolean[] b = new boolean[2];
-				if (player.getCards().hasEnough(track.getTrackColor1(), track.getLength())
-						&& (track.getPlayerColor2() == null
-								|| !track.getPlayerColor2().equals(player.getTrainColor())) && player.getTrains() >= track.getLength()) {
+
+				if (player.getCards().hasEnough(track.getTrackColor1(), track.getLength()) && track.getPlayerColor1() == null && !track.containsPlayerCol(player.getTrainColor()) &&  player.getTrains() >= track.getLength()) {
 					b[0] = true;
 				}
-				if (track.isDoubleTrack() && player.getCards().hasEnough(track.getTrackColor2(), track.getLength())
-						&& (track.getPlayerColor1() == null
-								|| !track.getPlayerColor1().equals(player.getTrainColor())) && player.getTrains() >= track.getLength()) {
-//					System.out.println(track.getCityOne() + " " + track.getCityTwo() + " " + track.getPlayerColor1() + " " + player.getTrainColor());
+
+				if (track.isDoubleTrack() && player.getCards().hasEnough(track.getTrackColor2(), track.getLength()) && track.getPlayerColor2() == null && !track.containsPlayerCol(player.getTrainColor())&& player.getTrains() >= track.getLength()) {
 					b[1] = true;
 				}
+				
 				if(b[0] || b[1])
 					ret.put(track, b);
 			}
