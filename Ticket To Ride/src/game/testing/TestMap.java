@@ -1,4 +1,4 @@
-package game.testing;
+/*package game.testing;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -35,3 +35,4 @@ public class TestMap
 		System.out.println(cm.testDP());
 	}
 }
+*/

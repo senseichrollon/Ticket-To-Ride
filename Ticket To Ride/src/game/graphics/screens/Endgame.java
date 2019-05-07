@@ -20,12 +20,18 @@ public class Endgame extends ScreenManager{
 	public Endgame()
 	{
 		super();
-		background = ImageLoader.loadImage("resources/gameboard/End game summary.jpg");
+		background = ImageLoader.loadImage("resources/gameboard/EndGameScreen.jpg");
 	
 		background = ImageLoader.resize(background, GraphicsPanel.WIDTH, GraphicsPanel.HEIGHT);
 	}
 	
-	@Override
+	
+	public void paintComponent(Graphics g)
+	{
+		g.drawImage(background, 0, 0, null);
+		draw((Graphics2D)g);
+	}
+	//@Override
 	public void update() {}
 	
 	public void setData(int[][] vals)
@@ -34,7 +40,7 @@ public class Endgame extends ScreenManager{
 		sortData();
 	}
 
-	@Override
+	//@Override
 	public void draw(Graphics2D g) {
 		if(data == null)
 			return;
@@ -45,11 +51,12 @@ public class Endgame extends ScreenManager{
 		
 		for(int i = 0; i < data.length; i++) {
 			g.drawString(GameState.PLAYER_NAMES[data[i][0]], 10, (380 + 180*i));
-			g.drawString(String.valueOf(data[i][1]), 230, (380 + 180*i));
-			g.drawString(String.valueOf(data[i][2]), 560, (380 + 180*i));
-			g.drawString(String.valueOf(data[i][3]), 1060, (380 + 180*i));
-			g.drawString(String.valueOf(data[i][4]), 1480, (380 + 180*i));
-			g.drawString(String.valueOf(sumPts(data[i])), 1720, (380 + 180*i));
+			g.drawString(String.valueOf(data[i][1]), 240, (430 + 180*i));
+			g.drawString(String.valueOf(data[i][2]), 510, (430 + 180*i));
+			g.drawString(String.valueOf(data[i][3]), 830, (430 + 180*i));
+			g.drawString(String.valueOf(data[i][4]), 1180, (430 + 180*i));
+			g.drawString(String.valueOf(data[i][5]), 1500, (430 + 180*i));
+			g.drawString(String.valueOf(sumPts(data[i])), 1780, (430 + 180*i));
 		}
 	}
 	
@@ -74,14 +81,14 @@ public class Endgame extends ScreenManager{
 	
 	private int sumPts(int[] vals)
 	{
-		return vals[1] + vals[2] - vals[3] + vals[4];
+		return vals[1] + vals[2] - vals[3] + vals[4] + vals[5];
 	}
 	
 	/*public static void main(String[] args)
 	{
 		JFrame jf = new JFrame("Test");
 		Endgame eg = new Endgame();
-		int[][] data = {{15, 15, 15, 15, 15, 15}, {15, 15, 15, 15, 15, 15}, {15, 15, 15, 15, 15, 15}, {15, 15, 15, 15, 15, 15}};
+		int[][] data = {{15, 15, 15, 15, 15, 15}, {15, 15, 15, 15, 15, 15}, {15, 15, 15, 15, 15, 15}, {15, 15, 15, 15, 15, 15}, {15, 15, 15, 15, 15, 15}, {15, 15, 15, 15, 15, 15}};
 		eg.setData(data);
 		jf.add(eg);
 		jf.setSize(GraphicsPanel.WIDTH, GraphicsPanel.HEIGHT);
