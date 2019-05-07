@@ -301,13 +301,15 @@ public class CityMap {
 		for (ArrayList<Track> tracks : FULLMAP) {
 			for (Track track : tracks) {
 				boolean[] b = new boolean[2];
+
 				if (player.getCards().hasEnough(track.getTrackColor1(), track.getLength()) && track.getPlayerColor1() == null && !track.containsPlayerCol(player.getTrainColor()) &&  player.getTrains() >= track.getLength()) {
 					b[0] = true;
 				}
+
 				if (track.isDoubleTrack() && player.getCards().hasEnough(track.getTrackColor2(), track.getLength()) && track.getPlayerColor2() == null && !track.containsPlayerCol(player.getTrainColor())&& player.getTrains() >= track.getLength()) {
-//					System.out.println(track.getCityOne() + " " + track.getCityTwo() + " " + track.getPlayerColor1() + " " + player.getTrainColor());
 					b[1] = true;
 				}
+				
 				if(b[0] || b[1])
 					ret.put(track, b);
 			}

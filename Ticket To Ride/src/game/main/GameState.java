@@ -142,13 +142,9 @@ public class GameState {
 		players[currentPlayer].removeCards(color, colorCount, wildCount);
 		AnimationManager.placeTrainsAnimation(color, colorCount, wildCount);
 		players[currentPlayer].decrementTrain(track.getLength());
-//<<<<<<< HEAD
 		boolean ret = board.addTrack(track, players[currentPlayer].getTrainColor(), second?track.getTrackColor2():track.getTrackColor1(), second?2:1);
-//=======
 		deck.addDrawnCards(color, colorCount);
 		deck.addDrawnCards("wild", wildCount);
-		//boolean ret = board.addTrack(track, players[currentPlayer].getTrainColor(), second?track.getTrackColor2():track.getTrackColor1());
-//>>>>>>> branch 'master' of https://github.com/senseichrollon/Ticket-To-Ride.git
 		if(ret) {
 			int points = 0;
 			switch(track.getLength()) {
@@ -202,7 +198,7 @@ public class GameState {
 	
 	public int[][] endGame() 
 	{
-		int[][] mat = new int[4][5];
+		int[][] mat = new int[4][6];
 		mat[0][0] = 0;
 		mat[1][0] = 1;
 		mat[2][0] = 2;
@@ -253,6 +249,13 @@ public class GameState {
 					mat[i][4] = 10;
 			}
 		}
+		int mostCompleted = 0;
+		for (int i = 1; i < NUMPLAYERS; i++)
+		{
+			if(players[i].getNumCompletedContracts() > players[mostCompleted].getNumCompletedContracts())
+				mostCompleted = i;
+		}
+		mat[mostCompleted][5] = 15;
 		return mat;
 	}
 }
