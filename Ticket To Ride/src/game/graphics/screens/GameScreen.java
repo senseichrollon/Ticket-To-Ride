@@ -34,6 +34,8 @@ import game.main.GameState;
 
 public class GameScreen extends ScreenManager implements Runnable {
 
+	public static LinkedHashMap<String, BufferedImage> cards;
+
 	private GameState game;
 	private CityMapDrawer cMapDrawer;
 	private ContractCardDrawer contractDrawer;
@@ -41,7 +43,6 @@ public class GameScreen extends ScreenManager implements Runnable {
 
 	private Thread gameThread;
 	private BufferedImage logo, govContract, trainContract;
-	private  LinkedHashMap<String, BufferedImage> cards;
 
 	private InputManager input;
 	private boolean init;

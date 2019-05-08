@@ -140,13 +140,9 @@ public class Deck {
 					AnimationManager.replaceTrainsAnimation(i, s);
 					AnimationManager.addTrainCardAnimation(i, prev);
 					while (AnimationManager.animating()) {
-						try {
-							Thread.sleep(10);
-						} catch (InterruptedException e) {
-						}
+						try {Thread.sleep(10);} catch (InterruptedException e) {}
 					}
 				}
-
 				upTrains[i] = s;
 			}
 		}

@@ -288,6 +288,7 @@ public class InputManager {
 		int total = 0;
 		placeCards.setShape(new RoundRectangle2D.Double(0, 0, 200, 50, 25, 25));
 		HashSet<String> set = new HashSet<>();
+		displayButtons.add(placeCards);
 		while (pressedButton != placeCards || !(total == track.getLength() && !((set.size() >= 2 && !set.contains("wild")) || (set.size() >= 3 && set.contains("wild"))))) {
 			if(pressedButton == placeCards) {
 				placeCards.setValidRelease(false);
@@ -336,14 +337,14 @@ public class InputManager {
 			}
 //			System.out.println(set);
 //			System.out.println(total + " " + track.getLength());
-			if(total == track.getLength() && !((set.size() >= 2 && !set.contains("wild")) || (set.size() >= 3 && set.contains("wild")))) {
-				displayButtons.add(placeCards);
-			} else if(displayButtons.contains(placeCards)) {
-				while(buttonIter)
-					try {Thread.sleep(10);} catch (InterruptedException e) {}
-				displayButtons.remove(placeCards);
-
-			}
+//			if(total == track.getLength() && !((set.size() >= 2 && !set.contains("wild")) || (set.size() >= 3 && set.contains("wild")))) {
+//				displayButtons.add(placeCards);
+//			} else if(displayButtons.contains(placeCards)) {
+//				while(buttonIter)
+//					try {Thread.sleep(10);} catch (InterruptedException e) {}
+//				displayButtons.remove(placeCards);
+//
+//			}
 			try {Thread.sleep(10);} catch (InterruptedException e) {}
 			System.out.println(System.currentTimeMillis() - time);
 		}

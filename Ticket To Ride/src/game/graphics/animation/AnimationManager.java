@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import game.graphics.drawers.HandDrawer;
+import game.graphics.screens.GameScreen;
 import game.graphics.util.ImageLoader;
 
 public class AnimationManager {
@@ -133,7 +134,15 @@ public class AnimationManager {
 		
 	}
 	
-	public static void shuffle(String[] oldCards, String[] newCards) {
+	public static void shuffle(String[] cards, boolean in) {
+		Point[] points = new Point[5];
+		BufferedImage[] img = new BufferedImage[5];
+		int y = 20;
+		for(int i = 0; i < 5; i++) {
+			points[i] = new Point(1700,y);
+			y += 130;
+			img[i] = GameScreen.cards.get(cards[i]);
+		}
 		
 	}
 	
