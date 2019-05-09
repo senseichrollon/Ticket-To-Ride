@@ -1,77 +1,63 @@
 package game.entity;
 
-
-public class CardNode 
-{
+public class CardNode {
 	private String color;
 	private int count;
 	private CardNode left;
 	private CardNode right;
 
-	public CardNode() 
-	{
-		
+	public CardNode() {
+
 		left = null;
 		right = null;
 	}
 
-	public CardNode(String str, int c) 
-	{
+	public CardNode(String str, int c) {
 		count = c;
 		color = str;
 		left = null;
 		right = null;
 	}
 
-	public CardNode(String value, CardNode left, CardNode right) 
-	{
-		color = value;	
+	public CardNode(String value, CardNode left, CardNode right) {
+		color = value;
 		this.left = left;
 		this.right = right;
 	}
 
-	public String getColor() 
-	{
+	public String getColor() {
 		return color;
 	}
 
-	public int getCount() 
-	{
+	public int getCount() {
 		return count;
 	}
 
-	public CardNode getLeft() 
-	{
+	public CardNode getLeft() {
 		return left;
 	}
 
-	public CardNode getRight() 
-	{
+	public CardNode getRight() {
 		return right;
 	}
 
-	public void setColor(String color) 
-	{
+	public void setColor(String color) {
 		this.color = color;
 	}
 
-	public void setLeft(CardNode left) 
-	{
+	public void setLeft(CardNode left) {
 		this.left = left;
 	}
 
-	public void setRight(CardNode right) 
-	{
+	public void setRight(CardNode right) {
 		this.right = right;
 	}
 
-	public void setCount(int c) 
-	{
+	public void setCount(int c) {
 		count = c;
 	}
-	
-	public String toString()
-	{
+
+	public String toString() {
 		return "Count: " + count + " Color: " + color;
 	}
 }

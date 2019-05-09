@@ -133,6 +133,10 @@ public class AnimationManager {
 		
 	}
 	
+	public static void shuffle(String[] oldCards, String[] newCards) {
+		
+	}
+	
 	public static boolean animating() {
 		return animations.size() != 0;
 	}
