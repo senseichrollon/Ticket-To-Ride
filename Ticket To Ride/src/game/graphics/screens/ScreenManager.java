@@ -22,7 +22,7 @@ public abstract class ScreenManager {
 		game = new GameScreen(input);
 		menu = new MenuScreen(input);
 		rule = new RuleScreen();
-		end = new Endgame();
+		end = new Endgame(input);
 		currentScreen = menu;
 	}
 	

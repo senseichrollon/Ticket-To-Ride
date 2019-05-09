@@ -80,7 +80,7 @@ public class CityMap {
 		System.out.println(player + "  fsds");
 		int c1 = work.getCityOne();
 		int c2 = work.getCityTwo();
-		ArrayList<Track> i = FULLMAP.get(c1);
+		/*ArrayList<Track> i = FULLMAP.get(c1);
 		for(int j = 0; j < i.size(); j++)
 		{
 			if(i.get(j).getOtherCity(c1) == c2)
@@ -91,7 +91,7 @@ public class CityMap {
 		}
 		
 		if(work == null)
-			return false;
+			return false;*/
 		
 		if(!work.isDoubleTrack())
 		{
@@ -146,6 +146,16 @@ public class CityMap {
 					return track;
 			}
 		}
+		return null;
+	}
+	
+	public Track getTrack(String city1, String city2)
+	{
+		int c1 = CITYINDEX.get(city1);
+		int c2 = CITYINDEX.get(city2);
+		for(Track i: FULLMAP.get(c1))
+			if(i.getOtherCity(c1) == c2)
+				return i;
 		return null;
 	}
 	public int longestPath(int currCity, List<Track> visited, List<Integer> loopCheck, String player, boolean bfMode)
@@ -348,5 +358,9 @@ public class CityMap {
 	public List<ArrayList<Track>> getFullMap() {
 		return FULLMAP;
 	}
+	
+	public List<ArrayList<Track>> getMap() {
+		return map;
+	} 
 
 }

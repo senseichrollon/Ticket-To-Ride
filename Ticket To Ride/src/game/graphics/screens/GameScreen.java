@@ -161,12 +161,18 @@ public class GameScreen extends ScreenManager implements Runnable {
 	}
 	
 	public void requestGovContract(int n) {
+		
 		ContractCard[] cards = game.drawContracts(n);
 		BufferedImage[] img = new BufferedImage[cards.length];
 		for(int i = 0; i < cards.length; i++) {
 			img[i] = ImageLoader.getCopy(contractDrawer.getCardImages().get(cards[i]));
 		}
 		ArrayList<Integer> keep = input.requestGovernmentContract(cards, img);
+		if(keep == null)
+		{
+			game.endGameDebug();
+			keep = input.requestGovernmentContract(cards, img);
+		}
 		ArrayList<ContractCard> retCards = new ArrayList<ContractCard>();
 		ArrayList<ContractCard> keepCards = new ArrayList<ContractCard>();
 		for(int i = 0; i < cards.length; i++) {

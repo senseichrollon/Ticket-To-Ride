@@ -95,6 +95,7 @@ public class GameState {
 	public void setContractCompletion() {
 		ArrayList<ContractCard> contracts = players[currentPlayer].getContracts();
 		for(int i = 0; i < contracts.size(); i++) {
+			//
 			if(!contracts.get(i).isComplete()) {
 				contracts.get(i).setComplete(board.completedContract(players[currentPlayer].getTrainColor(), contracts.get(i)));
 			}
@@ -257,5 +258,10 @@ public class GameState {
 		}
 		mat[mostCompleted][5] = 15;
 		return mat;
+	}
+	
+	public void endGameDebug()
+	{
+		lastRound = 5;
 	}
 }

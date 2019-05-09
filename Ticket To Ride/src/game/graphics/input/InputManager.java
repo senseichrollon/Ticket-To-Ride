@@ -160,6 +160,11 @@ public class InputManager {
 	}
 
 	public ArrayList<Integer> requestGovernmentContract(ContractCard[] cards, BufferedImage[] img) {
+		if(input.duluthHack())
+		{
+			input.resetDuluth();
+			return null;
+		}
 		ArrayList<Integer> keep = new ArrayList<Integer>();
 		int numKeep = (cards.length == 5)?3:1;
 		int y = 420;
