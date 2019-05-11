@@ -350,7 +350,7 @@ public class InputManager {
 
 			}
 			try {Thread.sleep(10);} catch (InterruptedException e) {}
-			System.out.println(System.currentTimeMillis() - time);
+			System.out.println("yeet: " + (System.currentTimeMillis() - time));
 		}
 		reset();
 		return map;
