@@ -80,7 +80,7 @@ public class Track implements Comparable<Track> {
 	}
 
 	public boolean containsPlayerCol(String col) {
-		if ((playerColor1 != null && playerColor1.equals(col)) || (playerColor2 != null && trackColor2.equals(col)))
+		if ((playerColor1 != null && playerColor1.equals(col)) || (playerColor2 != null && playerColor2.equals(col)))
 			return true;
 		return false;
 	}
@@ -118,12 +118,10 @@ public class Track implements Comparable<Track> {
 		}
 		else {
 			if (containsTrackCol(colChoice)) {
-				if (trackColor1.equals(colChoice) && playerColor1 == null
-						&& (playerColor2 == null || !playerColor2.equals(pc))) {
+				if (trackColor1.equals(colChoice) && playerColor1 == null && !containsPlayerCol(pc)) {
 					playerColor1 = pc;
 					return true;
-				} else if (trackColor2.equals(colChoice) && playerColor2 == null
-						&& (playerColor1 == null || !playerColor1.equals(pc))) {
+				} else if (trackColor2.equals(colChoice) && playerColor2 == null && !containsPlayerCol(pc)) {
 					playerColor2 = pc;
 					return true;
 				}
@@ -157,6 +155,6 @@ public class Track implements Comparable<Track> {
 	}
 
 	public String toString() {
-		return id + " " + cityOne + " " + cityTwo + " " + trackColor1 + " " + trackColor2 + " " + length;
+		return id + " " + cityOne + " " + cityTwo + " " + trackColor1 + " " + playerColor1 + " " + trackColor2 + " " + playerColor2 + " "+ length;
 	}
 }
