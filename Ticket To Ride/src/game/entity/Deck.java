@@ -64,10 +64,7 @@ public class Deck {
 		if (def)
 			AnimationManager.faceDownCardAnimation(temp);
 		while (AnimationManager.animating()) {
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-			}
+			try {Thread.sleep(10);} catch (InterruptedException e) {}
 		}
 		check();
 		return temp;
@@ -81,15 +78,18 @@ public class Deck {
 		return cc;
 	}
 
-	public void shuffle() {
+	public void shuffle(boolean in) {
 		ArrayList<String> list = new ArrayList<String>();
 		while (!trainDeck.isEmpty()) {
 			list.add(trainDeck.poll());
 		}
+		String[] temp = Arrays.copyOf(upTrains, upTrains.length);
 		for (int i = 0; i < upTrains.length; i++) {
 			list.add(upTrains[i]);
 			upTrains[i] = null;
 		}
+		if(in)
+			AnimationManager.shuffle(temp, true);
 		Collections.shuffle(list);
 		for (int i = 0; i < list.size(); i++) {
 			trainDeck.add(list.get(i));
@@ -133,23 +133,36 @@ public class Deck {
 	}
 
 	public void replaceTrains(String prev, boolean draw) {
-		for (int i = 0; i < upTrains.length; i++) {
-			if (upTrains[i] == null) {
-				String s = trainDeck.poll();
-				if (draw) {
-					AnimationManager.replaceTrainsAnimation(i, s);
-					AnimationManager.addTrainCardAnimation(i, prev);
-					while (AnimationManager.animating()) {
-						try {
-							Thread.sleep(10);
-						} catch (InterruptedException e) {
+		if(draw) {
+			for (int i = 0; i < upTrains.length; i++) {
+				if (upTrains[i] == null) {
+					String s = trainDeck.poll();
+						AnimationManager.replaceTrainsAnimation(i, s);
+						AnimationManager.addTrainCardAnimation(i, prev);
+						while (AnimationManager.animating()) {
+							try {Thread.sleep(10);} catch (InterruptedException e) {}
 						}
-					}
+					
+					upTrains[i] = s;
 				}
-
-				upTrains[i] = s;
 			}
+		} else {
+			String[] temp = new String[5];
+			int wildCount = 0;
+			for(int i = 0; i < upTrains.length; i++) {
+				temp[i] = trainDeck.poll();
+				if(temp[i].equals("wild"))
+					wildCount++;
+			}
+			if(wildCount < 3 )
+				AnimationManager.shuffle(temp, false);
+			for(int i = 0; i < upTrains.length; i++) {
+				upTrains[i] = temp[i];
+			}
+			if(wildCount >= 3)
+				shuffle(false);
 		}
+
 	}
 
 	public void check() {
@@ -161,7 +174,7 @@ public class Deck {
 				cntWild++;
 		}
 		if (cntWild >= 3)
-			shuffle();
+			shuffle(true);
 	}
 
 	public String[] getUpCards() {
