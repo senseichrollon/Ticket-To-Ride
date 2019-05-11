@@ -154,12 +154,12 @@ public class Deck {
 				if(temp[i].equals("wild"))
 					wildCount++;
 			}
-			if(wildCount < 2)
+			if(wildCount < 3 )
 				AnimationManager.shuffle(temp, false);
 			for(int i = 0; i < upTrains.length; i++) {
 				upTrains[i] = temp[i];
 			}
-			if(wildCount >= 2)
+			if(wildCount >= 3)
 				shuffle(false);
 		}
 
@@ -173,7 +173,7 @@ public class Deck {
 			if (upTrains[i].equals("wild"))
 				cntWild++;
 		}
-		if (cntWild >= 2)
+		if (cntWild >= 3)
 			shuffle(true);
 	}
 
