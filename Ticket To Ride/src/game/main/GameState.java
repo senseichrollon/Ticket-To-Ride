@@ -61,6 +61,10 @@ public class GameState {
 		lastRound = -1;
 		board = new CityMap();
 	}
+	
+	public GameState(GameState copy) {
+		
+	}
 
 	public Player[] getPlayers() {
 		return players;

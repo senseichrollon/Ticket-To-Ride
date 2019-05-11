@@ -16,10 +16,10 @@ public class CityMap {
 	public static HashMap<String, Integer> CITYINDEX;
 	public static HashMap<Integer,String> INDEX_TO_CITY;
 	public static HashMap<Integer, Track> allTracks;
-	public static List<ArrayList<Track>> FULLMAP;
 	
 	
 	
+	private List<ArrayList<Track>> FULLMAP;
 	private ArrayList<Integer> dp;
 	private HashSet<Track> lpVisited;
 	private List<ArrayList<Track>> map;
@@ -146,7 +146,7 @@ public class CityMap {
 					return track;
 			}
 		}
-		return null;
+		return null;	
 	}
 	public int longestPath(int currCity, List<Track> visited, List<Integer> loopCheck, String player, boolean bfMode)
 	{
@@ -309,7 +309,6 @@ public class CityMap {
 				if (track.isDoubleTrack() && player.getCards().hasEnough(track.getTrackColor2(), track.getLength())
 						&& (track.getPlayerColor1() == null
 								|| !track.getPlayerColor1().equals(player.getTrainColor())) && player.getTrains() >= track.getLength()) {
-//					System.out.println(track.getCityOne() + " " + track.getCityTwo() + " " + track.getPlayerColor1() + " " + player.getTrainColor());
 					b[1] = true;
 				}
 				if(b[0] || b[1])

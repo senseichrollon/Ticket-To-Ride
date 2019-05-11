@@ -142,8 +142,31 @@ public class AnimationManager {
 			points[i] = new Point(1700,y);
 			y += 130;
 			img[i] = GameScreen.cards.get(cards[i]);
+			img[i] = ImageLoader.resize(img[i], img[i].getWidth()*8/10, img[i].getHeight() * 8/10);
 		}
 		
+		int x;
+		if(in) {
+			x = points[4].x;
+			y = points[4].y;
+		} else {
+			x = 1700;
+			y = 760;
+		}
+
+		ShuffleAnimator anim = new ShuffleAnimator(points,img,x,y,500000000L,in);
+		anim.start();
+		animations.add(anim);
+		while(AnimationManager.animating())
+			try {Thread.sleep(10);} catch (InterruptedException e) {}
+		if(in) {
+			CardAnimator cardAnim = new CardAnimator(x,y,1700,760,img[4],500000000L,0,1,1);
+			cardAnim.start();
+			animations.add(cardAnim);
+			while(AnimationManager.animating())
+				try {Thread.sleep(10);} catch (InterruptedException e) {}
+		}
+
 	}
 	
 	public static boolean animating() {

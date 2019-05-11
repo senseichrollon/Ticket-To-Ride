@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 public class ShuffleAnimator implements Animator {
 	private long duration;
 	private CardAnimator[] anim;
-	private boolean first;
 	private boolean running;
 	
 	public ShuffleAnimator(Point[] pt1, BufferedImage[] img, int x, int y,long duration, boolean in) {

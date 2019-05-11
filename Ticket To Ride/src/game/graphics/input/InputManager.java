@@ -294,7 +294,6 @@ public class InputManager {
 				placeCards.setValidRelease(false);
 			}
 			
-			long time = System.currentTimeMillis();
 			total = 0;
 			for (String s : addMap.keySet()) {
 				MButton button = addMap.get(s);
@@ -346,7 +345,6 @@ public class InputManager {
 //
 //			}
 			try {Thread.sleep(10);} catch (InterruptedException e) {}
-			System.out.println(System.currentTimeMillis() - time);
 		}
 		reset();
 		return map;
