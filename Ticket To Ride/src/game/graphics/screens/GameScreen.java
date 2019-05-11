@@ -124,7 +124,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 				}
 				case 2: {
 					int id = input.requestTrack(cMapDrawer.getDrawMap(), game.getPlacableTracks());
-					System.out.println(game.getPlayers()[game.getCurrentPlayer()].getTrainColor());
+					//System.out.println(game.getPlayers()[game.getCurrentPlayer()].getTrainColor());
 					input.reset();
 					Track track = game.getBoard().getTrack(id > 100? id-1000:id);
 					HashMap<String,Integer> cards = input.requestCards(track, id>100, HandDrawer.getCards(),game.getPlayers()[game.getCurrentPlayer()]);
@@ -161,12 +161,18 @@ public class GameScreen extends ScreenManager implements Runnable {
 	}
 	
 	public void requestGovContract(int n) {
+		
 		ContractCard[] cards = game.drawContracts(n);
 		BufferedImage[] img = new BufferedImage[cards.length];
 		for(int i = 0; i < cards.length; i++) {
 			img[i] = ImageLoader.getCopy(contractDrawer.getCardImages().get(cards[i]));
 		}
 		ArrayList<Integer> keep = input.requestGovernmentContract(cards, img);
+		if(keep == null)
+		{
+			game.endGameDebug();
+			keep = input.requestGovernmentContract(cards, img);
+		}
 		ArrayList<ContractCard> retCards = new ArrayList<ContractCard>();
 		ArrayList<ContractCard> keepCards = new ArrayList<ContractCard>();
 		for(int i = 0; i < cards.length; i++) {
