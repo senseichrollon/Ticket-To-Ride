@@ -45,6 +45,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 
 	private InputManager input;
 	private boolean init;
+	private boolean running;
 	
 
 	public GameScreen(MouseInput in) {
@@ -89,6 +90,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 	@Override
 	public void run() {
 		initGame();
+		running = true;
 		for(int i = 0; i < game.getPlayers().length; i++) {
 			requestGovContract(5);
 			input.reset();
@@ -149,19 +151,15 @@ public class GameScreen extends ScreenManager implements Runnable {
 			}
 			input.reset();
 
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			try {Thread.sleep(1000);} catch (InterruptedException e){e.printStackTrace();}
 			game.updatePlayer();
 		}
 		GraphicsPanel.getPanel().remove(contractDrawer);
 		ScreenManager.switchEndGame(game.endGame());
+		running = false;
 	}
 	
 	public void requestGovContract(int n) {
-		
 		ContractCard[] cards = game.drawContracts(n);
 		BufferedImage[] img = new BufferedImage[cards.length];
 		for(int i = 0; i < cards.length; i++) {
@@ -290,5 +288,9 @@ public class GameScreen extends ScreenManager implements Runnable {
 		input.draw(g);
 		drawLeaderBoard(g);
 		AnimationManager.draw(g);
+	}
+	
+	public boolean running() {
+		return running;
 	}
 }

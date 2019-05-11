@@ -17,25 +17,20 @@ public class Deck {
 		trainDeck = new LinkedList<String>();
 		drawnTrainDeck = new LinkedList<String>();
 		contractDeck = new LinkedList<ContractCard>();
-		for (int i = 0; i < 12; i++) {
-			trainDeck.add("green");
-			trainDeck.add("yellow");
-			trainDeck.add("purple");
-			trainDeck.add("black");
-			trainDeck.add("white");
-			trainDeck.add("blue");
-			trainDeck.add("red");
-			trainDeck.add("orange");
-		}
-
-		for (int i = 0; i < 14; i++) {
-			trainDeck.add("wild");
-		}
-
-		// Shuffle
 		ArrayList<String> list = new ArrayList<String>();
-		while (!trainDeck.isEmpty()) {
-			list.add(trainDeck.poll());
+
+		for (int i = 0; i < 12; i++) {
+			list.add("green");
+			list.add("yellow");
+			list.add("purple");
+			list.add("black");
+			list.add("white");
+			list.add("blue");
+			list.add("red");
+			list.add("orange");
+		}
+		for (int i = 0; i < 14; i++) {
+			list.add("wild");
 		}
 		Collections.shuffle(list);
 		for (int i = 0; i < list.size(); i++) {
@@ -63,9 +58,6 @@ public class Deck {
 		String temp = trainDeck.poll();
 		if (def)
 			AnimationManager.faceDownCardAnimation(temp);
-		while (AnimationManager.animating()) {
-			try {Thread.sleep(10);} catch (InterruptedException e) {}
-		}
 		check();
 		return temp;
 	}
@@ -123,6 +115,8 @@ public class Deck {
 	public String drawTrain(int c) {
 		String temp = upTrains[c];
 		upTrains[c] = null;
+		if(trainDeck.isEmpty())
+			shuffleDeckIfFinished();
 		replaceTrains(temp, true);
 		check();
 		return temp;
@@ -137,24 +131,21 @@ public class Deck {
 			for (int i = 0; i < upTrains.length; i++) {
 				if (upTrains[i] == null) {
 					String s = trainDeck.poll();
-						AnimationManager.replaceTrainsAnimation(i, s);
-						AnimationManager.addTrainCardAnimation(i, prev);
-						while (AnimationManager.animating()) {
-							try {Thread.sleep(10);} catch (InterruptedException e) {}
-						}
-					
+					AnimationManager.replaceTrainsAnimation(i, s);
+					AnimationManager.addTrainCardAnimation(i, prev);					
 					upTrains[i] = s;
 				}
 			}
 		} else {
 			String[] temp = new String[5];
 			int wildCount = 0;
+			System.out.println(trainDeck);
 			for(int i = 0; i < upTrains.length; i++) {
 				temp[i] = trainDeck.poll();
 				if(temp[i].equals("wild"))
 					wildCount++;
 			}
-			if(wildCount < 3 )
+			if(wildCount< 3)
 				AnimationManager.shuffle(temp, false);
 			for(int i = 0; i < upTrains.length; i++) {
 				upTrains[i] = temp[i];
@@ -166,6 +157,7 @@ public class Deck {
 	}
 
 	public void check() {
+		System.out.println(trainDeck.size());
 		if (trainDeck.size() == 0)
 			shuffleIfDeckFinished();
 		int cntWild = 0;

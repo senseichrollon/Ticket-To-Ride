@@ -55,7 +55,8 @@ public class MenuScreen extends ScreenManager {
 		if(playButton.isValidRelease()) {
 			playButton.setValidRelease(false);
 			ScreenManager.switchScreen(ScreenManager.GAME);
-			((GameScreen)ScreenManager.getCurrentScreen()).startGame();
+			if(!((GameScreen)ScreenManager.getCurrentScreen()).running())
+				((GameScreen)ScreenManager.getCurrentScreen()).startGame();
 		}
 		
 		if(exitButton.isValidRelease()) {

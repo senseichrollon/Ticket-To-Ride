@@ -54,8 +54,10 @@ public class Endgame extends ScreenManager{
 	public void update() 
 	{
 		updateButton(input.clicked(), input.released(), new Point(input.getX(), input.getY()));
-		if(exitButton.isValidRelease()) 
-			System.exit(0);
+		if(exitButton.isValidRelease()) {
+			exitButton.setValidRelease(false);
+			ScreenManager.switchScreen(MENU);
+		}
 	}
 	
 	public void setData(int[][] vals)

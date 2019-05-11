@@ -65,6 +65,9 @@ public class AnimationManager {
 		CardAnimator cardAnim = new CardAnimator(x1,y1,x2,y2,img,500000000L,1.25,0.65/(8.0/10),0.65/(8.0/10));
 		cardAnim.start();
 		animations.add(cardAnim);
+		while (AnimationManager.animating()) {
+			try {Thread.sleep(10);} catch (InterruptedException e) {}
+		}
 	}
 	
 	public static void faceDownCardAnimation(String color) {
@@ -81,16 +84,11 @@ public class AnimationManager {
 		CardAnimator cardAnim = new CardAnimator(x1,y1,x2,y2,img,500000000L,0.5,0.7,0.7);
 		cardAnim.start();
 		animations.add(cardAnim);
+		while (AnimationManager.animating()) {
+			try {Thread.sleep(10);} catch (InterruptedException e) {}
+		}
 	}
-	
-	public static void returnGovernmentContractAnimation() {
 		
-	}
-	
-	public static void keepGovernmentContractAnimation() {
-		
-	}
-	
 	public static void placeTrainsAnimation(String color, int count, int wildCount) {
 		int x1 = 0,y1 = 0;
 		BufferedImage img = null;
@@ -122,11 +120,11 @@ public class AnimationManager {
 			}
 			
 			if(i < wildCount) {
-				CardAnimator anim = new CardAnimator(x2,y2,x3,y3, wild,1500000000L/ratio,1,1.42,1.42);
+				CardAnimator anim = new CardAnimator(x2,y2,x3,y3, wild,500000000L,1,1.42,1.42);
 				anim.start();
 				animations.add(anim);
 			}
-			try {Thread.sleep(100);} catch (InterruptedException e) {}
+			try {Thread.sleep(200);} catch (InterruptedException e) {}
 		}
 		while(animating()) {
 			try {Thread.sleep(10);} catch (InterruptedException e) {}
