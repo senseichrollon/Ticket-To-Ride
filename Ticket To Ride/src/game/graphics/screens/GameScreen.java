@@ -48,6 +48,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 
 	private InputManager input;
 	private boolean init;
+	private boolean running;
 	
 
 	public GameScreen(MouseInput in) {
@@ -56,7 +57,6 @@ public class GameScreen extends ScreenManager implements Runnable {
 		logo = ImageLoader.resize(logo, logo.getWidth() / 3, logo.getHeight() / 3);
 		govContract = ImageLoader.loadImage("resources/contractcard/ticket_card_back.jpg");
 		trainContract = ImageLoader.loadImage("resources/traincards/backtrain.png");
-		AnimationManager.init();
 	}
 	
 	public void startGame() {
@@ -86,12 +86,15 @@ public class GameScreen extends ScreenManager implements Runnable {
 		}
 
 		handDrawer = new HandDrawer(cards);
+		AnimationManager.init();
 		handDrawer.setTree(game.getPlayers()[game.getCurrentPlayer()].getCards());
+		
 		init = false;
 	}
 	@Override
 	public void run() {
 		initGame();
+		running = true;
 		for(int i = 0; i < game.getPlayers().length; i++) {
 			requestGovContract(5);
 			input.reset();
@@ -121,7 +124,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 					}
 					coords[5] = new Rectangle2D.Double(1900- trainContract.getHeight()/4,760,(trainContract.getHeight())/4,(trainContract.getWidth())/4);
 					while(game.getNumCardsDrawn() < 2) {
-						int index = input.requestTrainCardSelection(coords,game.getNumCardsDrawn(),upTrains);
+						int index = input.requestTrainCardSelection(coords,game.getNumCardsDrawn(),upTrains,game);
 						if(index < 5)
 							game.drawFaceUpCard(index);
 						else
@@ -157,20 +160,16 @@ public class GameScreen extends ScreenManager implements Runnable {
 				}
 			}
 			input.reset();
-
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			System.out.println(game.getDeck().getTrainDeck());
+			try {Thread.sleep(1000);} catch (InterruptedException e){e.printStackTrace();}
 			game.updatePlayer();
-		}
+		}		
 		GraphicsPanel.getPanel().remove(contractDrawer);
 		ScreenManager.switchEndGame(game.endGame());
+		running = false;
 	}
 	
 	public void requestGovContract(int n) {
-		
 		ContractCard[] cards = game.drawContracts(n);
 		BufferedImage[] img = new BufferedImage[cards.length];
 		for(int i = 0; i < cards.length; i++) {
@@ -299,5 +298,9 @@ public class GameScreen extends ScreenManager implements Runnable {
 		input.draw(g);
 		drawLeaderBoard(g);
 		AnimationManager.draw(g);
+	}
+	
+	public boolean running() {
+		return running;
 	}
 }

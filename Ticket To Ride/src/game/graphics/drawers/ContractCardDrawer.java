@@ -97,7 +97,7 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 				continue;
 			AffineTransform at = new AffineTransform();
 			at.setToTranslation(x, 20);
-			at.scale(0.17, 0.13);
+			at.scale(0.166666, 0.1428);
 			g.drawImage(contractCards.get(card),at,null);
 			x += 200;
 		}
@@ -114,7 +114,7 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 				continue;
 			AffineTransform at = new AffineTransform();
 			at.setToTranslation(x, 20);
-			at.scale(0.17, 0.13);
+			at.scale(0.166666, 0.1428);
 			g.drawImage(contractCards.get(card),at,null);
 			x += 200;
 		}

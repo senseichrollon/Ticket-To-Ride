@@ -8,8 +8,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Scanner;
+import java.util.Set;
 
+import game.ai.PathEdge;
 import game.main.GameState;
 
 public class CityMap {
@@ -335,6 +339,77 @@ public class CityMap {
 			}
 		}
 		return out;
+	}
+	
+	public ArrayList<PathEdge> shortestPath(String city1, String city2, String player) {
+		ArrayList<PathEdge> ret = new ArrayList<>();
+		
+		int c1 = CITYINDEX.get(city1);
+		int c2 = CITYINDEX.get(city2);
+		Set<Integer> visited = new HashSet<Integer>();
+			
+		PriorityQueue<PathEdge> pq = new PriorityQueue<>();
+		
+		for(Track track : map.get(c1)) {
+			if(track.containsPlayerCol(player))
+				pq.add(new PathEdge(track,0,true));
+		}
+		
+		for(Track track : FULLMAP.get(c1)) {
+			if(track.containsPlayerCol(player))
+				pq.add(new PathEdge(track,0,true));
+			else
+				pq.add(new PathEdge(track,0,false));		
+		}
+		visited.add(c1);		
+		PathEdge dest = null;
+		while(!pq.isEmpty()) {
+			PathEdge at = pq.poll();
+			int city;
+			if(at.getPrevious() == null) {
+				city = at.getTrack().getOtherCity(c1);
+				at.setCity(city);
+			}
+			else {
+				city = at.getCity();
+			}
+
+			visited.add(city);
+			if(city == c2) {
+				dest = at;
+				break;
+			}			
+			for(Track track : map.get(city)) {
+				if(!visited.contains(track.getOtherCity(city)) && track.containsPlayerCol(player)) {
+					PathEdge edge = new PathEdge(track,at.getWeight(),true);
+					edge.setPrevious(at);
+					pq.add(edge);
+				}
+			}
+			
+			for(Track track : FULLMAP.get(city)) {
+				if(!visited.contains(track.getOtherCity(city))) {
+					if(track.containsPlayerCol(player)) {
+						PathEdge edge = new PathEdge(track, at.getWeight(), true);
+						edge.setPrevious(at);
+						pq.add(edge);
+					} else {
+						PathEdge edge = new PathEdge(track, at.getWeight(), false);
+						edge.setPrevious(at);
+						pq.add(edge);
+					}
+				}
+			}
+		}
+		while(dest != null) {
+			Track track = dest.getTrack();
+			if(!track.containsPlayerCol(player)) {
+				ret.add(dest);
+			}
+			dest = dest.getPrevious();
+		}
+		Collections.reverse(ret);
+		return ret;
 	}
 	
 	public String printFULLMAP()

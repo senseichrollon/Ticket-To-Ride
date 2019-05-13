@@ -154,7 +154,10 @@ public class Track implements Comparable<Track> {
 		return length;
 	}
 
+	@Override
 	public String toString() {
-		return id + " " + cityOne + " " + cityTwo + " " + trackColor1 + " " + playerColor1 + " " + trackColor2 + " " + playerColor2 + " "+ length;
+		return CityMap.INDEX_TO_CITY.get(cityOne) + " " + CityMap.INDEX_TO_CITY.get(cityTwo);
 	}
+
+	
 }
