@@ -72,6 +72,16 @@ public class AIPlayer extends Player{
 	}
 	
 	private void drawTrainCards(Track track) {
+		int side = 0;
+		if(track.isDoubleTrack()) {
+			int cnt1 = cards.getCard(track.getTrackColor1()).getCount();
+			int cnt2 = cards.getCard(track.getTrackColor2()).getCount();
+			
+			if(cnt1 < cnt2) {
+				side = 1;
+			}
+		}
+		
 		
 	}
 	
