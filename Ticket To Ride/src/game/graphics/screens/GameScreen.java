@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.stream.IntStream;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import game.entity.ContractCard;
 import game.entity.Deck;
 import game.entity.Player;
@@ -100,7 +103,13 @@ public class GameScreen extends ScreenManager implements Runnable {
 
 		}
 		while (game.hasWinner() <= 4) {
-//			System.out.println("status: " + game.hasWinner());
+			if(game.hasWinner() == 1)
+			{
+				JOptionPane.showMessageDialog(new JFrame("Game Ending"),
+						"A player now has 3 or less train cards! Everyone gets one last turn now!", 
+						"Game Ending", JOptionPane.PLAIN_MESSAGE);
+			}
+				
 			int num = input.requestTypeOfTurn(game);
 			input.reset();
 			switch (num) {
