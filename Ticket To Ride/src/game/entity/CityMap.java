@@ -13,6 +13,7 @@ import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.util.Set;
 
+import game.ai.AIPlayer;
 import game.ai.PathEdge;
 import game.main.GameState;
 
@@ -378,7 +379,12 @@ public class CityMap {
 			if(city == c2) {
 				dest = at;
 				break;
-			}			
+			}
+			if(AIPlayer.print) {
+				System.out.println(INDEX_TO_CITY.get(city));
+				System.out.println(pq);
+			}
+			
 			for(Track track : map.get(city)) {
 				if(!visited.contains(track.getOtherCity(city)) && track.containsPlayerCol(player)) {
 					PathEdge edge = new PathEdge(track,at.getWeight(),true);

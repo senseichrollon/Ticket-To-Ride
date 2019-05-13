@@ -31,8 +31,8 @@ public class ContractPath implements Comparable<ContractPath> {
 		return (double)card.getPoints()/(double)sumPath();
 	}
 	
-	public Track getBestTrack(Player player) {
-		return null;
+	public ArrayList<PathEdge> getPath() {
+		return path;
 	}
 
 	@Override
