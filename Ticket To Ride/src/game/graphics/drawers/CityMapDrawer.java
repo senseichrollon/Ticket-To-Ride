@@ -3,13 +3,11 @@ package game.graphics.drawers;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,26 +33,18 @@ public class CityMapDrawer {
 			int n = in.nextInt();
 			for (int i = 0; i < n; i++) {
 				int id = in.nextInt();
-				in.next();
-				in.next();
-				int track = in.nextInt();
-				boolean doubleTrack = in.nextBoolean();
-				in.next();
-				String color = in.next().toLowerCase();
-				Point2D[] pts = new Point2D.Double[6];
-				for (int j = 0; j < 3; j++) {
-					pts[j] = new Point2D.Double((int) in.nextDouble(), (int) in.nextDouble());
-				}
-				if (doubleTrack) {
-					String color2 = in.next();
-					for (int j = 3; j < 6; j++) {
-						pts[j] = new Point2D.Double(in.nextDouble(), in.nextDouble());
+				int doubleTrack = in.nextInt();
+				int trackLen = in.nextInt();
+				System.out.println(id + " " + doubleTrack + " " + trackLen);
+				Point2D[][] pts = new Point2D[2][trackLen * 2];
+				for(int j = 0; j < doubleTrack; j++) {
+					pts[j] = new Point2D[trackLen * 2];
+					for(int k = 0; k < trackLen * 2; k+=2) {
+						pts[j][k] = new Point2D.Double(in.nextInt(), in.nextInt());
+						pts[j][k+1] = new Point2D.Double(in.nextInt(), in.nextInt());
 					}
 				}
-
-				TrackDrawer drawer = new TrackDrawer(pts, doubleTrack);
-				tracks.put(id, drawer);
-
+				tracks.put(id, new TrackDrawer(pts[0],pts[1]));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -75,13 +65,16 @@ public class CityMapDrawer {
 
 	public void drawTracks(Graphics2D g) {
 		for (int i : tracks.keySet()) {
+
 			Track track = CityMap.allTracks.get(i);
 			if (track.getPlayerColor1() != null) {
 				tracks.get(i).draw(g, stringToColor(track.getPlayerColor1()), false);
+//				tracks.get(i).draw(g, null, false);
 			}
 
 			if (track.getPlayerColor2() != null) {
 				tracks.get(i).draw(g, stringToColor(track.getPlayerColor2()), true);
+//				tracks.get(i).draw(g, null, true);
 			}
 		}
 	}
@@ -98,51 +91,34 @@ public class CityMapDrawer {
 	}
 
 	public class TrackDrawer {
-		private boolean doubleTrack;
-		private Point2D[] points;
+		private Point2D[] firstTrack, secondTrack;
 		private Color c;
 
-		public TrackDrawer(Point2D[] points, boolean doubleTrack) {
-			this.doubleTrack = doubleTrack;
-			this.points = doubleTrack ? points : Arrays.copyOfRange(points, 0, 3);
+		public TrackDrawer(Point2D[] firstTrack, Point2D[] secondTrack) {
+			this.firstTrack = firstTrack;
+			this.secondTrack = secondTrack;
 			c = new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
-
 		}
 
 		public void draw(Graphics2D g, Color c, boolean second) {
+			Point2D[] pts = (second)?secondTrack:firstTrack;
 			g.setColor(c);
-			AffineTransform at = new AffineTransform();
-			at.setToTranslation(340, -55);
-			at.scale(1.3, 1.3);
-			Path2D path = new Path2D.Double();
-			g.setStroke(new BasicStroke(10, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0f, new float[] { 43, 4 },
-					22));
-			if (!second) {
-				path.moveTo(points[0].getX(), points[0].getY());
-				path.quadTo(points[1].getX(), points[1].getY(), points[2].getX(), points[2].getY());
-
-				path.transform(at);
-				g.draw(path);
-			} else {
-				path.moveTo(points[3].getX(), points[3].getY());
-				path.quadTo(points[4].getX(), points[4].getY(), points[5].getX(), points[5].getY());
-				path.transform(at);
-				g.draw(path);
+			g.setStroke(new BasicStroke(9));
+			for(int i = 0; i < pts.length; i+=2) {
+				int x1 = (int)pts[i].getX();
+				int y1 = (int)pts[i].getY();
+				int x2 = (int)pts[i+1].getX();
+				int y2 = (int)pts[i+1].getY();
+				g.drawLine(x1, y1, x2, y2);
 			}
 		}
 
 		public Point2D.Double getClick(int num) {
-			if (num == 0)
-				return new Point2D.Double(((points[1].getX() * 1.3) + 340), ((points[1].getY() * 1.3) - 55));
-			return new Point2D.Double(((points[4].getX() * 1.3) + 340), ((points[4].getY() * 1.3) - 55));
-
+			Point2D[] pts = (num == 1)?secondTrack:firstTrack;
+			Point2D one = pts[pts.length/2-1];
+			Point2D two = pts[pts.length/2];
+			return new Point2D.Double((one.getX() + two.getX())/2,(one.getY() + two.getY())/2);
 		}
-
-		@Override
-		public String toString() {
-			return "TrackDrawer [doubleTrack=" + doubleTrack + ", points=" + Arrays.toString(points) + ", c=" + c + "]";
-		}
-
 	}
 
 	public Color stringToColor(String color) {

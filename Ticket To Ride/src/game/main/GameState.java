@@ -35,7 +35,7 @@ public class GameState {
 
 		for(Player ply : players) {
 			for(int i = 0; i < 4; i++) {
-				System.out.println(i);
+//				System.out.println(i);
 				String card = deck.drawRandTrain(false);
 				ply.addCard(card, 1);
 			}

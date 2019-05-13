@@ -137,7 +137,8 @@ public class InputManager {
 			displayButtons.add(b1);
 		if(game.getPlacableTracks().size() > 0)
 			displayButtons.add(b2);
-		displayButtons.add(b3);
+		if(game.getDeck().canDrawTrains())
+			displayButtons.add(b3);
 
 		while (pressedButton == null) {
 			try {Thread.sleep(100);} catch (InterruptedException e) {}
@@ -146,13 +147,14 @@ public class InputManager {
 		return pressedButton.getId();
 	}
 
-	public int requestTrainCardSelection(Rectangle2D.Double[] clickArea, int numCardsDrawn, String[] upTrains) {
+	public int requestTrainCardSelection(Rectangle2D.Double[] clickArea, int numCardsDrawn, String[] upTrains,GameState game) {
 		for (int i = 0; i < 5; i++) {
 			if (numCardsDrawn != 1 || !upTrains[i].equals("wild")) {
 				clickBoxes.add(new ClickBox(clickArea[i], i));
 			}
 		}
-		clickBoxes.add(new ClickBox(clickArea[5], 5));
+		if(!game.getDeck().getTrainDeck().isEmpty())
+			clickBoxes.add(new ClickBox(clickArea[5], 5));
 		while (pressedClick == null) {
 			try {Thread.sleep(100);} catch (InterruptedException e) {}
 		}
