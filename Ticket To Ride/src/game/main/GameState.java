@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import game.ai.AIPlayer;
 import game.entity.CardNode;
 import game.entity.CityMap;
 import game.entity.ContractCard;
@@ -30,7 +31,7 @@ public class GameState {
 		players[0] = new Player("Jim", "blue");
 		players[1] = new Player("Joe", "purple");
 		players[2] = new Player("Bob", "green");
-		players[3] = new Player("John", "yellow");
+		players[3] = new AIPlayer("John", "yellow",this);
 		deck = new Deck();
 
 		for(Player ply : players) {

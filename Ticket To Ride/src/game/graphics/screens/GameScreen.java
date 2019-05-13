@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.stream.IntStream;
 
+import game.ai.AIPlayer;
 import game.entity.ContractCard;
 import game.entity.Deck;
 import game.entity.Player;
@@ -93,7 +94,13 @@ public class GameScreen extends ScreenManager implements Runnable {
 		initGame();
 		running = true;
 		for(int i = 0; i < game.getPlayers().length; i++) {
-			requestGovContract(5);
+			if(game.getPlayers()[game.getCurrentPlayer()] instanceof AIPlayer) {
+				try {Thread.sleep(500);} catch (InterruptedException e) {	}
+				AIPlayer player = (AIPlayer) game.getPlayers()[game.getCurrentPlayer()];
+				player.startGameMove();
+			} else {
+				requestGovContract(5);
+			}
 			input.reset();
 			try {Thread.sleep(1000);} catch (InterruptedException e) {	}
 			game.updatePlayer();

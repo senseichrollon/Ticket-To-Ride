@@ -1,10 +1,12 @@
 package game.testing;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
+import game.ai.ContractPath;
 import game.entity.CityMap;
 import game.entity.ContractCard;
-import game.entity.Track;
+import game.entity.Deck;
 
 
 public class TestMap 
@@ -12,7 +14,7 @@ public class TestMap
 	public static void main(String[] args) throws IOException 
 	{
 		CityMap cm = new CityMap();
-		
+		Deck deck = new Deck();
 		
 //		cm.addTrack(cm.getTrack("Nashville", "Raleigh"), "Yeet", null, 1);
 //		cm.addTrack(cm.getTrack("Pittsburgh", "Raleigh"), "Yeet", null, 1);
@@ -42,7 +44,15 @@ public class TestMap
 		
 //		System.out.println(cm.completedContract("Yeet", new ContractCard("Salt Lake City", "Kansas City", 100)));
 //		System.out.println(cm.completedContract("Yeet", new ContractCard("Nashville", "New York", 100)));
-		cm.addTrack(cm.getTrack("Boston", "New York"), "Yeet", "yellow", 1);
-		System.out.println(cm.shortestPath("Montreal", "Pittsburgh", "Yeet"));
+		ArrayList<ContractPath> list = new ArrayList<>();
+		for(ContractCard card : deck.getContractCards()) {
+			ContractPath path = new ContractPath(card);
+			path.calculateShortestPath(cm, "Yeet");
+			list.add(path);
+		}
+		Collections.sort(list);
+		for(int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i).ratio());
+		}
 	}
 }
