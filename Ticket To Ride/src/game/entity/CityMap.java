@@ -233,7 +233,7 @@ public class CityMap {
 				int segLongest = -1;
 				
 				if(!dp.isEmpty())
-					Math.max(Collections.max(dp), temp);
+					segLongest = Math.max(Collections.max(dp), temp);
 				else
 					segLongest = temp;
 				
