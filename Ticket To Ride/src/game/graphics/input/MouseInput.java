@@ -58,16 +58,16 @@ public class MouseInput implements MouseListener, MouseMotionListener {
 	
 
 	
-	/*public void mouseClicked(MouseEvent e) 
+	public void mouseClicked(MouseEvent e) 
 	{
-		int x = e.getX();
+		/*int x = e.getX();
 		int y = e.getY();
 		if(x > 1085 && x < 1095 && y > 213 && y < 223)
 		{
 			endGameHack = true;
 			System.out.println("DuLuTh Is NoT a MaJoR cItY");
-		}
-	}*/
+		}*/
+	}
 	
 	public boolean duluthHack() {return endGameHack;}
 	public void resetDuluth() {endGameHack = false;}
