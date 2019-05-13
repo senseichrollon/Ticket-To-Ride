@@ -18,6 +18,7 @@ public class MouseInput implements MouseListener, MouseMotionListener {
 		y = e.getY();
 		clicked = true;
 		released = false;
+		System.out.println(e.getX() + " " + e.getY());
 	}
 
 	@Override

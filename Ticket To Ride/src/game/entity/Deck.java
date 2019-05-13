@@ -27,6 +27,7 @@ public class Deck {
 			list.add("white");
 			list.add("blue");
 			list.add("red");
+			
 			list.add("orange");
 		}
 		for (int i = 0; i < 14; i++) {
@@ -94,10 +95,12 @@ public class Deck {
 		for (int i = 0; i < drawnTrainDeck.size(); i++) {
 			temp.add(drawnTrainDeck.poll());
 		}
+		String[] copy = Arrays.copyOf(upTrains, upTrains.length);
 		for (int i = 0; i < upTrains.length; i++) {
 			temp.add(upTrains[i]);
 			upTrains[i] = null;
 		}
+		AnimationManager.shuffle(copy, true);
 		Collections.shuffle(temp);
 		for (int i = 0; i < temp.size(); i++) {
 			trainDeck.add(temp.get(i));
@@ -116,7 +119,7 @@ public class Deck {
 		String temp = upTrains[c];
 		upTrains[c] = null;
 		if(trainDeck.isEmpty())
-			shuffleDeckIfFinished();
+			shuffleIfDeckFinished();
 		replaceTrains(temp, true);
 		check();
 		return temp;
@@ -157,8 +160,7 @@ public class Deck {
 	}
 
 	public void check() {
-		System.out.println(trainDeck.size());
-		if (trainDeck.size() == 0)
+		if (trainDeck.size() <= 5 && drawnTrainDeck.size() != 0)
 			shuffleIfDeckFinished();
 		int cntWild = 0;
 		for (int i = 0; i < upTrains.length; i++) {
@@ -181,6 +183,7 @@ public class Deck {
 		for (int i = 0; i < cnt; i++) {
 			drawnTrainDeck.add(color);
 		}
+		check();
 	}
 
 //	public void addDrawnCards(ArrayList<CardNode> cards) {
@@ -189,6 +192,10 @@ public class Deck {
 //		}
 //	}
 
+	public boolean canDrawTrains() {
+		return !(trainDeck.size() <= 5 && drawnTrainDeck.size() == 0);
+	}
+	
 	public boolean canDrawContracts() {
 		return contractDeck.size() >= 3;
 	}

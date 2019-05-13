@@ -114,7 +114,7 @@ public class AnimationManager {
 		wild = ImageLoader.resize(wild, (int)(wild.getWidth() * 0.65), (int)(wild.getHeight() * 0.65));
 		for(int i = 0; i < Math.max(count, wildCount); i++) {
 			if(i < count) {
-				CardAnimator anim = new CardAnimator(x1,y1,x3,y3, img,1500000000L/ratio,1,1.42,1.42);
+				CardAnimator anim = new CardAnimator(x1,y1,x3,y3, img,500000000L,1,1.42,1.42);
 				anim.start();
 				animations.add(anim);
 			}
@@ -133,38 +133,41 @@ public class AnimationManager {
 	}
 	
 	public static void shuffle(String[] cards, boolean in) {
-		Point[] points = new Point[5];
-		BufferedImage[] img = new BufferedImage[5];
-		int y = 20;
-		for(int i = 0; i < 5; i++) {
-			points[i] = new Point(1700,y);
-			y += 130;
-			img[i] = GameScreen.cards.get(cards[i]);
-			img[i] = ImageLoader.resize(img[i], img[i].getWidth()*8/10, img[i].getHeight() * 8/10);
-		}
-		
-		int x;
-		if(in) {
-			x = points[4].x;
-			y = points[4].y;
-		} else {
-			x = 1700;
-			y = 760;
-		}
+		try {
+			Point[] points = new Point[5];
+			BufferedImage[] img = new BufferedImage[5];
+			int y = 20;
+			for(int i = 0; i < 5; i++) {
+				points[i] = new Point(1700,y);
+				y += 130;
+				img[i] = GameScreen.cards.get(cards[i]);
+				img[i] = ImageLoader.resize(img[i], img[i].getWidth()*8/10, img[i].getHeight() * 8/10);
+			}
+			
+			int x;
+			if(in) {
+				x = points[4].x;
+				y = points[4].y;
+			} else {
+				x = 1700;
+				y = 760;
+			}
 
-		ShuffleAnimator anim = new ShuffleAnimator(points,img,x,y,500000000L,in);
-		anim.start();
-		animations.add(anim);
-		while(AnimationManager.animating())
-			try {Thread.sleep(10);} catch (InterruptedException e) {}
-		if(in) {
-			CardAnimator cardAnim = new CardAnimator(x,y,1700,760,img[4],500000000L,0,1,1);
-			cardAnim.start();
-			animations.add(cardAnim);
+			ShuffleAnimator anim = new ShuffleAnimator(points,img,x,y,500000000L,in);
+			anim.start();
+			animations.add(anim);
 			while(AnimationManager.animating())
 				try {Thread.sleep(10);} catch (InterruptedException e) {}
+			if(in) {
+				CardAnimator cardAnim = new CardAnimator(x,y,1700,760,img[4],500000000L,0,1,1);
+				cardAnim.start();
+				animations.add(cardAnim);
+				while(AnimationManager.animating())
+					try {Thread.sleep(10);} catch (InterruptedException e) {}
+			}
+		} catch(Exception e) {
+			
 		}
-
 	}
 	
 	public static boolean animating() {
