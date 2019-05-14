@@ -81,38 +81,6 @@ public class PlayerCardTree {
 		}
 	}
 
-//	public ArrayList<CardNode> remove(String color, int c) {
-//		ArrayList<CardNode> cards = new ArrayList<CardNode>();
-//		CardNode wildCard;
-//		CardNode temp = getCard(root, color);
-//		if (temp == null) {
-//			return cards;
-//		}
-//		int numLeft = temp.getCount() - c;
-//		if (numLeft > 0) {
-//			temp.setCount(numLeft);
-//			cards.add(new CardNode(color, c));
-//			return cards;
-//		} else if (numLeft < 0) {
-//			wildCard = getCard(root, "wild");
-//			if (wildCard == null)
-//				return cards;
-//			int wildCardLeft = wildCard.getCount() - (-1 * numLeft);
-//			if (wildCardLeft < 0) {
-//				return cards;
-//			} else if (wildCardLeft > 0) {
-//				wildCard.setCount(wildCardLeft);
-//				cards.add(new CardNode("wild", numLeft));
-//				numLeft = 0;
-//			}
-//		}
-//		if (numLeft == 0) {
-//			cards.add(new CardNode(color, c));
-//			temp.setCount(0);
-//			return cards;
-//		}
-//		return cards;
-//	}
 	
 	public void remove(String color, int cnt, int wildCnt) {
 		CardNode card = getCard(color);
@@ -129,6 +97,20 @@ public class PlayerCardTree {
 			total += getCard(s).getCount();
 		}
 		return total;
+	}
+	
+	public CardNode getMax() {
+		String[] colors = {"black", "blue", "green", "orange", "purple", "red", "white", "yellow","wild"};
+		CardNode ret = null;
+		int max = Integer.MIN_VALUE;
+		for(String s : colors) {
+			CardNode node = getCard(s);
+			if(node.getCount() > max) {
+				ret = node;
+				max = node.getCount();
+			}
+		}
+		return ret;
 	}
 
 	public String toString() {

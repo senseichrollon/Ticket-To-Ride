@@ -19,6 +19,7 @@ import java.util.stream.IntStream;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import game.ai.AIPlayer;
 import game.entity.ContractCard;
 import game.entity.Deck;
 import game.entity.Player;
@@ -96,7 +97,13 @@ public class GameScreen extends ScreenManager implements Runnable {
 		initGame();
 		running = true;
 		for(int i = 0; i < game.getPlayers().length; i++) {
-			requestGovContract(5);
+			if(game.getPlayers()[game.getCurrentPlayer()] instanceof AIPlayer) {
+				try {Thread.sleep(500);} catch (InterruptedException e) {	}
+				AIPlayer player = (AIPlayer) game.getPlayers()[game.getCurrentPlayer()];
+				player.startGameMove();
+			} else {
+				requestGovContract(5);
+			}
 			input.reset();
 			try {Thread.sleep(1000);} catch (InterruptedException e) {	}
 			game.updatePlayer();
@@ -108,59 +115,62 @@ public class GameScreen extends ScreenManager implements Runnable {
 				JOptionPane.showMessageDialog(new JFrame("Game Ending"),
 						"A player now has 3 or less train cards! Everyone gets one last turn now!", 
 						"Game Ending", JOptionPane.PLAIN_MESSAGE);
-			}
-				
-			int num = input.requestTypeOfTurn(game);
-			input.reset();
-			switch (num) {
-				case 1: {
-					Rectangle2D.Double[] coords = new Rectangle2D.Double[6];
-					int y = 20;
-					String[] upTrains = game.getDeck().getUpCards();
-					for(int i = 0; i < 5; i++) {
-						BufferedImage img = cards.get(upTrains[i]);
-						coords[i] = new Rectangle2D.Double(1700,y,(img.getWidth()*8)/10,(img.getHeight()*8)/10);
-						y+= 130;
-					}
-					coords[5] = new Rectangle2D.Double(1900- trainContract.getHeight()/4,760,(trainContract.getHeight())/4,(trainContract.getWidth())/4);
-					while(game.getNumCardsDrawn() < 2) {
-						int index = input.requestTrainCardSelection(coords,game.getNumCardsDrawn(),upTrains,game);
-						if(index < 5)
-							game.drawFaceUpCard(index);
-						else
-							game.drawFaceDownCard();
-						input.reset();
-					}
-
-					break;
-				}
-				case 2: {
-					int id = input.requestTrack(cMapDrawer.getDrawMap(), game.getPlacableTracks());
-					//System.out.println(game.getPlayers()[game.getCurrentPlayer()].getTrainColor());
-					input.reset();
-					Track track = game.getBoard().getTrack(id > 100? id-1000:id);
-					HashMap<String,Integer> cards = input.requestCards(track, id>100, HandDrawer.getCards(),game.getPlayers()[game.getCurrentPlayer()]);
-					int wildCount = 0;
-					String color = "";
-					int colorCount = 0;
-					
-					for(String s : cards.keySet()) {
-						if(s.equals("wild")) {
-							wildCount = cards.get(s);
-						} else if(cards.get(s) != 0) {
-							color = s;
-							colorCount = cards.get(s);
+			}			if(game.getPlayers()[game.getCurrentPlayer()] instanceof AIPlayer) {
+				try {Thread.sleep(500);} catch (InterruptedException e) {	}
+				AIPlayer player = (AIPlayer) game.getPlayers()[game.getCurrentPlayer()];
+				player.makeMove();
+			} else {
+				int num = input.requestTypeOfTurn(game);
+				input.reset();
+				switch (num) {
+					case 1: {
+						Rectangle2D.Double[] coords = new Rectangle2D.Double[6];
+						int y = 20;
+						String[] upTrains = game.getDeck().getUpCards();
+						for(int i = 0; i < 5; i++) {
+							BufferedImage img = cards.get(upTrains[i]);
+							coords[i] = new Rectangle2D.Double(1700,y,(img.getWidth()*8)/10,(img.getHeight()*8)/10);
+							y+= 130;
 						}
+						coords[5] = new Rectangle2D.Double(1900- trainContract.getHeight()/4,760,(trainContract.getHeight())/4,(trainContract.getWidth())/4);
+						while(game.getNumCardsDrawn() < 2) {
+							int index = input.requestTrainCardSelection(coords,game.getNumCardsDrawn(),upTrains,game);
+							if(index < 5)
+								game.drawFaceUpCard(index);
+							else
+								game.drawFaceDownCard();
+							input.reset();
+						}
+
+						break;
 					}
-					game.placeTrack(track, color, colorCount, wildCount, id>100);
-					break;
-				}
-				case 3: {
-					requestGovContract(3);
+					case 2: {
+						int id = input.requestTrack(cMapDrawer.getDrawMap(), game.getPlacableTracks());
+						//System.out.println(game.getPlayers()[game.getCurrentPlayer()].getTrainColor());
+						input.reset();
+						Track track = game.getBoard().getTrack(id > 100? id-1000:id);
+						HashMap<String,Integer> cards = input.requestCards(track, id>100, HandDrawer.getCards(),game.getPlayers()[game.getCurrentPlayer()]);
+						int wildCount = 0;
+						String color = "";
+						int colorCount = 0;
+						
+						for(String s : cards.keySet()) {
+							if(s.equals("wild")) {
+								wildCount = cards.get(s);
+							} else if(cards.get(s) != 0) {
+								color = s;
+								colorCount = cards.get(s);
+							}
+						}
+						game.placeTrack(track, color, colorCount, wildCount, id>100);
+						break;
+					}
+					case 3: {
+						requestGovContract(3);
+					}
 				}
 			}
 			input.reset();
-			System.out.println(game.getDeck().getTrainDeck());
 			try {Thread.sleep(1000);} catch (InterruptedException e){e.printStackTrace();}
 			game.updatePlayer();
 		}		

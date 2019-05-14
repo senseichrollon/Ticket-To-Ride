@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import game.entity.CityMap;
 import game.entity.ContractCard;
 import game.entity.Player;
+import game.entity.Track;
 
 public class ContractPath implements Comparable<ContractPath> {
 	private ContractCard card;
@@ -13,8 +14,12 @@ public class ContractPath implements Comparable<ContractPath> {
 		this.card = card;
 	}
 	
-	public void calculateShortestPath(CityMap map, Player player) {
-		this.path =  map.shortestPath(card.getCityOne(), card.getCityTwo(), player.getTrainColor());
+	public void calculateShortestPath(CityMap map, String player) {
+		this.path =  map.shortestPath(card.getCityOne(), card.getCityTwo(), player);
+	}
+	
+	public ContractCard getCard() {
+		return card;
 	}
 	
 	public int sumPath() {
@@ -23,11 +28,17 @@ public class ContractPath implements Comparable<ContractPath> {
 	}
 	
 	public double ratio() {
-		return (double)card.getPoints()/sumPath();
+		return (double)card.getPoints()/(double)sumPath();
+	}
+	
+	public ArrayList<PathEdge> getPath() {
+		return path;
 	}
 
 	@Override
 	public int compareTo(ContractPath path) {
-		return Double.compare(path.ratio(), ratio());
+		if(ratio() != path.ratio())
+			return Double.compare(path.ratio(), ratio());
+		return Integer.compare(path.getCard().getPoints(), card.getPoints());
 	}
 }
