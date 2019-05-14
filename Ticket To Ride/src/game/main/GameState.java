@@ -228,12 +228,13 @@ public class GameState {
 		if (longestPath.size() > 1)
 		{
 			ArrayList<Integer> temp = new ArrayList<Integer>();
-			int j = 0;
-			for (int i = 0; i < PLAYER_COLS.length; i++)
+			for (int i = 0; i < longestPath.size(); i++)
 			{
-				if (longestPath.get(j).equals(PLAYER_COLS[i])) 
-					temp.add(i);
-					j++;
+				for(int j = 0; j < PLAYER_COLS.length; j++)
+				{
+					if(longestPath.get(i).equals(PLAYER_COLS[j]))
+						temp.add(j);
+				}
 			}
 			int mostCompleted = temp.get(0);
 			for (int x = 1; x < temp.size(); x++)

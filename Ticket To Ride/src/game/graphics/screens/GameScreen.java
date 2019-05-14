@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.stream.IntStream;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import game.ai.AIPlayer;
 import game.entity.ContractCard;
 import game.entity.Deck;
@@ -107,8 +110,12 @@ public class GameScreen extends ScreenManager implements Runnable {
 
 		}
 		while (game.hasWinner() <= 4) {
-//			System.out.println("status: " + game.hasWinner());
-			if(game.getPlayers()[game.getCurrentPlayer()] instanceof AIPlayer) {
+			if(game.hasWinner() == 1)
+			{
+				JOptionPane.showMessageDialog(new JFrame("Game Ending"),
+						"A player now has 3 or less train cards! Everyone gets one last turn now!", 
+						"Game Ending", JOptionPane.PLAIN_MESSAGE);
+			}			if(game.getPlayers()[game.getCurrentPlayer()] instanceof AIPlayer) {
 				try {Thread.sleep(500);} catch (InterruptedException e) {	}
 				AIPlayer player = (AIPlayer) game.getPlayers()[game.getCurrentPlayer()];
 				player.makeMove();

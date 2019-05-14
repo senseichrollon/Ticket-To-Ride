@@ -76,7 +76,7 @@ public class Endgame extends ScreenManager{
 		exitButton.draw(g);
 		
 		for(int i = 0; i < data.length; i++) {
-			g.drawString(GameState.PLAYER_NAMES[data[i][0]], 10, (380 + 180*i));
+			g.drawString(GameState.PLAYER_NAMES[data[i][0]], 10, (430 + 180*i));
 			g.drawString(String.valueOf(data[i][1]), 240, (430 + 180*i));
 			g.drawString(String.valueOf(data[i][2]), 510, (430 + 180*i));
 			g.drawString(String.valueOf(data[i][3]), 830, (430 + 180*i));
