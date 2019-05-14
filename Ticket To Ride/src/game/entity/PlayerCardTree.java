@@ -100,7 +100,7 @@ public class PlayerCardTree {
 	}
 	
 	public CardNode getMax() {
-		String[] colors = {"black", "blue", "green", "orange", "purple", "red", "white", "yellow","wild"};
+		String[] colors = {"black", "blue", "green", "orange", "purple", "red", "white", "yellow"};
 		CardNode ret = null;
 		int max = Integer.MIN_VALUE;
 		for(String s : colors) {
