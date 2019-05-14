@@ -88,8 +88,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 
 		handDrawer = new HandDrawer(cards);
 		AnimationManager.init();
-		handDrawer.setTree(game.getPlayers()[game.getCurrentPlayer()].getCards());
-		
+		handDrawer.setTree(game.getPlayers()[game.getCurrentPlayer()].getCards());		
 		init = false;
 	}
 	@Override

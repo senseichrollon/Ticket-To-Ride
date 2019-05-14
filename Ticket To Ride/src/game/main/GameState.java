@@ -12,6 +12,7 @@ import game.entity.Deck;
 import game.entity.Player;
 import game.entity.Track;
 import game.graphics.animation.AnimationManager;
+import game.graphics.screens.PlayerSelectionScreen;
 
 public class GameState {
 	private Player[] players;
@@ -22,45 +23,26 @@ public class GameState {
 	private int lastRound;
 	public static int NUMPLAYERS = 4;
 
-	public static String[] PLAYER_COLS;
-	public static String[] PLAYER_NAMES;
+	public static String[] PLAYER_COLS = new String[]{"blue", "purple", "green", "yellow"};
+	public static String[] PLAYER_NAMES = new String[]{"Jim", "Joe", "Bob", "John"};;
 	
 	public GameState() throws IOException
 	{
 		players = new Player[4];
-		/*players[0] = new AIPlayer("Jim", "blue",this);
-		players[1] = new AIPlayer("Joe", "purple",this);
-		players[2] = new AIPlayer("Bob", "green", this);
-		players[3] = new AIPlayer("John", "yellow",this);*/
-		players[0] = new Player("Jim", "blue");
-		players[1] = new Player("Joe", "purple");
-		players[2] = new Player("Bob", "green");
-		players[3] = new Player("John", "yellow");
 		deck = new Deck();
-
-		for(Player ply : players) {
-			for(int i = 0; i < 4; i++) {
-//				System.out.println(i);
+		for(int i = 0; i < 4; i++) {
+			Player ply;
+			if(PlayerSelectionScreen.PLAYER_TYPE[i]) {
+				ply = new AIPlayer(PLAYER_NAMES[i], PLAYER_COLS[i],this);
+			} else {
+				ply = new Player(PLAYER_NAMES[i], PLAYER_COLS[i]);
+			}
+			for(int j = 0; j < 4; j++) {
 				String card = deck.drawRandTrain(false);
 				ply.addCard(card, 1);
 			}
+			players[i] = ply;
 		}
-		
-		currentPlayer = (int) (Math.random() * 4);
-		
-		PLAYER_COLS = new String[4];
-		PLAYER_COLS[0] = "blue";
-		PLAYER_COLS[1] = "purple";
-		PLAYER_COLS[2] = "green";
-		PLAYER_COLS[3] = "yellow";
-		
-		PLAYER_NAMES = new String[4];
-		PLAYER_NAMES[0] = "Jim";
-		PLAYER_NAMES[1] = "Joe";
-		PLAYER_NAMES[2] = "Bob";
-		PLAYER_NAMES[3] = "John";
-		
-		
 		currentPlayer = (int)(Math.random() * 4);
 		numCardsDrawn = 0;
 		lastRound = -1;
@@ -256,13 +238,22 @@ public class GameState {
 					mat[i][4] = 10;
 			}
 		}
-		int mostCompleted = 0;
-		for (int i = 1; i < NUMPLAYERS; i++)
+		int max = Integer.MIN_VALUE;
+		ArrayList<Integer> mostCompleted = new ArrayList<>();
+		for (int i = 0; i < NUMPLAYERS; i++)
 		{
-			if(players[i].getNumCompletedContracts() > players[mostCompleted].getNumCompletedContracts())
-				mostCompleted = i;
+			if(players[i].getNumCompletedContracts() > max) {
+				mostCompleted.clear();
+				max = players[i].getNumCompletedContracts();
+				mostCompleted.add(i);
+			} else if(players[i].getNumCompletedContracts() == max) {
+				mostCompleted.add(i);
+			}
+				
 		}
-		mat[mostCompleted][5] = 15;
+		for(int i : mostCompleted) {
+			mat[i][5] = 15;
+		}
 		return mat;
 	}
 	

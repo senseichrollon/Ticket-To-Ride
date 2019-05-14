@@ -35,7 +35,7 @@ public class CityMapDrawer {
 				int id = in.nextInt();
 				int doubleTrack = in.nextInt();
 				int trackLen = in.nextInt();
-				System.out.println(id + " " + doubleTrack + " " + trackLen);
+//				System.out.println(id + " " + doubleTrack + " " + trackLen);
 				Point2D[][] pts = new Point2D[2][trackLen * 2];
 				for(int j = 0; j < doubleTrack; j++) {
 					pts[j] = new Point2D[trackLen * 2];

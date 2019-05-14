@@ -1,34 +1,17 @@
 package game.testing;
-<<<<<<< HEAD
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-=======
->>>>>>> branch 'master' of https://github.com/senseichrollon/Ticket-To-Ride.git
 
-import game.ai.ContractPath;
+import game.ai.PathEdge;
 import game.entity.CityMap;
-<<<<<<< HEAD
-import game.entity.ContractCard;
 import game.entity.Deck;
-=======
->>>>>>> branch 'master' of https://github.com/senseichrollon/Ticket-To-Ride.git
 
 public class TestMap
 {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		CityMap cm = new CityMap();
-<<<<<<< HEAD
 		Deck deck = new Deck();
-=======
-		cm.addTrack(cm.getTrack("Sault St. Marie", "Toronto"), "Yeet", "gray", 1);
-		cm.addTrack(cm.getTrack("Montreal", "Toronto"), "Yeet", "gray", 1);
-		cm.addTrack(cm.getTrack("Pittsburgh", "Toronto"), "Yeet", "gray", 1);
-		
-		cm.addTrack(cm.getTrack("Denver", "Helena"), "Bleet", "green", 1);
->>>>>>> branch 'master' of https://github.com/senseichrollon/Ticket-To-Ride.git
-		
-<<<<<<< HEAD
+
 //		cm.addTrack(cm.getTrack("Nashville", "Raleigh"), "Yeet", null, 1);
 //		cm.addTrack(cm.getTrack("Pittsburgh", "Raleigh"), "Yeet", null, 1);
 //		cm.addTrack(cm.getTrack("Pittsburgh", "New York"), "Yeet", "green", 1);
@@ -57,18 +40,9 @@ public class TestMap
 		
 //		System.out.println(cm.completedContract("Yeet", new ContractCard("Salt Lake City", "Kansas City", 100)));
 //		System.out.println(cm.completedContract("Yeet", new ContractCard("Nashville", "New York", 100)));
-		ArrayList<ContractPath> list = new ArrayList<>();
-		for(ContractCard card : deck.getContractCards()) {
-			ContractPath path = new ContractPath(card);
-			path.calculateShortestPath(cm, "Yeet");
-			list.add(path);
-		}
-		Collections.sort(list);
-		for(int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i).ratio());
-		}
-=======
-		System.out.println(cm.getPlayersLongest());
->>>>>>> branch 'master' of https://github.com/senseichrollon/Ticket-To-Ride.git
+		cm.addTrack(cm.getTrack("Boston","Montreal"), "Yeet", "gray", 1);
+		cm.addTrack(cm.getTrack("Boston","New York"), "lol", "red", 2);
+		ArrayList<PathEdge> list = cm.shortestPath("Montreal", "Washington", "Yeet");
+		System.out.println(list.get(list.size()-1).getWeight());
 	}
 }
