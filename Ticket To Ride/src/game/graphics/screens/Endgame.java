@@ -65,6 +65,10 @@ public class Endgame extends ScreenManager{
 	public void update() 
 	{
 		updateButton(input.clicked(), input.released(), new Point(input.getX(), input.getY()));
+		if(ScreenManager.getGame().getContractDrawer().getParent() == GraphicsPanel.getPanel()) {
+			GraphicsPanel.getPanel().remove(ScreenManager.getGame().getContractDrawer());
+		}
+		
 		if(exitButton.isValidRelease()) {
 			exitButton.setValidRelease(false);
 			ScreenManager.switchScreen(MENU);
