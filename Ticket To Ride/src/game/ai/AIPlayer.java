@@ -117,6 +117,7 @@ public class AIPlayer extends Player{
 			if(b[0] && b[1]) {
 				if(wildCnt < wildCnt2) {
 					game.placeTrack(track, color1, cnt, wildCnt, false);
+					
 				} else {
 					game.placeTrack(track, color2, cnt2, wildCnt2, true);
 				}

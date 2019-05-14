@@ -310,6 +310,10 @@ public class GameScreen extends ScreenManager implements Runnable {
 		AnimationManager.draw(g);
 	}
 	
+	public ContractCardDrawer getContractDrawer() {
+		return contractDrawer;
+	}
+	
 	public boolean running() {
 		return running;
 	}
