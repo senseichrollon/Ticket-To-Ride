@@ -28,10 +28,14 @@ public class GameState {
 	public GameState() throws IOException
 	{
 		players = new Player[4];
-		players[0] = new AIPlayer("Jim", "blue",this);
+		/*players[0] = new AIPlayer("Jim", "blue",this);
 		players[1] = new AIPlayer("Joe", "purple",this);
 		players[2] = new AIPlayer("Bob", "green", this);
-		players[3] = new AIPlayer("John", "yellow",this);
+		players[3] = new AIPlayer("John", "yellow",this);*/
+		players[0] = new Player("Jim", "blue");
+		players[1] = new Player("Joe", "purple");
+		players[2] = new Player("Bob", "green");
+		players[3] = new Player("John", "yellow");
 		deck = new Deck();
 
 		for(Player ply : players) {

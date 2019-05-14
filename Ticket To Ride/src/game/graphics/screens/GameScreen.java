@@ -115,7 +115,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 				JOptionPane.showMessageDialog(new JFrame("Game Ending"),
 						"A player now has 3 or less train cards! Everyone gets one last turn now!", 
 						"Game Ending", JOptionPane.PLAIN_MESSAGE);
-			}			if(game.getPlayers()[game.getCurrentPlayer()] instanceof AIPlayer) {
+			}if(game.getPlayers()[game.getCurrentPlayer()] instanceof AIPlayer) {
 				try {Thread.sleep(500);} catch (InterruptedException e) {	}
 				AIPlayer player = (AIPlayer) game.getPlayers()[game.getCurrentPlayer()];
 				player.makeMove();
@@ -175,7 +175,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 			game.updatePlayer();
 		}		
 		GraphicsPanel.getPanel().remove(contractDrawer);
-		ScreenManager.switchEndGame(game.endGame());
+		ScreenManager.switchEndGame(game.endGame(), game);
 		running = false;
 	}
 	

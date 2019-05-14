@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JFrame;
+
 import game.graphics.engine.GraphicsPanel;
 import game.graphics.input.MouseInput;
 import game.graphics.util.ImageLoader;
@@ -18,6 +20,7 @@ public class Endgame extends ScreenManager{
 	private BufferedImage background;
 	private int[][] data;
 	private MButton exitButton;
+	private MButton screenButton;
 	private MouseInput input;
 	
 	public Endgame(MouseInput input)
@@ -28,19 +31,27 @@ public class Endgame extends ScreenManager{
 		background = ImageLoader.resize(background, GraphicsPanel.WIDTH, GraphicsPanel.HEIGHT);
 		exitButton = new MButton("Exit", new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 20), Color.GREEN, Color.orange);
 		exitButton.setCenter(new Point(1650,75));
-		exitButton.setShape(MButton.ellipse(200,100));
+		exitButton.setShape(MButton.ellipse(200,75));
+		
+		screenButton = new MButton("View Game", new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 20), Color.GREEN, Color.orange);
+		screenButton.setCenter(new Point(1650,200));
+		screenButton.setShape(MButton.ellipse(200,75));
 	}
 	
 	public void updateButton(boolean mousePressed, boolean mouseReleased, Point mouseLoc) {
+		MButton[] buttons = {exitButton, screenButton};
 		if(mousePressed)
-			if(exitButton.checkContains(mouseLoc))
-				exitButton.setPressed(true);
+			for(MButton b : buttons)
+				if(b.checkContains(mouseLoc))
+					b.setPressed(true);
 		if(mouseReleased)
-			if(exitButton.checkContains(mouseLoc) && exitButton.isPressed())
-				exitButton.setValidRelease(true);
+			for(MButton b : buttons)
+				if(b.checkContains(mouseLoc) && b.isPressed())
+					b.setValidRelease(true);
 		if(!mousePressed && !mouseReleased)
-			if(!exitButton.checkContains(mouseLoc))
-				exitButton.setPressed(false);
+			for(MButton b : buttons)
+				if(!b.checkContains(mouseLoc))
+					b.setPressed(false);
 	}
 	
 	
@@ -58,6 +69,10 @@ public class Endgame extends ScreenManager{
 			exitButton.setValidRelease(false);
 			ScreenManager.switchScreen(MENU);
 		}
+		else if(screenButton.isValidRelease()){
+			screenButton.setValidRelease(false);
+			ScreenManager.switchScreen(STATIC);
+		}
 	}
 	
 	public void setData(int[][] vals)
@@ -74,6 +89,7 @@ public class Endgame extends ScreenManager{
 		g.setFont(new Font("Arial", Font.BOLD, 60));
 		
 		exitButton.draw(g);
+		screenButton.draw(g);
 		
 		for(int i = 0; i < data.length; i++) {
 			g.drawString(GameState.PLAYER_NAMES[data[i][0]], 10, (430 + 180*i));
@@ -109,15 +125,4 @@ public class Endgame extends ScreenManager{
 	{
 		return vals[1] + vals[2] - vals[3] + vals[4] + vals[5];
 	}
-	
-	/*public static void main(String[] args)
-	{
-		JFrame jf = new JFrame("Test");
-		Endgame eg = new Endgame();
-		int[][] data = {{15, 15, 15, 15, 15, 15}, {15, 15, 15, 15, 15, 15}, {15, 15, 15, 15, 15, 15}, {15, 15, 15, 15, 15, 15}, {15, 15, 15, 15, 15, 15}, {15, 15, 15, 15, 15, 15}};
-		eg.setData(data);
-		jf.add(eg);
-		jf.setSize(GraphicsPanel.WIDTH, GraphicsPanel.HEIGHT);
-		jf.setVisible(true);
-	}*/
 }
