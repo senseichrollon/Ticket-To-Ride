@@ -13,12 +13,14 @@ public abstract class ScreenManager {
 	public static final int RULE = 2;
 	public static final int END = 3;
 	public static final int STATIC = 4;
+	public static final int PLAY = 5;
 	
 	private static GameScreen game;
 	private static MenuScreen menu;
 	private static RuleScreen rule;
 	private static Endgame end;
 	private static StaticScreen stat;
+	private static PlayerSelectionScreen play;
 	
 	private static ScreenManager currentScreen;
 	
@@ -28,6 +30,7 @@ public abstract class ScreenManager {
 		rule = new RuleScreen();
 		end = new Endgame(input);
 		stat = new StaticScreen(input);
+		play = new PlayerSelectionScreen(input);
 		currentScreen = menu;
 	}
 	
@@ -60,6 +63,8 @@ public abstract class ScreenManager {
 			currentScreen = end;
 		else if(key == STATIC)
 			currentScreen = stat;
+		else if(key == PLAY)
+			currentScreen = play;
 	}
 	
 	public static void switchEndGame(int[][] data, GameState gs)

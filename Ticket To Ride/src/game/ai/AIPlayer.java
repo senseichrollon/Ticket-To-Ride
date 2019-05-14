@@ -57,9 +57,7 @@ public class AIPlayer extends Player{
 						}
 					}
 				}
-			}
-
-			
+			}			
 			if(tracks.containsKey(best)) {
 				placeTrack(best, tracks.get(best));
 			} else {
@@ -100,7 +98,6 @@ public class AIPlayer extends Player{
 			color2 = cards.getMax().getColor();
 		}
 		
-		System.out.println(color1 + " " + color2);
 		
 		if(!track.isDoubleTrack()) {
 			int cnt = Math.min(track.getLength(), cards.getCard(color1).getCount());

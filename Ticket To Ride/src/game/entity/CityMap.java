@@ -393,6 +393,7 @@ public class CityMap {
 				}
 			}
 			
+//			System.out.println(FULLMAP.get(city));
 			for(Track track : FULLMAP.get(city)) {
 				if(!visited.contains(track.getOtherCity(city))) {
 					if(track.containsPlayerCol(player)) {

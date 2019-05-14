@@ -49,8 +49,12 @@ public class Deck {
 			// System.out.println(Arrays.toString(ss));
 			Integer x = new Integer(ss[0]);
 			ContractCard card = new ContractCard(ss[1], ss[2], x);
-			contractDeck.add(card);
 			contractList.add(card);
+		}
+		
+		Collections.shuffle(contractList);
+		for(int i = 0; i < contractList.size(); i++) {
+			contractDeck.add(contractList.get(i));
 		}
 
 	}
@@ -95,17 +99,11 @@ public class Deck {
 		for (int i = 0; i < drawnTrainDeck.size(); i++) {
 			temp.add(drawnTrainDeck.poll());
 		}
-		String[] copy = Arrays.copyOf(upTrains, upTrains.length);
-		for (int i = 0; i < upTrains.length; i++) {
-			temp.add(upTrains[i]);
-			upTrains[i] = null;
-		}
-		AnimationManager.shuffle(copy, true);
 		Collections.shuffle(temp);
 		for (int i = 0; i < temp.size(); i++) {
 			trainDeck.add(temp.get(i));
 		}
-		replaceTrains(null, false);
+//		replaceTrains(null, false);
 	}
 
 	public void replaceContract(List<ContractCard> ss) {
@@ -142,7 +140,7 @@ public class Deck {
 		} else {
 			String[] temp = new String[5];
 			int wildCount = 0;
-			System.out.println(trainDeck);
+//			System.out.println(trainDeck);
 			for(int i = 0; i < upTrains.length; i++) {
 				temp[i] = trainDeck.poll();
 				if(temp[i].equals("wild"))

@@ -84,7 +84,7 @@ public class InputManager {
 		if (mousePressed)
 			for (int i = 0; i < clickBoxes.size(); i++) {
 				ClickBox b = clickBoxes.get(i);
-				if (b.contains(mouseLoc)) {
+				if (b != null&& b.contains(mouseLoc)) {
 					b.setPressed(true);
 				} else
 					b.setHover(false);
@@ -92,7 +92,7 @@ public class InputManager {
 		if (mouseReleased)
 			for (int i = 0; i < clickBoxes.size(); i++) {
 				ClickBox b = clickBoxes.get(i);
-				if (b.pressed() && b.contains(mouseLoc)) {
+				if (b != null && b.pressed() && b.contains(mouseLoc)) {
 					pressedClick = b;
 				} else
 					b.setHover(false);
@@ -101,7 +101,7 @@ public class InputManager {
 		if (!mousePressed && !mouseReleased)
 			for (int i = 0; i < clickBoxes.size(); i++) {
 				ClickBox b = clickBoxes.get(i);
-				if (b.contains(mouseLoc)) {
+				if (b != null && b.contains(mouseLoc)) {
 					b.setHover(true);
 					b.setPressed(false);
 				} else
@@ -378,10 +378,14 @@ public class InputManager {
 		}
 		buttonIter = false;
 		for (int i = 0; i < clickBoxes.size(); i++) {
+			if(clickBoxes.get(i) == null)
+				continue;
 			clickBoxes.get(i).draw(g);
 		}
 
 		for (int i = 0; i < textDisplay.size(); i++) {
+			if(textDisplay.get(i) == null)
+				continue;
 			textDisplay.get(i).draw(g);
 		}
 	}

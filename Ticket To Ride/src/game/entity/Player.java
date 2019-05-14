@@ -18,7 +18,7 @@ public class Player {
 			cards.add(s, 0);
 		}
 
-		setTrains(5);
+		setTrains(45);
 		contracts = new ArrayList<>();
 	}
 
