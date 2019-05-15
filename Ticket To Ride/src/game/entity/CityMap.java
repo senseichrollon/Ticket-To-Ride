@@ -19,10 +19,9 @@ import game.main.GameState;
 
 public class CityMap {
 	public static HashMap<String, Integer> CITYINDEX;
-	public static HashMap<Integer,String> INDEX_TO_CITY;
+	public static HashMap<Integer, String> INDEX_TO_CITY;
 	public static HashMap<Integer, Track> allTracks;
-	
-	
+
 	private List<ArrayList<Track>> FULLMAP;
 	private ArrayList<Integer> dp;
 	private HashSet<Track> lpVisited;
@@ -35,11 +34,11 @@ public class CityMap {
 		map = new ArrayList<ArrayList<Track>>();
 		allTracks = new HashMap<>();
 		INDEX_TO_CITY = new HashMap<>();
-		
+
 		FULLMAP = new ArrayList<ArrayList<Track>>();
 		loopAlert = new HashMap<Integer, ArrayList<Track>>();
 		dp = new ArrayList<Integer>();
-		
+
 		try {
 			Scanner in = new Scanner(new File("resources/gamedata/cities.txt"));
 			int n = in.nextInt();
@@ -69,7 +68,7 @@ public class CityMap {
 					add.setTrackColor2(args[6].toLowerCase());
 
 				allTracks.put(Integer.parseInt(args[0]), add);
-					 
+
 				FULLMAP.get(add.getCityOne()).add(add);
 				FULLMAP.get(add.getCityTwo()).add(add);
 			}
@@ -79,43 +78,30 @@ public class CityMap {
 
 	}
 
-	public boolean addTrack(Track work, String player, String colChoice, int side)
-	{
+	public boolean addTrack(Track work, String player, String colChoice, int side) {
 		System.out.println(player + "  fsds");
 		int c1 = work.getCityOne();
 		int c2 = work.getCityTwo();
-		/*ArrayList<Track> i = FULLMAP.get(c1);
-		for(int j = 0; j < i.size(); j++)
-		{
-			if(i.get(j).getOtherCity(c1) == c2)
-			{
-				work = i.get(j);
-				break;
-			}
-		}
-		
-		if(work == null)
-			return false;*/
-		
-		if(!work.isDoubleTrack())
-		{
+		/*
+		 * ArrayList<Track> i = FULLMAP.get(c1); for(int j = 0; j < i.size(); j++) {
+		 * if(i.get(j).getOtherCity(c1) == c2) { work = i.get(j); break; } }
+		 * 
+		 * if(work == null) return false;
+		 */
+
+		if (!work.isDoubleTrack()) {
 			FULLMAP.get(c1).remove(work);
 			FULLMAP.get(c2).remove(work);
 			boolean out = work.occupyTrack(player, "", side);
 			map.get(c1).add(work);
 			map.get(c2).add(work);
 			return out;
-		}
-		else
-		{
+		} else {
 			boolean out = work.occupyTrack(player, colChoice, side);
-			if(work.isFilled())
-			{
+			if (work.isFilled()) {
 				FULLMAP.get(c1).remove(work);
 				FULLMAP.get(c2).remove(work);
-			}
-			else
-			{
+			} else {
 				map.get(c1).add(work);
 				map.get(c2).add(work);
 			}
@@ -126,7 +112,7 @@ public class CityMap {
 	public boolean completedContract(String color, ContractCard check) {
 //		System.out.println(check.getCityOne() + " " + check.getCityTwo());
 		return dfs(CITYINDEX.get(check.getCityTwo()), color, CITYINDEX.get(check.getCityOne()), new ArrayList<Track>());
-		
+
 	}
 
 	private boolean dfs(int goal, String color, int curr, List<Track> visited) {
@@ -152,42 +138,36 @@ public class CityMap {
 		}
 		return null;
 	}
-	
-	public Track getTrack(String city1, String city2)
-	{
+
+	public Track getTrack(String city1, String city2) {
 		int c1 = CITYINDEX.get(city1);
 		int c2 = CITYINDEX.get(city2);
-		for(Track i: FULLMAP.get(c1))
-			if(i.getOtherCity(c1) == c2)
+		for (Track i : FULLMAP.get(c1))
+			if (i.getOtherCity(c1) == c2)
 				return i;
 		return null;
 	}
-	public int longestPath(int currCity, List<Track> visited, List<Integer> loopCheck, String player, boolean bfMode)
-	{
+
+	public int longestPath(int currCity, List<Track> visited, List<Integer> loopCheck, String player, boolean bfMode) {
 		ArrayList<Integer> lengths = new ArrayList<Integer>();
 		loopCheck.add(currCity);
-		for(Track i : map.get(currCity))
-		{
-			if(loopAlert.containsKey(currCity))
-			{
-				System.out.println("fixing loop for city "  + currCity);
+		for (Track i : map.get(currCity)) {
+			if (loopAlert.containsKey(currCity)) {
+				System.out.println("fixing loop for city " + currCity);
 				visited.addAll(loopAlert.get(currCity));
 				loopAlert.remove(currCity);
 			}
-			if(!visited.contains(i) && i.containsPlayerCol(player))
-			{
+			if (!visited.contains(i) && i.containsPlayerCol(player)) {
 				visited.add(i);
-				//int length = i.getLength();
-				if(!bfMode)
+				// int length = i.getLength();
+				if (!bfMode)
 					lpVisited.remove(i);
 				System.out.println(currCity + " " + i.getOtherCity(currCity));
-				if(loopCheck.contains(i.getOtherCity(currCity)))
-				{
+				if (loopCheck.contains(i.getOtherCity(currCity))) {
 					loopCounter++;
-					if(loopAlert.containsKey(i.getOtherCity(currCity)))
+					if (loopAlert.containsKey(i.getOtherCity(currCity)))
 						loopAlert.get(i.getOtherCity(currCity)).add(i);
-					else
-					{
+					else {
 						ArrayList<Track> addIn = new ArrayList<Track>();
 						addIn.add(i);
 						loopAlert.put(i.getOtherCity(currCity), addIn);
@@ -195,116 +175,105 @@ public class CityMap {
 					System.out.println("LOOOOP with track " + i);
 					lengths.add(i.getLength());
 					continue;
-				}
-				else
-					lengths.add(i.getLength() + longestPath(i.getOtherCity(currCity), new ArrayList<Track>(visited), loopCheck, player, bfMode));
+				} else
+					lengths.add(i.getLength() + longestPath(i.getOtherCity(currCity), new ArrayList<Track>(visited),
+							loopCheck, player, bfMode));
 			}
 		}
-		
-		if(lengths.isEmpty())
+
+		if (lengths.isEmpty())
 			return 0;
-		
+
 		Collections.sort(lengths);
 		System.out.println("lengths for city " + currCity + " :" + lengths);
-		if(lengths.size() >= 2)
+		if (lengths.size() >= 2)
 			dp.add(lengths.get(lengths.size() - 1) + lengths.get(lengths.size() - 2));
 		return lengths.get(lengths.size() - 1);
 	}
 
-	public ArrayList<String> getPlayersLongest()
-	{
-		//GAMESTATE NEEDS A GLOBAL COLOR LIST!!!! PLZ ADD ASAP!!! 
-		//get players
-		//HashMap<String, Integer> log = new HashMap<String, Integer>();
-		//String[] players = GameState.PLAYER_COLS;
+	public ArrayList<String> getPlayersLongest() {
+		// GAMESTATE NEEDS A GLOBAL COLOR LIST!!!! PLZ ADD ASAP!!!
+		// get players
+		// HashMap<String, Integer> log = new HashMap<String, Integer>();
+		// String[] players = GameState.PLAYER_COLS;
 		String[] players = GameState.PLAYER_COLS;
 		int[] playerLength = new int[players.length];
- 		int plc = 0;
-		for(String i: players)
-		{
+		int plc = 0;
+		for (String i : players) {
 			lpVisited = getPlayerTracks(i);
 			ArrayList<Integer> vals = new ArrayList<Integer>();
-			while(!lpVisited.isEmpty())
-			{
+			while (!lpVisited.isEmpty()) {
 				dp.clear();
 				Iterator<Track> iter = lpVisited.iterator();
-				
+
 				Track start = iter.next();
 				int temp = longestPath(start.getCityOne(), new ArrayList<Track>(), new ArrayList<Integer>(), i, false);
 				int segLongest = -1;
-				
-				if(!dp.isEmpty())
+
+				if (!dp.isEmpty())
 					segLongest = Math.max(Collections.max(dp), temp);
 				else
 					segLongest = temp;
-				
-				if(loopCounter >= 2)
-				{
+
+				if (loopCounter >= 2) {
+					
 					vals.add(bruteForce(i, start, segLongest));
 					loopCounter = 0;
 					loopAlert.clear();
 					break;
-				}
-				else
+				} else
 					vals.add(segLongest);
 			}
-			if(!vals.isEmpty())
+			if (!vals.isEmpty())
 				playerLength[plc++] = Collections.max(vals);
 			else
 				playerLength[plc++] = 0;
 		}
-		
+
 		ArrayList<String> out = new ArrayList<String>();
 		ArrayList<Integer> indices = getLargestPos(playerLength);
-		
-		for(int i : indices)
-		{
+
+		for (int i : indices) {
 			out.add(players[i]);
 		}
-		
-		//out.add(String.valueOf(playerLength[indices.get(0)]));
+
+		// out.add(String.valueOf(playerLength[indices.get(0)]));
 		return out;
 	}
 
-	
-	private int bruteForce(String player, Track firstStart, int firstLength)
-	{
+	private int bruteForce(String player, Track firstStart, int firstLength) {
 		System.out.println("Start brute force\n");
 		lpVisited = getPlayerTracks(player);
 		lpVisited.remove(firstStart);
 		HashSet<Integer> bfCities = new HashSet<Integer>();
-		for(Track i: lpVisited)
-		{
+		for (Track i : lpVisited) {
 			bfCities.add(i.getCityOne());
 			bfCities.add(i.getCityTwo());
 		}
 		lpVisited.clear();
-		
+
 		int max = firstLength;
-		for(int i: bfCities)
-		{
+		for (int i : bfCities) {
 			dp.clear();
 			System.out.println("BRUTE FORCE:" + i + "\n");
-			int temp = Math.max(longestPath(i, new ArrayList<Track>(), new ArrayList<Integer>(), player, true), Collections.max(dp));
-			if(temp > max)
+			int temp = Math.max(longestPath(i, new ArrayList<Track>(), new ArrayList<Integer>(), player, true),
+					Collections.max(dp));
+			if (temp > max)
 				max = temp;
 		}
 		return max;
 	}
-	
-	private ArrayList<Integer> getLargestPos(int[] test)
-	{
+
+	private ArrayList<Integer> getLargestPos(int[] test) {
 		int max = Integer.MIN_VALUE;
-		for(int i = 0; i < test.length; i++)
-		{
-			if(test[i] > max)
+		for (int i = 0; i < test.length; i++) {
+			if (test[i] > max)
 				max = test[i];
 		}
-		
+
 		ArrayList<Integer> out = new ArrayList<Integer>();
-		for(int i = 0; i < test.length; i++)
-		{
-			if(test[i] == max)
+		for (int i = 0; i < test.length; i++) {
+			if (test[i] == max)
 				out.add(i);
 		}
 		return out;
@@ -316,15 +285,19 @@ public class CityMap {
 			for (Track track : tracks) {
 				boolean[] b = new boolean[2];
 
-				if (player.getCards().hasEnough(track.getTrackColor1(), track.getLength()) && track.getPlayerColor1() == null && !track.containsPlayerCol(player.getTrainColor()) &&  player.getTrains() >= track.getLength()) {
+				if (player.getCards().hasEnough(track.getTrackColor1(), track.getLength())
+						&& track.getPlayerColor1() == null && !track.containsPlayerCol(player.getTrainColor())
+						&& player.getTrains() >= track.getLength()) {
 					b[0] = true;
 				}
 
-				if (track.isDoubleTrack() && player.getCards().hasEnough(track.getTrackColor2(), track.getLength()) && track.getPlayerColor2() == null && !track.containsPlayerCol(player.getTrainColor())&& player.getTrains() >= track.getLength()) {
+				if (track.isDoubleTrack() && player.getCards().hasEnough(track.getTrackColor2(), track.getLength())
+						&& track.getPlayerColor2() == null && !track.containsPlayerCol(player.getTrainColor())
+						&& player.getTrains() >= track.getLength()) {
 					b[1] = true;
 				}
-				
-				if(b[0] || b[1])
+
+				if (b[0] || b[1])
 					ret.put(track, b);
 			}
 		}
@@ -341,62 +314,56 @@ public class CityMap {
 		}
 		return out;
 	}
-	
+
 	public ArrayList<PathEdge> shortestPath(String city1, String city2, String player) {
 		ArrayList<PathEdge> ret = new ArrayList<>();
-		
+
 		int c1 = CITYINDEX.get(city1);
 		int c2 = CITYINDEX.get(city2);
 		Set<Integer> visited = new HashSet<Integer>();
-			
+
 		PriorityQueue<PathEdge> pq = new PriorityQueue<>();
-		
-		for(Track track : map.get(c1)) {
-			if(track.containsPlayerCol(player))
-				pq.add(new PathEdge(track,0,true));
+
+		for (Track track : map.get(c1)) {
+			if (track.containsPlayerCol(player))
+				pq.add(new PathEdge(track, 0, true));
 		}
-		
-		for(Track track : FULLMAP.get(c1)) {
-			if(track.containsPlayerCol(player))
-				pq.add(new PathEdge(track,0,true));
+
+		for (Track track : FULLMAP.get(c1)) {
+			if (track.containsPlayerCol(player))
+				pq.add(new PathEdge(track, 0, true));
 			else
-				pq.add(new PathEdge(track,0,false));		
+				pq.add(new PathEdge(track, 0, false));
 		}
-		visited.add(c1);		
+		visited.add(c1);
 		PathEdge dest = null;
-		while(!pq.isEmpty()) {
+		while (!pq.isEmpty()) {
 			PathEdge at = pq.poll();
 			int city;
-			if(at.getPrevious() == null) {
+			if (at.getPrevious() == null) {
 				city = at.getTrack().getOtherCity(c1);
 				at.setCity(city);
-			}
-			else {
+			} else {
 				city = at.getCity();
 			}
 
 			visited.add(city);
-			if(city == c2) {
+			if (city == c2) {
 				dest = at;
 				break;
 			}
-			if(AIPlayer.print) {
-				System.out.println(INDEX_TO_CITY.get(city));
-				System.out.println(pq);
-			}
-			
-			for(Track track : map.get(city)) {
-				if(!visited.contains(track.getOtherCity(city)) && track.containsPlayerCol(player)) {
-					PathEdge edge = new PathEdge(track,at.getWeight(),true);
+			for (Track track : map.get(city)) {
+				if (!visited.contains(track.getOtherCity(city)) && track.containsPlayerCol(player)) {
+					PathEdge edge = new PathEdge(track, at.getWeight(), true);
 					edge.setPrevious(at);
 					pq.add(edge);
 				}
 			}
-			
+
 //			System.out.println(FULLMAP.get(city));
-			for(Track track : FULLMAP.get(city)) {
-				if(!visited.contains(track.getOtherCity(city))) {
-					if(track.containsPlayerCol(player)) {
+			for (Track track : FULLMAP.get(city)) {
+				if (!visited.contains(track.getOtherCity(city))) {
+					if (track.containsPlayerCol(player)) {
 						PathEdge edge = new PathEdge(track, at.getWeight(), true);
 						edge.setPrevious(at);
 						pq.add(edge);
@@ -408,9 +375,9 @@ public class CityMap {
 				}
 			}
 		}
-		while(dest != null) {
+		while (dest != null) {
 			Track track = dest.getTrack();
-			if(!track.containsPlayerCol(player)) {
+			if (!track.containsPlayerCol(player)) {
 				ret.add(dest);
 			}
 			dest = dest.getPrevious();
@@ -418,30 +385,27 @@ public class CityMap {
 		Collections.reverse(ret);
 		return ret;
 	}
-	
-	public String printFULLMAP()
-	{
+
+	public String printFULLMAP() {
 		return FULLMAP.toString();
 	}
-	
-	public String printOGMap()
-	{
+
+	public String printOGMap() {
 
 		return map.toString();
 	}
-	
-	//TESTING ONLY, REMOVE ONCE DONE!!!
-	public ArrayList<Integer> testDP()
-	{
+
+	// TESTING ONLY, REMOVE ONCE DONE!!!
+	public ArrayList<Integer> testDP() {
 		return dp;
 	}
 
 	public List<ArrayList<Track>> getFullMap() {
 		return FULLMAP;
 	}
-	
+
 	public List<ArrayList<Track>> getMap() {
 		return map;
-	} 
+	}
 
 }

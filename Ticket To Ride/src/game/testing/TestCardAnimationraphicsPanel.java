@@ -71,9 +71,11 @@ public class TestCardAnimationraphicsPanel extends JPanel implements Runnable, M
 
 		
 
-		BufferedImage img = ImageLoader.loadImage("resources/gameboard/crystaltexture.jpg");
-		g.setPaint(new TexturePaint(img,new Rectangle(0,0,100,100)));
-		g.fillRect(0, 0, 1920, 1080);
+		BufferedImage img = ImageLoader.loadImage("resources/gameboard/metaltexture.jpg");
+		img = ImageLoader.resize(img, 1920, 1080);
+//		g.setPaint(new TexturePaint(img,new Rectangle(0,0,100,100)));
+		g.drawImage(img,0,0,null);
+//		g.fillRect(0, 0, 1920, 1080);
 		g.setFont(new Font("TimesRoman", Font.BOLD, 60));
 		g.drawString(x + " " + y, x2, 1000);
 		if(anim.hasStarted()) {

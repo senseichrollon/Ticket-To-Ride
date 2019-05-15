@@ -149,7 +149,7 @@ public class InputManager {
 
 	public int requestTrainCardSelection(Rectangle2D.Double[] clickArea, int numCardsDrawn, String[] upTrains,GameState game) {
 		for (int i = 0; i < 5; i++) {
-			if (numCardsDrawn != 1 || !upTrains[i].equals("wild")) {
+			if (upTrains[i] != null && (numCardsDrawn != 1 || !upTrains[i].equals("wild"))) {
 				clickBoxes.add(new ClickBox(clickArea[i], i));
 			}
 		}
