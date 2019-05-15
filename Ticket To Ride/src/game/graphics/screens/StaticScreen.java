@@ -36,7 +36,7 @@ public class StaticScreen extends ScreenManager{
 	public StaticScreen(MouseInput in) {
 		input = in;
 		egButton = new MButton("View Points", new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 20), Color.GREEN, Color.orange);
-		egButton.setCenter(new Point(100,600));
+		egButton.setCenter(new Point(100,550));
 		egButton.setShape(MButton.ellipse(200,100));
 		
 		spButton = new MButton("Switch Player", new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 20), Color.GREEN, Color.orange);

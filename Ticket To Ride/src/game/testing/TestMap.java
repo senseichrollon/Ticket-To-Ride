@@ -1,9 +1,9 @@
 package game.testing;
 import java.io.IOException;
-import java.util.ArrayList;
 
-import game.ai.PathEdge;
+import game.ai.ContractPath;
 import game.entity.CityMap;
+import game.entity.ContractCard;
 import game.entity.Deck;
 
 public class TestMap
@@ -40,9 +40,16 @@ public class TestMap
 		
 //		System.out.println(cm.completedContract("Yeet", new ContractCard("Salt Lake City", "Kansas City", 100)));
 //		System.out.println(cm.completedContract("Yeet", new ContractCard("Nashville", "New York", 100)));
-		cm.addTrack(cm.getTrack("Boston","Montreal"), "Yeet", "gray", 1);
-		cm.addTrack(cm.getTrack("Boston","New York"), "lol", "red", 2);
-		ArrayList<PathEdge> list = cm.shortestPath("Montreal", "Washington", "Yeet");
-		System.out.println(list.get(list.size()-1).getWeight());
+		
+		for(ContractCard card : deck.getContractCards()) {
+			ContractPath p = new ContractPath(card);
+			p.calculateShortestPath(cm, "");
+			System.out.println(p.ratio());
+		}
+		
+//		cm.addTrack(cm.getTrack("Boston","Montreal"), "Yeet", "gray", 1);
+//		cm.addTrack(cm.getTrack("Boston","New York"), "lol", "red", 2);
+//		ArrayList<PathEdge> list = cm.shortestPath("Montreal", "Washington", "Yeet");
+//		System.out.println(list.get(list.size()-1).getWeight());
 	}
 }

@@ -13,7 +13,6 @@ import game.main.GameState;
 
 public class AIPlayer extends Player{
 	private GameState game;
-	public static boolean print = false;
 	
 	public AIPlayer(String n, String c, GameState game) {
 		super(n, c);
@@ -35,10 +34,20 @@ public class AIPlayer extends Player{
 				contractList.add(path);
 		}
 		HashMap<Track, boolean[]> tracks = game.getPlacableTracks();
+		HashMap<Track, Integer> frequency = new HashMap<>();
 		
+		for(ContractPath path : contractList) {
+			for(PathEdge edge : path.getPath()) {
+				if(frequency.containsKey(edge.getTrack())) {
+					frequency.put(edge.getTrack(), frequency.get(edge.getTrack()) + 1);
+				} else {
+					frequency.put(edge.getTrack(), 1);
+				}
+			}
+		}
 		if(contractList.isEmpty() && trains > 10 && game.getDeck().canDrawContracts()) {
 			selectContracts(3,1);
-		} else if(contractList.isEmpty() && trains <= 10) { 
+		} else if(contractList.isEmpty() && trains <= 10 && game.hasWinner() == -1) { 
 			Track best = null;
 			int len = Integer.MIN_VALUE;
 			int close = Integer.MAX_VALUE;
@@ -63,26 +72,42 @@ public class AIPlayer extends Player{
 			} else {
 				drawTrainCards(best);
 			}
+		} else if(contractList.isEmpty() && game.hasWinner() != -1) {
+			if(tracks.isEmpty()) {
+				selectContracts(3,1);
+			}
+			ArrayList<Track> list = new ArrayList<>();
+			tracks.keySet().stream().forEach(n -> list.add(n));
+			Collections.sort(list, (a,b) -> Integer.compare(a.getLength(), b.getLength()));
+			Track track = list.get(list.size()-1);
+			placeTrack(track, tracks.get(track));
 		} else {
 			ContractPath opt = Collections.min(contractList);
 			Track track = null;
 			int close = Integer.MAX_VALUE;
 			for(PathEdge e : opt.getPath()) {
 				int cl = getCardDistance(e.getTrack());
-				if(cl < close && (track == null || e.getTrack().getLength() > track.getLength())) {
+				if(cl < close) {
+					track = e.getTrack();
+					close = cl;
+				} else if(track != null && cl == close && frequency.get(e.getTrack()) > frequency.get(track)) {
+					track = e.getTrack();
+					close = cl;
+				} else if(track != null && cl == close && frequency.get(e.getTrack()) == frequency.get(track) &&  e.getTrack().getLength() > track.getLength()) {
 					track = e.getTrack();
 					close = cl;
 				}
 			}
 			if(track == null) {
-				print = true;
 				opt.calculateShortestPath(game.getBoard(), trainColor);
 				track = opt.getPath().get(0).getTrack();
 			}
 			if(tracks.containsKey(track)) {
 				placeTrack(track, tracks.get(track));
-			} else {
+			} else if(game.getDeck().canDrawTrains()) {
 				drawTrainCards(track);
+			} else {
+				selectContracts(3, 1);
 			}
 		}
 	}
@@ -213,7 +238,7 @@ public class AIPlayer extends Player{
 		}
 		
 		for(ContractPath path : list) {
-			if(path.ratio() >= 1.5 && trainCount > 0) {
+			if(path.ratio() >= 3.5 && trainCount > 0) {
 				trainCount -= path.sumPath();
 				keep.add(path.getCard());
 			} else {
@@ -223,5 +248,4 @@ public class AIPlayer extends Player{
 		game.setContracts(keep);
 		game.returnContracts(discard);
 	}
-
 }
