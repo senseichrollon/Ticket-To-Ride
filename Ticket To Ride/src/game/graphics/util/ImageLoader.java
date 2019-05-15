@@ -4,16 +4,18 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
 public class ImageLoader {
 	 public static BufferedImage loadImage(String path) {
+	
 		 BufferedImage img = null;
 		 try {
 		    img = ImageIO.read(new File(path));
 		 } catch (Exception e) {
-			 System.out.println("Error loading image!");
+			 System.out.println(e.getMessage());
 		 }
 		 return img;
 	 }

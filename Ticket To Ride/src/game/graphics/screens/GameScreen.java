@@ -6,9 +6,11 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ import game.graphics.engine.GraphicsPanel;
 import game.graphics.input.InputManager;
 import game.graphics.input.MouseInput;
 import game.graphics.util.ImageLoader;
+import game.graphics.util.MButton;
 import game.main.GameState;
 
 public class GameScreen extends ScreenManager implements Runnable {
@@ -43,6 +46,8 @@ public class GameScreen extends ScreenManager implements Runnable {
 	private CityMapDrawer cMapDrawer;
 	private ContractCardDrawer contractDrawer;
 	private HandDrawer handDrawer;
+	private MButton exitButton;
+	
 
 	private Thread gameThread;
 	private BufferedImage logo, govContract, trainContract;
@@ -50,13 +55,18 @@ public class GameScreen extends ScreenManager implements Runnable {
 	private InputManager input;
 	private boolean init;
 	private boolean running;
+	private MouseInput in;
 
 	public GameScreen(MouseInput in) {
 		input = new InputManager(in);
+		this.in = in;
 		logo = ImageLoader.loadImage("resources/menuscreen/logo2.png");
 		logo = ImageLoader.resize(logo, logo.getWidth() / 3, logo.getHeight() / 3);
 		govContract = ImageLoader.loadImage("resources/contractcard/ticket_card_back.jpg");
 		trainContract = ImageLoader.loadImage("resources/traincards/backtrain.png");
+		exitButton = new MButton("Exit", new Font ("TimesRoman", Font.BOLD | Font.ITALIC, 15), Color.GREEN, Color.orange);
+		exitButton.setCenter(new Point(270,20));
+		exitButton.setShape(new RoundRectangle2D.Double(0, 0, 100, 25, 12, 12));
 	}
 
 	public void startGame() {
@@ -219,6 +229,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 			TrainBackGround.update();
 			return;
 		}
+		
 		input.update();
 		if (!(contractDrawer.getParent() == GraphicsPanel.getPanel())) {
 			GraphicsPanel.getPanel().add(contractDrawer);
@@ -260,7 +271,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 				20, 80);
 		int y = 150;
 		for (Player p : sorted) {
-			g.setColor(p == players[game.getCurrentPlayer()] ? Color.MAGENTA : Color.BLACK);
+			g.setColor(p == players[game.getCurrentPlayer()] ? Color.WHITE : Color.BLACK);
 			g.drawString(String.format("%-8s     %4d    %8d      %12d   %21d", p.getName(), p.getPoints(),
 					p.getTrains(), p.getCards().getNumCards(), p.getContracts().size()), 20, y);
 			Color c = null;
@@ -317,6 +328,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 		cMapDrawer.draw(g);
 		input.draw(g);
 		drawLeaderBoard(g);
+		exitButton.draw(g);
 		AnimationManager.draw(g);
 	}
 

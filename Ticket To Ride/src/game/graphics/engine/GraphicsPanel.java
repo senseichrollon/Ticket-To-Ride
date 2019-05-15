@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import game.graphics.input.MouseInput;
 import game.graphics.screens.ScreenManager;
+import game.graphics.util.ImageLoader;
 
 public class GraphicsPanel extends JPanel implements Runnable {
 		
@@ -36,6 +37,7 @@ public class GraphicsPanel extends JPanel implements Runnable {
 	
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Ticket to Ride");
+		frame.setIconImage(ImageLoader.loadImage("resources/menuscreen/logo.png"));
 		frame.setSize(WIDTH, HEIGHT);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
