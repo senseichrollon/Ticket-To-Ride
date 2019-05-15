@@ -108,8 +108,8 @@ public class StaticScreen extends ScreenManager{
 		if(game == null)
 			return;
 		
-		Color c2 = new Color(126, 249, 255);
-		GradientPaint gp1 = new GradientPaint(0, 0, Color.YELLOW, 0, (600), c2, true);
+		Color c2 = Color.CYAN.darker().darker();
+		GradientPaint gp1 = new GradientPaint(0, 0, Color.CYAN, 0, (600), c2, true);
 		Paint p = g.getPaint();
 		g.setPaint(gp1);
 		g.fillRect(0, 0, 398, 400);

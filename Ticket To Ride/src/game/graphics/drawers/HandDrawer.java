@@ -36,8 +36,8 @@ public class HandDrawer {
 	}
 		
 	public void draw(Graphics2D g) {
-		Color c2 = new Color(126, 249, 255);
-		GradientPaint gp1 = new GradientPaint(298, 720, Color.YELLOW, 1524, (920), c2, false);
+		Color c2 = Color.CYAN.darker().darker();
+		GradientPaint gp1 = new GradientPaint(0, 0,Color.CYAN, 0, (600), c2, true);
 		g.setPaint(gp1);
 		g.fillRect(398, 720, 1226, 200);
 		

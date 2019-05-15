@@ -74,7 +74,13 @@ public class AIPlayer extends Player{
 			}
 		} else if(contractList.isEmpty() && game.hasWinner() != -1) {
 			if(tracks.isEmpty()) {
-				selectContracts(3,1);
+				if(game.getDeck().canDrawTrains()) {
+					game.drawFaceDownCard();
+					game.drawFaceDownCard();
+				} else {
+					selectContracts(3,1);
+				}
+				return;
 			}
 			ArrayList<Track> list = new ArrayList<>();
 			tracks.keySet().stream().forEach(n -> list.add(n));
@@ -111,6 +117,7 @@ public class AIPlayer extends Player{
 			}
 		}
 	}
+	
 	
 	private void placeTrack(Track track, boolean[] b) {
 		String color1 = track.getTrackColor1();
