@@ -229,6 +229,26 @@ public class GameScreen extends ScreenManager implements Runnable {
 			TrainBackGround.update();
 			return;
 		}
+		boolean clicked = in.clicked();
+		boolean released = in.released();
+		Point p = new Point(in.getX(), in.getY());
+		if(clicked) {
+			if(exitButton.checkContains(p)) {
+				exitButton.setPressed(true);
+			}
+		} else if(released) {
+			if(exitButton.checkContains(p)) {
+				exitButton.setValidRelease(true);
+			}
+		} else if(!clicked && !released) {
+			exitButton.setPressed(false);
+		}
+		
+		if(exitButton.isValidRelease()) {
+			exitButton.setValidRelease(false);
+			ScreenManager.switchScreen(MENU);
+			
+		}
 		
 		input.update();
 		if (!(contractDrawer.getParent() == GraphicsPanel.getPanel())) {
