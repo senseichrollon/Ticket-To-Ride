@@ -12,6 +12,7 @@ public class Deck {
 
 	// list of all contract cards to be returned in get method
 	private ArrayList<ContractCard> contractList;
+	private int shuffleCount;
 
 	public Deck() throws IOException {
 		trainDeck = new LinkedList<String>();
@@ -103,7 +104,14 @@ public class Deck {
 		for (int i = 0; i < temp.size(); i++) {
 			trainDeck.add(temp.get(i));
 		}
-//		replaceTrains(null, false);
+		boolean hasNull = true;
+		for(String s : upTrains) {
+			if(s == null) {
+				hasNull = true;
+			}
+		}
+		if(hasNull)
+			replaceTrains(null, true);
 	}
 
 	public void replaceContract(List<ContractCard> ss) {
@@ -116,9 +124,13 @@ public class Deck {
 	public String drawTrain(int c) {
 		String temp = upTrains[c];
 		upTrains[c] = null;
-		if(trainDeck.isEmpty())
+		if(trainDeck.isEmpty() && !drawnTrainDeck.isEmpty()) {
 			shuffleIfDeckFinished();
-		replaceTrains(temp, true);
+		}
+		if(!trainDeck.isEmpty())
+			replaceTrains(temp, true);
+		else
+			AnimationManager.addTrainCardAnimation(c, temp);					
 		check();
 		return temp;
 	}
@@ -133,7 +145,8 @@ public class Deck {
 				if (upTrains[i] == null) {
 					String s = trainDeck.poll();
 					AnimationManager.replaceTrainsAnimation(i, s);
-					AnimationManager.addTrainCardAnimation(i, prev);					
+					if(prev != null)
+						AnimationManager.addTrainCardAnimation(i, prev);					
 					upTrains[i] = s;
 				}
 			}
@@ -151,22 +164,26 @@ public class Deck {
 			for(int i = 0; i < upTrains.length; i++) {
 				upTrains[i] = temp[i];
 			}
-			if(wildCount >= 3)
+			if(wildCount >= 3 && shuffleCount < 500) {
+				shuffleCount++;
 				shuffle(false);
+			}
 		}
 
 	}
 
 	public void check() {
-		if (trainDeck.size() <= 5 && drawnTrainDeck.size() != 0)
+		if (trainDeck.size() == 0 && drawnTrainDeck.size() != 0)
 			shuffleIfDeckFinished();
 		int cntWild = 0;
 		for (int i = 0; i < upTrains.length; i++) {
-			if (upTrains[i].equals("wild"))
+			if (upTrains[i] != null && upTrains[i].equals("wild"))
 				cntWild++;
 		}
-		if (cntWild >= 3)
+		if (cntWild >= 3) {
+			shuffleCount = 0;
 			shuffle(true);
+		}
 	}
 
 	public String[] getUpCards() {
@@ -191,7 +208,23 @@ public class Deck {
 //	}
 
 	public boolean canDrawTrains() {
-		return !(trainDeck.size() <= 5 && drawnTrainDeck.size() == 0);
+		boolean cards = false;
+		for(String s : upTrains) {
+			if(s != null)
+				cards = true;
+		}
+		if(cards) {
+			int cnt = 0;
+			for(String s : upTrains) {
+				if(s != null  && !s.equals("wild")) {
+					cnt++;
+				}
+			}
+			if(cnt <= 1 && trainDeck.isEmpty() && drawnTrainDeck.isEmpty()) {
+				cards = false;
+			}
+		}
+		return !(trainDeck.size() == 0 && drawnTrainDeck.size() == 0 && !cards);
 	}
 	
 	public boolean canDrawContracts() {

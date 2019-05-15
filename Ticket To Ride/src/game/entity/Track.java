@@ -158,6 +158,4 @@ public class Track implements Comparable<Track> {
 	public String toString() {
 		return CityMap.INDEX_TO_CITY.get(cityOne) + " " + CityMap.INDEX_TO_CITY.get(cityTwo);
 	}
-
-	
 }

@@ -50,6 +50,37 @@ public class PathEdge implements Comparable<PathEdge>{
 		return Integer.compare(weight, e.getWeight());
 	}
 	
+	public int getTrackPoints() {
+		int points = 0;
+		switch(track.getLength()) {
+		case 1 : {
+			points = 1;
+			break;
+		}
+		case 2: {
+			points = 2;
+			break;
+		}
+		case 3: {
+			points = 4;
+			break;
+		}
+		case 4: {
+			points = 7;
+			break;
+		}
+		case 5: {
+			points = 10;
+			break;
+		}
+		case 6: {
+			points = 15;
+			break;
+		}
+	}
+		return points;
+	}
+	
 	public String toString() {
 		return CityMap.INDEX_TO_CITY.get(city) + " " + weight;
 	}

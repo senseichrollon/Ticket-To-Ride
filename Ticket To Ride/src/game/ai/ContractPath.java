@@ -28,11 +28,19 @@ public class ContractPath implements Comparable<ContractPath> {
 	}
 	
 	public double ratio() {
-		return (double)card.getPoints()/(double)sumPath();
+		return ((double)card.getPoints() + getTrackPoints())/(double)sumPath();
 	}
 	
 	public ArrayList<PathEdge> getPath() {
 		return path;
+	}
+	
+	public int getTrackPoints() {
+		int total = 0;
+		for(PathEdge e : path) {
+			total += e.getTrackPoints();
+		}
+		return total;
 	}
 
 	@Override
