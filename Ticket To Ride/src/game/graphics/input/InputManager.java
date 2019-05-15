@@ -43,11 +43,10 @@ public class InputManager {
 		this.input = input;
 	}
 
-	public void update() {
+	public void update(boolean clicked, boolean released) {
 		if(AnimationManager.animating())
 			return;
-		boolean clicked = input.clicked();
-		boolean released = input.released();
+
 		updateButtons(clicked, released, new Point(input.getX(), input.getY()));
 		updateClickBox(clicked, released, new Point(input.getX(), input.getY()));
 	}

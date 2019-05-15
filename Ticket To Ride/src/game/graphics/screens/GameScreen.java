@@ -107,10 +107,9 @@ public class GameScreen extends ScreenManager implements Runnable {
 		running = true;
 		for (int i = 0; i < game.getPlayers().length; i++) {
 			if (game.getPlayers()[game.getCurrentPlayer()] instanceof AIPlayer) {
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-				}
+				while(ScreenManager.getCurrentScreen() != this)
+					try {Thread.sleep(10);} catch (InterruptedException e) {}
+				try {Thread.sleep(500);} catch (InterruptedException e) {}
 				AIPlayer player = (AIPlayer) game.getPlayers()[game.getCurrentPlayer()];
 				player.startGameMove();
 			} else {
@@ -128,10 +127,9 @@ public class GameScreen extends ScreenManager implements Runnable {
 						JOptionPane.PLAIN_MESSAGE);
 			}
 			if (game.getPlayers()[game.getCurrentPlayer()] instanceof AIPlayer) {
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-				}
+				while(ScreenManager.getCurrentScreen() != this)
+					try {Thread.sleep(10);} catch (InterruptedException e) {}
+				try {Thread.sleep(500);} catch (InterruptedException e) {}
 				AIPlayer player = (AIPlayer) game.getPlayers()[game.getCurrentPlayer()];
 				player.makeMove();
 			} else {
@@ -244,15 +242,16 @@ public class GameScreen extends ScreenManager implements Runnable {
 			exitButton.setPressed(false);
 		}
 		
+
+		
+		input.update(clicked,released);
+		if (!(contractDrawer.getParent() == GraphicsPanel.getPanel())) {
+			GraphicsPanel.getPanel().add(contractDrawer);
+		}
 		if(exitButton.isValidRelease()) {
 			exitButton.setValidRelease(false);
 			ScreenManager.switchScreen(MENU);
-			
-		}
-		
-		input.update();
-		if (!(contractDrawer.getParent() == GraphicsPanel.getPanel())) {
-			GraphicsPanel.getPanel().add(contractDrawer);
+			GraphicsPanel.getPanel().remove(contractDrawer);
 		}
 		handDrawer.setTree(game.getPlayers()[game.getCurrentPlayer()].getCards());
 		contractDrawer.setPlayerContracts(game.getPlayers()[game.getCurrentPlayer()].getContracts());
