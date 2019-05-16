@@ -127,7 +127,7 @@ public class ContractCardDrawer extends JPanel implements AdjustmentListener {
 	
 	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e) {
-		dx = e.getAdjustable().getValue() * (Math.max(2, (playerContracts.size() * 5)/3));
+		dx = e.getAdjustable().getValue() * 30;
 	}
 	
 	public void setPlayerContracts(ArrayList<ContractCard> cards) {

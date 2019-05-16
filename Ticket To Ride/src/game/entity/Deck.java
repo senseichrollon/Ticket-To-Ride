@@ -88,10 +88,13 @@ public class Deck {
 		}
 		if(in)
 			AnimationManager.shuffle(temp, true);
+		
 		Collections.shuffle(list);
 		for (int i = 0; i < list.size(); i++) {
 			trainDeck.add(list.get(i));
 		}
+		if(shuffleCount > 500)
+			return;
 		replaceTrains(null, false);
 	}
 
@@ -164,7 +167,7 @@ public class Deck {
 			for(int i = 0; i < upTrains.length; i++) {
 				upTrains[i] = temp[i];
 			}
-			if(wildCount >= 3 && shuffleCount < 500) {
+			if(wildCount >= 3) {
 				shuffleCount++;
 				shuffle(false);
 			}
