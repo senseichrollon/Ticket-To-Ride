@@ -74,7 +74,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 		gameThread.start();
 	}
 
-	public void initGame() {
+	private void initGame() {
 		init = true;
 		try {
 			game = new GameState();
@@ -94,7 +94,6 @@ public class GameScreen extends ScreenManager implements Runnable {
 				cards.put(color, ImageLoader.loadImage("resources/traincards/" + color + ".jpg"));
 
 		}
-
 		handDrawer = new HandDrawer(cards);
 		AnimationManager.init();
 		handDrawer.setTree(game.getPlayers()[game.getCurrentPlayer()].getCards());
@@ -137,40 +136,24 @@ public class GameScreen extends ScreenManager implements Runnable {
 				input.reset();
 				switch (num) {
 				case 1: {
-					Rectangle2D.Double[] coords = new Rectangle2D.Double[6];
-					int y = 20;
-					String[] upTrains = game.getDeck().getUpCards();
-					for (int i = 0; i < 5; i++) {
-						BufferedImage img = cards.get(upTrains[i]);
-						if (img != null)
-							coords[i] = new Rectangle2D.Double(1700, y, (img.getWidth() * 8) / 10,
-									(img.getHeight() * 8) / 10);
-						y += 130;
-					}
-					coords[5] = new Rectangle2D.Double(1900 - trainContract.getHeight() / 4, 760,
-							(trainContract.getHeight()) / 4, (trainContract.getWidth()) / 4);
 					while (game.getNumCardsDrawn() < 2) {
-						int index = input.requestTrainCardSelection(coords, game.getNumCardsDrawn(), upTrains, game);
+						int index = input.requestTrainCardSelection(game.getNumCardsDrawn(), game,cards,trainContract);
 						if (index < 5)
 							game.drawFaceUpCard(index);
 						else
 							game.drawFaceDownCard();
 						input.reset();
 					}
-
 					break;
 				}
 				case 2: {
 					int id = input.requestTrack(cMapDrawer.getDrawMap(), game.getPlacableTracks());
-					// System.out.println(game.getPlayers()[game.getCurrentPlayer()].getTrainColor());
 					input.reset();
 					Track track = game.getBoard().getTrack(id > 100 ? id - 1000 : id);
-					HashMap<String, Integer> cards = input.requestCards(track, id > 100, HandDrawer.getCards(),
-							game.getPlayers()[game.getCurrentPlayer()]);
+					HashMap<String, Integer> cards = input.requestCards(track, id > 100, HandDrawer.getCards(),game.getPlayers()[game.getCurrentPlayer()]);
 					int wildCount = 0;
 					String color = "";
 					int colorCount = 0;
-
 					for (String s : cards.keySet()) {
 						if (s.equals("wild")) {
 							wildCount = cards.get(s);
@@ -196,7 +179,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 		running = false;
 	}
 
-	public void requestGovContract(int n) {
+	private void requestGovContract(int n) {
 		ContractCard[] cards = game.drawContracts(n);
 		BufferedImage[] img = new BufferedImage[cards.length];
 		for (int i = 0; i < cards.length; i++) {
@@ -218,7 +201,6 @@ public class GameScreen extends ScreenManager implements Runnable {
 
 		game.setContracts(keepCards);
 		game.returnContracts(retCards);
-
 	}
 
 	@Override
@@ -242,8 +224,6 @@ public class GameScreen extends ScreenManager implements Runnable {
 			exitButton.setPressed(false);
 		}
 		
-
-		
 		input.update(clicked,released);
 		if (!(contractDrawer.getParent() == GraphicsPanel.getPanel())) {
 			GraphicsPanel.getPanel().add(contractDrawer);
@@ -258,7 +238,7 @@ public class GameScreen extends ScreenManager implements Runnable {
 		AnimationManager.update();
 	}
 
-	public void drawPiles(Graphics2D g) {
+	private void drawPiles(Graphics2D g) {
 		g.fillRect(1625, 0, 500, 1080);
 		g.drawImage(govContract, 1700, 900, (govContract.getWidth() * 2) / 3, (govContract.getHeight() * 2) / 3, null);
 		AffineTransform at = new AffineTransform();
@@ -278,18 +258,15 @@ public class GameScreen extends ScreenManager implements Runnable {
 		}
 	}
 
-	public void drawLeaderBoard(Graphics2D g) {
+	private void drawLeaderBoard(Graphics2D g) {
 		Player[] players = game.getPlayers();
-		ArrayList<Player> sorted = new ArrayList<>();
-		IntStream.range(0, players.length).forEach(i -> sorted.add(players[i]));
-//		Collections.sort(sorted, (a,b) -> Integer.compare(b.getPoints(), a.getPoints()));
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("TimesRoman", Font.BOLD | Font.ITALIC, 15));
 		g.drawString(
 				String.format("%8s   %8s %8s   %14s    %14s", "", "Points", "Trains", "Train Cards", "Contract Cards"),
 				20, 80);
 		int y = 150;
-		for (Player p : sorted) {
+		for (Player p : players) {
 			g.setColor(p == players[game.getCurrentPlayer()] ? Color.WHITE : Color.BLACK);
 			g.drawString(String.format("%-8s     %4d    %8d      %12d   %21d", p.getName(), p.getPoints(),
 					p.getTrains(), p.getCards().getNumCards(), p.getContracts().size()), 20, y);

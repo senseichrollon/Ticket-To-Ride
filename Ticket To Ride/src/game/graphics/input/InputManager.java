@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import game.entity.CityMap;
 import game.entity.ContractCard;
@@ -25,6 +26,7 @@ import game.graphics.util.MButton;
 import game.main.GameState;
 
 public class InputManager {
+	
 	private ArrayList<MButton> displayButtons;
 	private ArrayList<ClickBox> clickBoxes;
 	private ArrayList<Text> textDisplay;
@@ -33,8 +35,6 @@ public class InputManager {
 	private MButton pressedButton;
 	private MouseInput input;
 	
-	private boolean buttonIter;
-
 	public InputManager(MouseInput input) {
 		displayButtons = new ArrayList<>();
 		clickBoxes = new ArrayList<ClickBox>();
@@ -45,14 +45,12 @@ public class InputManager {
 
 	public void update(boolean clicked, boolean released) {
 		if(AnimationManager.animating())
-			return;
-
+			return;			
 		updateButtons(clicked, released, new Point(input.getX(), input.getY()));
 		updateClickBox(clicked, released, new Point(input.getX(), input.getY()));
 	}
 
 	public void updateButtons(boolean mousePressed, boolean mouseReleased, Point mouseLoc) {
-		buttonIter = true;
 		if (mousePressed)
 			for (int i = 0; i < displayButtons.size(); i++) {
 				MButton b = displayButtons.get(i);
@@ -76,7 +74,6 @@ public class InputManager {
 					b.setPressed(false);
 				}
 			}
-		buttonIter = false;
 	}
 
 	public void updateClickBox(boolean mousePressed, boolean mouseReleased, Point mouseLoc) {
@@ -146,14 +143,26 @@ public class InputManager {
 		return pressedButton.getId();
 	}
 
-	public int requestTrainCardSelection(Rectangle2D.Double[] clickArea, int numCardsDrawn, String[] upTrains,GameState game) {
+	public int requestTrainCardSelection(int numCardsDrawn,GameState game, LinkedHashMap<String, BufferedImage> cards,BufferedImage trainContract) {
+		String[] upTrains = game.getDeck().getUpCards();
+		Rectangle2D.Double[] coords = new Rectangle2D.Double[6];
+		for (int i = 0; i < 5; i++) {
+			BufferedImage img = cards.get(upTrains[i]);
+			if (img != null)
+				coords[i] = new Rectangle2D.Double(1700, i * 130 + 20, (img.getWidth() * 8) / 10,
+						(img.getHeight() * 8) / 10);
+		}
+		coords[5] = new Rectangle2D.Double(1900 - trainContract.getHeight() / 4, 760,
+				(trainContract.getHeight()) / 4, (trainContract.getWidth()) / 4);
+		
+		
 		for (int i = 0; i < 5; i++) {
 			if (upTrains[i] != null && (numCardsDrawn != 1 || !upTrains[i].equals("wild"))) {
-				clickBoxes.add(new ClickBox(clickArea[i], i));
+				clickBoxes.add(new ClickBox(coords[i], i));
 			}
 		}
 		if(!game.getDeck().getTrainDeck().isEmpty())
-			clickBoxes.add(new ClickBox(clickArea[5], 5));
+			clickBoxes.add(new ClickBox(coords[5], 5));
 		while (pressedClick == null) {
 			try {Thread.sleep(100);} catch (InterruptedException e) {}
 		}
@@ -255,7 +264,6 @@ public class InputManager {
 		} else {
 			search = track.getTrackColor1();
 		}
-		int one = 0;
 			
 		int x = 10;
 		int y = 420;
@@ -340,16 +348,6 @@ public class InputManager {
 				else
 					set.remove(s);
 			}
-//			System.out.println(set);
-//			System.out.println(total + " " + track.getLength());
-//			if(total == track.getLength() && !((set.size() >= 2 && !set.contains("wild")) || (set.size() >= 3 && set.contains("wild")))) {
-//				displayButtons.add(placeCards);
-//			} else if(displayButtons.contains(placeCards)) {
-//				while(buttonIter)
-//					try {Thread.sleep(10);} catch (InterruptedException e) {}
-//				displayButtons.remove(placeCards);
-//
-//			}
 			try {Thread.sleep(10);} catch (InterruptedException e) {}
 		}
 		reset();
@@ -368,14 +366,12 @@ public class InputManager {
 	public void draw(Graphics2D g) {
 		if(AnimationManager.animating())
 			return;
-		buttonIter = true;
 		for (int i = 0; i < displayButtons.size(); i++) {
 			MButton b = displayButtons.get(i);
 			if(b == null)
 				continue;
 			b.draw(g);
 		}
-		buttonIter = false;
 		for (int i = 0; i < clickBoxes.size(); i++) {
 			if(clickBoxes.get(i) == null)
 				continue;

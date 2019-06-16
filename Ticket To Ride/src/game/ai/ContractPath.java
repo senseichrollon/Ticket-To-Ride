@@ -23,7 +23,7 @@ public class ContractPath implements Comparable<ContractPath> {
 	}
 	
 	public int sumPath() {
-		if(path.isEmpty()) return Integer.MAX_VALUE;
+		if(path.isEmpty()) return 100000;
 		return path.get(path.size()-1).getWeight();
 	}
 	

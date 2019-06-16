@@ -97,18 +97,6 @@ public class MButton {
 		this.cleared = cleared;
 	}
 	
-	public static Shape roundedRect	(int width, int height, int borderRadius) {
-		Path2D path = new Path2D.Double();
-        path.moveTo(0, 0);
-        path.lineTo(width - borderRadius, 0);
-        path.curveTo(width, 0, width, 0, width, borderRadius);
-        path.lineTo(width, height - borderRadius);
-        path.curveTo(width, height, width, height, width - borderRadius, height);
-        path. lineTo(0, height);
-        path. closePath();
-        return path;
-	}
-	
 	public static Shape ellipse(int width, int height) {
 		Ellipse2D shape = new Ellipse2D.Double(0, 0, width, height);
 		return shape;
@@ -130,10 +118,8 @@ public class MButton {
 			g.setColor(Color.black);
 			g.fill(shape);
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
-			
 			if (!pressed) 
 				g.translate(5, -5);
-			
 			
 			Color c2 = background.darker().darker().darker().darker();
 			GradientPaint gp1 = new GradientPaint(0, 0, background, 0, (int)(shape.getBounds2D().getHeight() / 1.5), c2, true);
@@ -155,8 +141,7 @@ public class MButton {
 //			if(shape instanceof Ellipse2D)
 				g.drawString(text, (int)(-width / 2 + shape.getBounds().getWidth()/2), (int) (-height / 2 + g.getFontMetrics().getAscent() + shape.getBounds().getHeight()/2));
 //			else
-//				g.drawString(text, (int)(-width / 2), (int) (-height / 2 + g.getFontMetrics().getAscent()));
-			
+//				g.drawString(text, (int)(-width / 2), (int) (-height / 2 + g.getFontMetrics().getAscent()));		
 		} else {
 			g.translate(center.getX(), center.getY());
 		}

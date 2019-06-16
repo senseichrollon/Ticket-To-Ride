@@ -19,31 +19,29 @@ public class GameState {
 	private int currentPlayer, numCardsDrawn;
 	private CityMap board;
 	private Deck deck;
-	private boolean hasWinner;
 	private int lastRound;
 	public static int NUMPLAYERS = 4;
 
-	public static String[] PLAYER_COLS = new String[]{"blue", "purple", "green", "yellow"};
-	public static String[] PLAYER_NAMES = new String[]{"Jim", "Joe", "Bob", "John"};;
-	
-	public GameState() throws IOException
-	{
+	public static String[] PLAYER_COLS = new String[] { "blue", "purple", "green", "yellow" };
+	public static String[] PLAYER_NAMES = new String[] { "Jim", "Joe", "Bob", "John" };;
+
+	public GameState() throws IOException {
 		players = new Player[4];
 		deck = new Deck();
-		for(int i = 0; i < 4; i++) {
+		for (int i = 0; i < 4; i++) {
 			Player ply;
-			if(PlayerSelectionScreen.PLAYER_TYPE[i]) {
-				ply = new AIPlayer(PLAYER_NAMES[i], PLAYER_COLS[i],this);
+			if (PlayerSelectionScreen.PLAYER_TYPE[i]) {
+				ply = new AIPlayer(PLAYER_NAMES[i], PLAYER_COLS[i], this);
 			} else {
 				ply = new Player(PLAYER_NAMES[i], PLAYER_COLS[i]);
 			}
-			for(int j = 0; j < 4; j++) {
+			for (int j = 0; j < 4; j++) {
 				String card = deck.drawRandTrain(false);
 				ply.addCard(card, 1);
 			}
 			players[i] = ply;
 		}
-		currentPlayer = (int)(Math.random() * 4);
+		currentPlayer = (int) (Math.random() * 4);
 		numCardsDrawn = 0;
 		lastRound = -1;
 		board = new CityMap();
@@ -69,22 +67,23 @@ public class GameState {
 		currentPlayer++;
 		if (currentPlayer == NUMPLAYERS)
 			currentPlayer = 0;
-		if(lastRound != -1)
+		if (lastRound != -1)
 			lastRound++;
-		for(Player ply : players) {
-			if(ply.getTrains()  <= 3 && lastRound == -1) {
+		for (Player ply : players) {
+			if (ply.getTrains() <= 3 && lastRound == -1) {
 				lastRound = 1;
 			}
 		}
 		resetNumCardsDrawn();
 	}
-	
+
 	public void setContractCompletion() {
 		ArrayList<ContractCard> contracts = players[currentPlayer].getContracts();
-		for(int i = 0; i < contracts.size(); i++) {
+		for (int i = 0; i < contracts.size(); i++) {
 			//
-			if(!contracts.get(i).isComplete()) {
-				contracts.get(i).setComplete(board.completedContract(players[currentPlayer].getTrainColor(), contracts.get(i)));
+			if (!contracts.get(i).isComplete()) {
+				contracts.get(i)
+						.setComplete(board.completedContract(players[currentPlayer].getTrainColor(), contracts.get(i)));
 			}
 		}
 	}
@@ -130,36 +129,37 @@ public class GameState {
 		players[currentPlayer].removeCards(color, colorCount, wildCount);
 		AnimationManager.placeTrainsAnimation(color, colorCount, wildCount);
 		players[currentPlayer].decrementTrain(track.getLength());
-		boolean ret = board.addTrack(track, players[currentPlayer].getTrainColor(), second?track.getTrackColor2():track.getTrackColor1(), second?2:1);
+		boolean ret = board.addTrack(track, players[currentPlayer].getTrainColor(),
+				second ? track.getTrackColor2() : track.getTrackColor1(), second ? 2 : 1);
 		deck.addDrawnCards(color, colorCount);
 		deck.addDrawnCards("wild", wildCount);
-		if(ret) {
+		if (ret) {
 			int points = 0;
-			switch(track.getLength()) {
-				case 1 : {
-					points = 1;
-					break;
-				}
-				case 2: {
-					points = 2;
-					break;
-				}
-				case 3: {
-					points = 4;
-					break;
-				}
-				case 4: {
-					points = 7;
-					break;
-				}
-				case 5: {
-					points = 10;
-					break;
-				}
-				case 6: {
-					points = 15;
-					break;
-				}
+			switch (track.getLength()) {
+			case 1: {
+				points = 1;
+				break;
+			}
+			case 2: {
+				points = 2;
+				break;
+			}
+			case 3: {
+				points = 4;
+				break;
+			}
+			case 4: {
+				points = 7;
+				break;
+			}
+			case 5: {
+				points = 10;
+				break;
+			}
+			case 6: {
+				points = 15;
+				break;
+			}
 			}
 			setContractCompletion();
 			players[currentPlayer].addPoints(points);
@@ -179,86 +179,69 @@ public class GameState {
 		return board.getPlaceableTracks(players[currentPlayer]);
 	}
 
-
 	public int hasWinner() {
 		return lastRound;
 	}
-	
-	public int[][] endGame() 
-	{
+
+	public int[][] endGame() {
 		int[][] mat = new int[4][6];
 		mat[0][0] = 0;
 		mat[1][0] = 1;
 		mat[2][0] = 2;
 		mat[3][0] = 3;
-		for(int i = 0; i < players.length; i++) 
-		{
+		for (int i = 0; i < players.length; i++) {
 			mat[i][1] = players[i].getPoints();
 			int cnt = 0;
-			for(ContractCard card : players[i].getContracts()) 
-			{
-				if(card.isComplete()) 
-				{
+			for (ContractCard card : players[i].getContracts()) {
+				if (card.isComplete()) {
 					mat[i][2] += card.getPoints();
 					cnt++;
-				} 
-				else 
-				{
+				} else {
 					mat[i][3] += card.getPoints();
 				}
 			}
 			players[i].setNumCompletedContracts(cnt);
 		}
 		ArrayList<String> longestPath = board.getPlayersLongest();
-		System.out.println(longestPath);
-		if (longestPath.size() > 1)
-		{
+		if (longestPath.size() > 1) {
 			ArrayList<Integer> temp = new ArrayList<Integer>();
-			for (int i = 0; i < longestPath.size(); i++)
-			{
-				for(int j = 0; j < PLAYER_COLS.length; j++)
-				{
-					if(longestPath.get(i).equals(PLAYER_COLS[j]))
+			for (int i = 0; i < longestPath.size(); i++) {
+				for (int j = 0; j < PLAYER_COLS.length; j++) {
+					if (longestPath.get(i).equals(PLAYER_COLS[j]))
 						temp.add(j);
 				}
 			}
 			int mostCompleted = temp.get(0);
-			for (int x = 1; x < temp.size(); x++)
-			{
+			for (int x = 1; x < temp.size(); x++) {
 				if (players[temp.get(x)].getNumCompletedContracts() > players[mostCompleted].getNumCompletedContracts())
 					mostCompleted = temp.get(x);
 			}
 			mat[mostCompleted][4] = 10;
-		}
-		else
-		{
-			for (int i = 0; i < PLAYER_COLS.length; i++)
-			{
+		} else {
+			for (int i = 0; i < PLAYER_COLS.length; i++) {
 				if (longestPath.get(0).equals(PLAYER_COLS[i]))
 					mat[i][4] = 10;
 			}
 		}
 		int max = Integer.MIN_VALUE;
 		ArrayList<Integer> mostCompleted = new ArrayList<>();
-		for (int i = 0; i < NUMPLAYERS; i++)
-		{
-			if(players[i].getNumCompletedContracts() > max) {
+		for (int i = 0; i < NUMPLAYERS; i++) {
+			if (players[i].getNumCompletedContracts() > max) {
 				mostCompleted.clear();
 				max = players[i].getNumCompletedContracts();
 				mostCompleted.add(i);
-			} else if(players[i].getNumCompletedContracts() == max) {
+			} else if (players[i].getNumCompletedContracts() == max) {
 				mostCompleted.add(i);
 			}
-				
+
 		}
-		for(int i : mostCompleted) {
+		for (int i : mostCompleted) {
 			mat[i][5] = 15;
 		}
 		return mat;
 	}
-	
-	public void endGameDebug()
-	{
+
+	public void endGameDebug() {
 		lastRound = 5;
 	}
 }

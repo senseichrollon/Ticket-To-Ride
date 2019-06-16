@@ -148,7 +148,6 @@ public class StaticScreen extends ScreenManager{
 					b.setValidRelease(true);
 		if(!mousePressed && !mouseReleased)
 			for(MButton b : buttons)
-				if(!b.checkContains(mouseLoc))
 					b.setPressed(false);
 	}
 	
