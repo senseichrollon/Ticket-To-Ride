@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import game.graphics.input.MouseInput;
 import game.graphics.screens.ScreenManager;
 import game.graphics.util.ImageLoader;
-
+	
 public class GraphicsPanel extends JPanel implements Runnable {
 		
 	public static final int WIDTH = 1920, HEIGHT = 1080;
@@ -20,7 +20,7 @@ public class GraphicsPanel extends JPanel implements Runnable {
 	private boolean running;
 	private int FPS = 60;
 	private long targetTime = 1000 / FPS;
-	
+
 	
 	public GraphicsPanel() {
 		currentPanel = this;
@@ -44,12 +44,13 @@ public class GraphicsPanel extends JPanel implements Runnable {
 		frame.setUndecorated(true);
 		frame.add(new GraphicsPanel());
 		frame.setVisible(true);
-		
 	}
 	
 	public void update() {
 		ScreenManager.getCurrentScreen().update();
 	}
+	
+	
 	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);

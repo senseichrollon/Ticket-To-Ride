@@ -76,7 +76,7 @@ public class CityMap {
 			System.out.println("Error reading resources/gamedata/tracks.txt");
 		}
 
-	}
+	}    
 
 	public boolean addTrack(Track work, String player, String colChoice, int side) {
 		System.out.println(player + "  fsds");
@@ -267,6 +267,7 @@ public class CityMap {
 	private ArrayList<Integer> getLargestPos(int[] test) {
 		int max = Integer.MIN_VALUE;
 		for (int i = 0; i < test.length; i++) {
+
 			if (test[i] > max)
 				max = test[i];
 		}
