@@ -1,11 +1,9 @@
 Ticket To Ride
-SLHS CS2 Spring Project 2019
 
 TEAM:
 Aurko Routh(Programming Lead)
 Rac Mukkamala(Associate Developer)
 Nikunj Zamwar(Associate Developer)
-Miles Tran(Associate Developer)
 
 OBJECTIVE:
 To create a graphical, Java based implementation of the board game "Ticket to Ride".
@@ -25,9 +23,3 @@ POSTING ISSUES:
 - For all to see the issue, assign everyone to it and add it to the Project
 - For a private issue, only assign the pertainent people to that issue.
 
-PRO TIP: Submit pull requests around 2-3 minutes before the end of class. 
-
-PROJECT TIMELINE*:
-2/20/19-3/18/19: Planning Phase
-3/23/19-EOY: Programming Phase
-*-For most accurate timeline, please see Google Drive.
